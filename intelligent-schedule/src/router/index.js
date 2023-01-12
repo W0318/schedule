@@ -1,4 +1,5 @@
 import Home from '../views/Home.vue'
+<<<<<<< HEAD
 import User from '../views/Setting/User.vue'
 import Main from '../views/Main.vue'
 import ShiftSchedule from '../views/ShiftSchedule.vue'
@@ -8,6 +9,15 @@ import MyStore from '../views/StoreManagement/MyStore.vue'
 import Employee from '../views/StoreManagement/Employee.vue'
 import SchedulingCalendar from '../views/ShiftSchedule/SchedulingCalendar.vue'
 import PersonalizationRules from '../views/ShiftSchedule/PersonalizationRules.vue'
+=======
+import User from '../views/User.vue'
+import Main from '../views/Main.vue'
+import ShiftSchedule from '../views/ShiftSchedule.vue'
+import StoreManagement from '../views/StoreManagement.vue'
+import ShiftManagement from '../views/ShiftManagement.vue'
+import ShiftSetting from '../views/ShiftSetting.vue'
+import Setting from '../views/Setting.vue'
+>>>>>>> 89b9224a072fc8a867713dd438a3de36b0247624
 // // Vue.use(VueRouter)
 // //1.创建路由组件
 // //2. 将路由与组件进行映射
@@ -28,6 +38,7 @@ const routes = [
                 component: Home,
             },
             {
+<<<<<<< HEAD
                 path: "/shiftschedule",//排班表
                 name: "ShiftSchedule",
                 component: ShiftSchedule,
@@ -56,10 +67,28 @@ const routes = [
             },
             //基础排班设置
             {
+=======
+                path: "/user",
+                name: "User",
+                component: User,
+            },
+            {
+                path: "/shiftschedule",
+                name: "ShiftSchedule",
+                component: ShiftSchedule,
+            },
+            {
+                path: "/storemanagement",
+                name: "StoreManagement",
+                component: StoreManagement,
+            },
+            {
+>>>>>>> 89b9224a072fc8a867713dd438a3de36b0247624
                 path: "/shiftmanagement",
                 name: "ShiftManagement",
                 component: ShiftManagement,
             },
+<<<<<<< HEAD
             // {
             //     path: "/shiftsetting",
             //     name: "ShiftSetting",
@@ -75,6 +104,17 @@ const routes = [
                 path: "/menumanagement",
                 name: "MenuManagement",
                 component: MenuManagement,
+=======
+            {
+                path: "/shiftsetting",
+                name: "ShiftSetting",
+                component: ShiftSetting,
+            },
+            {
+                path: "/setting",
+                name: "Setting",
+                component: Setting,
+>>>>>>> 89b9224a072fc8a867713dd438a3de36b0247624
             },
             
         ]
