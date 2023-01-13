@@ -8,19 +8,21 @@ import MyStore from '../views/StoreManagement/MyStore.vue'
 import Employee from '../views/StoreManagement/Employee.vue'
 import SchedulingCalendar from '../views/ShiftSchedule/SchedulingCalendar.vue'
 import PersonalizationRules from '../views/ShiftSchedule/PersonalizationRules.vue'
+
+import Login from '../views/Login.vue'
 // //1.创建路由组件
 // //2. 将路由与组件进行映射
 // //3. 创建router实例
 
-import {createWebHistory, createRouter } from "vue-router";
+import { createWebHistory, createRouter } from "vue-router";
 
 const routes = [
     {
         path: "/",
         name: "Main",
         component: Main,
-        redirect:'/home',
-        children:[
+        redirect: '/home',
+        children: [
             {
                 path: "/home",//首页
                 name: "Home",
@@ -79,10 +81,15 @@ const routes = [
                 name: "MenuManagement",
                 component: MenuManagement,
             },
-            
+
         ]
     },
-    
+    {
+        path: "/login",
+        name: "Login",
+        component: Login,
+    }
+
 ];
 
 const router = createRouter({

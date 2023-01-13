@@ -1,7 +1,7 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-aside width="200px">
+      <el-aside width="auto">
         <common-aside />
       </el-aside>
       <el-container>
@@ -30,14 +30,9 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style lang="less" scoped>
 .el-header {
   padding: 0;
-  height: auto;
-}
-
-.el-main {
-  background-color: #e3e3e3;
-  border: 1px solid black;
+  height: max-content;
 }
 </style>
