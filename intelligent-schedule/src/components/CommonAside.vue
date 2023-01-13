@@ -1,7 +1,7 @@
 <template>
     <el-menu default-active="2" class="el-menu-vertical-demo" :collapse="isCollapse" @open="handleOpen"
         @close="handleClose" text-color="" active-text-color="#ffd04b" background-color="#545c64">
-        <h3>智能排班系统</h3>
+        <h3>{{ isCollapse ? '后台' : '智能排班系统' }}</h3>
         <el-menu-item v-on:click="clickMenu(item)" v-for="item in noChildren" :key="item.name" :index="item.name">
             <el-icon>
                 <component :is="item.icon"></component>
@@ -150,6 +150,7 @@ const router = useRouter();
 const clickMenu=(item)=>{
     console.log(item)
     router.push({path:`${item.path}`})
+    store.commit('selectMenu',item)
 }
 
 //没有子菜单
@@ -181,7 +182,9 @@ const isCollapse = computed(() => {
         line-height: 48px;
         font-size: 16px;
         font-weight: 400;
+        
     }
+    border-right: none;
 }
 </style>
 
