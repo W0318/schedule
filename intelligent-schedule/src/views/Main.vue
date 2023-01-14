@@ -17,6 +17,7 @@
     </el-container>
   </div>
 </template>
+
 <script>
 import CommonAside from '../components/CommonAside.vue'
 import CommonHeader from '../components/CommonHeader.vue'
@@ -34,5 +35,10 @@ export default {
 .el-header {
   padding: 0;
   height: max-content;
+}
+
+.el-main {
+  background-color: #e3e3e3;
+  padding: 20px 30px;
 }
 </style>

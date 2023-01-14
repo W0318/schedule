@@ -53,13 +53,12 @@
         <div class="schedule">
 
             <transition-group tag="datas" class="items">
-                <div class="col" :class="'col' + index" v-for="(data, index) in items" :key="data.key"
-                    draggable="true">
+                <div class="col" :class="'col' + index" v-for="(data, index) in items" :key="data.key" draggable="true">
                     <transition-group tag="data">
                         <div class="item" :class="'item' + i" v-for="(item, i) in data.col" :key="item.key"
-                            :draggable="index !== 0 && i !== 0 ? true : false" @dragstart="handleDragStart($event, index, item)"
-                            @dragover.prevent="handleDragOver($event)" @dragenter="handleDragEnter($event, index, item)"
-                            @dragend="handleDragEnd($event, item)">
+                            :draggable="index !== 0 && i !== 0 ? true : false"
+                            @dragstart="handleDragStart($event, index, item)" @dragover.prevent="handleDragOver($event)"
+                            @dragenter="handleDragEnter($event, index, item)" @dragend="handleDragEnd($event, item)">
                             <span>{{ item.name }}</span>
                         </div>
                     </transition-group>
@@ -318,7 +317,7 @@ const handleDragEnd = (e) => {
     const src = newItems[dragging.value[0]].col.indexOf(dragging.value[1]);
     const dst = newItems[ending.value[0]].col.indexOf(ending.value[1]);
     console.log(src, dst);
-    if (src === 0 || dst === 0 || dragging.value[0] === 0 || ending.value[0] === 0 )
+    if (src === 0 || dst === 0 || dragging.value[0] === 0 || ending.value[0] === 0)
         return;
 
     if (dragging.value[0] === ending.value[0]) {
@@ -350,13 +349,11 @@ const handleDragEnter = (e, col, item) => {
 
 <style lang="less" scoped>
 .container {
-    width: 100%;
-    height: 100%;
     background-color: #fff;
     border-radius: 15px;
     display: flex;
     flex-direction: column;
-    padding: 10px;
+    padding: 20px;
 
     .store {
         margin-top: 10px;
@@ -472,8 +469,14 @@ const handleDragEnter = (e, col, item) => {
                     margin: 0;
                     border: solid 1px #eee;
                     background-color: #fff;
-                    min-width: 110px;
+                    // min-width: 110px;
                     min-height: 40px;
+                }
+
+                @media screen and (min-width: 1330px) {
+                    .item {
+                        min-width: 109px;
+                    }
                 }
 
                 .item:hover {
