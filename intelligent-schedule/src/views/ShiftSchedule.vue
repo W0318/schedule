@@ -45,53 +45,33 @@
 
             <div class="buttonView">
                 <el-button type="primary" :icon="Delete">删除</el-button>
-                <el-button type="primary" :icon="Edit">删除</el-button>
+                <el-button type="primary" :icon="Edit">编辑</el-button>
                 <el-button type="primary" :icon="Postcard">一键生成排班</el-button>
             </div>
         </div>
 
         <div class="schedule">
-            <el-row>
-                
-            </el-row>
-            <draggable v-model="column1" group="people" animation="300" dragClass="dragClass" ghostClass="ghostClass"
-                chosenClass="chosenClass" @start="drag = true" @end="drag = false" item-key="id">
-                <template #item="{ element }">
-                    <div class="item">{{ element.name }}</div>
-                </template>
-            </draggable>
-            <draggable v-model="column2" group="people" animation="300" dragClass="dragClass" ghostClass="ghostClass"
-                chosenClass="chosenClass" @start="drag = true" @end="drag = false" item-key="id">
-                <template #item="{ element }">
-                    <div class="item">{{ element.name }}</div>
-                </template>
-            </draggable>
+
+            <transition-group tag="datas" class="items">
+                <div class="col" :class="'col' + index" v-for="(data, index) in items" :key="data.key"
+                    draggable="true">
+                    <transition-group tag="data">
+                        <div class="item" :class="'item' + i" v-for="(item, i) in data.col" :key="item.key"
+                            :draggable="index !== 0 && i !== 0 ? true : false" @dragstart="handleDragStart($event, index, item)"
+                            @dragover.prevent="handleDragOver($event)" @dragenter="handleDragEnter($event, index, item)"
+                            @dragend="handleDragEnd($event, item)">
+                            <span>{{ item.name }}</span>
+                        </div>
+                    </transition-group>
+                </div>
+            </transition-group>
         </div>
     </div>
 </template>
-<!-- <div class="schedule">
-    <el-table :data="tableData" border>
-        <el-table-column prop="index" label="时间" align="center" :row-style="{ height: '100' }" fixed>
-            <draggable v-model="column1" group="site" animation="300" dragClass="dragClass"
-                ghostClass="ghostClass" chosenClass="chosenClass" @start="onStart" @end="onEnd">
-                <transition-group>
-                    <div class="item" v-for="item in column1" :key="item.id">{{ item.name }}</div>
-                </transition-group>
-            </draggable>
-        </el-table-column>
-        <el-table-column prop="week1" :label="labels[0]" align="center" />
-        <el-table-column prop="week2" :label="labels[1]" align="center" />
-        <el-table-column prop="week3" :label="labels[2]" align="center" />
-        <el-table-column prop="week4" :label="labels[3]" align="center" />
-        <el-table-column prop="week5" :label="labels[4]" align="center" />
-        <el-table-column prop="week6" :label="labels[5]" align="center" />
-        <el-table-column prop="week7" :label="labels[6]" align="center" />
-    </el-table>
-</div> -->
+
 <script setup>
 import { ref } from 'vue';
 import moment from "moment";
-import draggable from 'vuedraggable';
 import { Delete, Edit, Postcard } from '@element-plus/icons-vue'
 
 /** 获取数据库 */
@@ -216,39 +196,156 @@ times = times.map(() => {
     return time;
 });
 
-// var tableData = new Array(hours).fill({});
-// tableData = tableData.map((value, index) => {
-//     return ({
-//         index: times[index],
-//         week1: '-',
-//         week2: '-',
-//         week3: '-',
-//         week4: '-',
-//         week5: '-',
-//         week6: '-',
-//         week7: '-'
-//     });
-// })
-// console.log(tableData)
-var drag = ref(false);
-const column1 = [
-    { id: 1, name: times[0] },
-    { id: 2, name: times[1] },
-    { id: 3, name: times[2] },
-    { id: 4, name: times[3] },
-    { id: 5, name: times[4] },
-    { id: 6, name: times[5] },
-    { id: 7, name: times[6] }
-];
-const column2 = [
-    { id: 1, name: '-' },
-    { id: 2, name: '-' },
-    { id: 3, name: '-' },
-    { id: 4, name: '-' },
-    { id: 5, name: '-' },
-    { id: 6, name: '-' },
-    { id: 7, name: '-' }
-];
+var id = 0;
+const items = ref([
+    {
+        key: 1,
+        col: [
+            { key: id++, name: '时间' },
+            { key: id++, name: times[0] },
+            { key: id++, name: times[1] },
+            { key: id++, name: times[2] },
+            { key: id++, name: times[3] },
+            { key: id++, name: times[4] },
+            { key: id++, name: times[5] },
+            { key: id++, name: times[6] }
+        ]
+    },
+    {
+        key: 2,
+        col: [
+            { key: id++, name: labels.value[0] },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' }
+        ]
+    },
+    {
+        key: 3,
+        col: [
+            { key: id++, name: labels.value[1] },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' }
+        ]
+    },
+    {
+        key: 4,
+        col: [
+            { key: id++, name: labels.value[2] },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' }
+        ]
+    },
+    {
+        key: 5,
+        col: [
+            { key: id++, name: labels.value[3] },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' }
+        ]
+    },
+    {
+        key: 6,
+        col: [
+            { key: id++, name: labels.value[4] },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' }
+        ]
+    },
+    {
+        key: 7,
+        col: [
+            { key: id++, name: labels.value[5] },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' }
+        ]
+    },
+    {
+        key: 8,
+        col: [
+            { key: id++, name: labels.value[6] },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' },
+            { key: id++, name: '-' }
+        ]
+    }
+]);
+const ending = ref(null);
+const dragging = ref(null);
+
+const handleDragStart = (e, col, item) => {
+    dragging.value = [col, item];
+}
+const handleDragEnd = (e) => {
+    if (ending.value[0] === dragging.value[0] &&
+        ending.value[1].key === dragging.value[1].key) {
+        return;
+    }
+    let newItems = [...items.value];
+    const src = newItems[dragging.value[0]].col.indexOf(dragging.value[1]);
+    const dst = newItems[ending.value[0]].col.indexOf(ending.value[1]);
+    console.log(src, dst);
+    if (src === 0 || dst === 0 || dragging.value[0] === 0 || ending.value[0] === 0 )
+        return;
+
+    if (dragging.value[0] === ending.value[0]) {
+        let item = newItems[dragging.value[0]].col;
+        item.splice(src, 1, ...item.splice(dst, 1, item[src]));
+        newItems.splice(dragging.value[0], 1, { ...newItems[dragging.value[0]], col: item });
+    }
+    else {
+        let item1 = newItems[dragging.value[0]].col;
+        let item2 = newItems[ending.value[0]].col;
+        item1.splice(src, 1, ...item2.splice(dst, 1, item1[src]));
+
+        newItems.splice(dragging.value[0], 1, { ...newItems[dragging.value[0]], col: item1 });
+        newItems.splice(ending.value[0], 1, { ...newItems[ending.value[0]], col: item2 });
+    }
+
+    items.value = newItems;
+    dragging.value = null;
+    ending.value = null;
+}
+const handleDragOver = (e) => {
+    e.dataTransfer.dropEffect = "move";
+}
+const handleDragEnter = (e, col, item) => {
+    e.dataTransfer.effectAllowed = "move";
+    ending.value = [col, item];
+}
 </script>
 
 <style lang="less" scoped>
@@ -256,7 +353,7 @@ const column2 = [
     width: 100%;
     height: 100%;
     background-color: #fff;
-    border-radius: 20px;
+    border-radius: 15px;
     display: flex;
     flex-direction: column;
     padding: 10px;
@@ -357,35 +454,38 @@ const column2 = [
 
     .schedule {
         display: flex;
-    }
+        justify-content: center;
 
-    .ghostClass {
-        background-color: blue !important;
-    }
+        .items {
+            display: flex;
+            flex-direction: row;
 
-    .chosenClass {
-        background-color: red !important;
-        opacity: 1 !important;
-    }
+            .col {
+                display: flex;
+                flex-direction: column;
 
-    .dragClass {
-        background-color: blueviolet !important;
-        opacity: 1 !important;
-        box-shadow: none !important;
-        outline: none !important;
-        background-image: none !important;
-    }
+                .item {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 10px;
+                    margin: 0;
+                    border: solid 1px #eee;
+                    background-color: #fff;
+                    min-width: 110px;
+                    min-height: 40px;
+                }
 
-    .item {
-        padding: 10px;
-        margin: 0;
-        border: solid 1px #eee;
-        background-color: #fff;
-    }
+                .item:hover {
+                    background-color: #eee;
+                    cursor: move;
+                }
 
-    .item:hover {
-        background-color: #eee;
-        cursor: move;
+                .item0 {
+                    background-color: #e3e3e3;
+                }
+            }
+        }
     }
 }
 </style>
