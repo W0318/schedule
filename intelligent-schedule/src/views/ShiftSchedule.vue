@@ -44,26 +44,42 @@
             </el-select>
 
             <div class="buttonView">
-                <el-button type="primary" :icon="Delete">删除</el-button>
-                <el-button type="primary" :icon="Edit">编辑</el-button>
+                <el-button type="primary" :icon="Delete" @click="handleDelete">删除</el-button>
+                <el-button :class="edit === '取消' ? 'button-choose' : null" type="primary" :icon="Edit"
+                    @click="handleEdit">{{ edit }}</el-button>
                 <el-button type="primary" :icon="Postcard">一键生成排班</el-button>
             </div>
         </div>
 
         <div class="schedule">
-
-            <transition-group tag="datas" class="items">
-                <div class="col" :class="'col' + index" v-for="(data, index) in items" :key="data.key" draggable="true">
-                    <transition-group tag="data">
-                        <div class="item" :class="'item' + i" v-for="(item, i) in data.col" :key="item.key"
-                            :draggable="index !== 0 && i !== 0 ? true : false"
-                            @dragstart="handleDragStart($event, index, item)" @dragover.prevent="handleDragOver($event)"
-                            @dragenter="handleDragEnter($event, index, item)" @dragend="handleDragEnd($event, item)">
-                            <span>{{ item.name }}</span>
-                        </div>
-                    </transition-group>
-                </div>
-            </transition-group>
+            <table class="table-out">
+                <thead>
+                    <tr>
+                        <template v-for='(item, index) in tabel'>
+                            <th class="item">{{ item }}</th>
+                        </template>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for='(row, index1) in data' class="tr-out">
+                        <template v-for='(col, index2) in row'>
+                            <td class="td-out" :id="'td' + index1 + '-' + index2" @click="drag === false ? handleClickTd(index1, index2) : null">
+                                <draggable :model-value="col" group="people" animation="300"
+                                    @start="startDrag($event, index1, index2)" @end="endDrag($event)"
+                                    @dragenter="enterDrag($event, index1, index2)">
+                                    <template #item="{ element, index }">
+                                        <div class="item" :class="(drag === true && index2 !== 'time') ? 'move' : null"
+                                            :title="typeof (element) === 'object' ? (element.employName + ' ' +
+                                            element.position) : element">
+                                            {{ typeof(element) === 'object' ? (element.employName + ' ' +
+                                            element.position) : element }}</div>
+                                    </template>
+                                </draggable>
+                            </td>
+                        </template>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </template>
@@ -71,7 +87,9 @@
 <script setup>
 import { ref } from 'vue';
 import moment from "moment";
-import { Delete, Edit, Postcard } from '@element-plus/icons-vue'
+import draggable from 'vuedraggable';
+import { Delete, Edit, Postcard } from '@element-plus/icons-vue';
+import { ElMessage, ElMessageBox } from 'element-plus';
 
 /** 获取数据库 */
 
@@ -179,6 +197,93 @@ const shift = (direction) => {
     }
 }
 
+/** 删除、编辑、一键生成排班 */
+var arrTd = [];
+const handleClickTd = (row, col) => {
+    if (col === 'time') return;
+    var flag = 0;
+    var td = document.getElementById('td' + row + '-' + col);
+
+    arrTd.map((value, index) => {
+        if (value.toString() === [row, col].toString()) {
+            arrTd.splice(index, 1);
+            td.style.backgroundColor = '';
+            flag = 1;
+            return;
+        }
+    })
+    if (flag === 0) {
+        arrTd.push([row, col]);
+        td.style.backgroundColor = '#ffe0e0';
+    }
+
+    console.log(arrTd);
+}
+const handleDelete = () => {
+    if (edit.value === '取消') {
+        ElMessage({
+            showClose: true,
+            message: '正处于编辑状态，不可删除',
+            type: 'warning',
+            grouping: true
+        })
+    }
+    else if (arrTd.length === 0) {
+        ElMessage({
+            showClose: true,
+            message: '请选择要删除内容的单元格',
+            type: 'warning',
+            grouping: true
+        })
+    }
+    else {
+        ElMessageBox.confirm(
+            '单元格内容将永久被删除，确定吗?',
+            'Warning',
+            {
+                confirmButtonText: 'OK',
+                cancelButtonText: 'Cancel',
+                type: 'warning',
+            }
+        )
+            .then(() => {
+                let newData = [...data.value];
+                arrTd.map(value => {
+                    newData[value[0]][value[1]] = '-';
+                    let td = document.getElementById('td' + value[0] + '-' + value[1]);
+                    console.log(td)
+                    td.style.backgroundColor = '#fff';
+                })
+                data.value = [...newData];
+                arrTd.splice(0, arrTd.length);
+
+                ElMessage({
+                    type: 'success',
+                    message: '删除成功',
+                })
+            })
+            .catch(() => {
+                ElMessage({
+                    type: 'info',
+                    message: '取消删除',
+                })
+            })
+    }
+}
+
+const edit = ref('编辑');
+const handleEdit = () => {
+    if (edit.value === '编辑') {
+        var tds = document.querySelectorAll('td');
+        for (var i = 1; i < tds.length; i++) {
+            tds[i].style.backgroundColor = '';
+        }
+    }
+
+    drag.value = (drag.value === true ? false : true);
+    edit.value = (edit.value === '编辑' ? '取消' : '编辑');
+}
+
 /** 排班表 */
 const startTime = '8:00';
 const endTime = '22:00';
@@ -195,155 +300,138 @@ times = times.map(() => {
     return time;
 });
 
-var id = 0;
-const items = ref([
+//拖拽
+const tabel = ref({
+    time: '时间',
+    week1: labels.value[0],
+    week2: labels.value[1],
+    week3: labels.value[2],
+    week4: labels.value[3],
+    week5: labels.value[4],
+    week6: labels.value[5],
+    week7: labels.value[6],
+},);
+const data = ref([
     {
-        key: 1,
-        col: [
-            { key: id++, name: '时间' },
-            { key: id++, name: times[0] },
-            { key: id++, name: times[1] },
-            { key: id++, name: times[2] },
-            { key: id++, name: times[3] },
-            { key: id++, name: times[4] },
-            { key: id++, name: times[5] },
-            { key: id++, name: times[6] }
-        ]
+        time: [times[0]],
+        week1: [
+            { employName: 'www', position: '门店经理' },
+            { employName: 'aaa', position: '副经理' },
+            { employName: 'zzz', position: '小组长' }
+        ],
+        week2: [
+            { employName: 'yyy', position: '门店经理' },
+            { employName: 'bbb', position: '店员' }
+        ],
+        week3: [
+            { employName: 'zzz', position: '门店经理' }
+        ],
+        week4: [],
+        week5: [],
+        week6: [],
+        week7: [],
     },
     {
-        key: 2,
-        col: [
-            { key: id++, name: labels.value[0] },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' }
-        ]
+        time: [times[1]],
+        week1: [],
+        week2: [],
+        week3: [],
+        week4: [],
+        week5: [],
+        week6: [],
+        week7: [],
     },
     {
-        key: 3,
-        col: [
-            { key: id++, name: labels.value[1] },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' }
-        ]
+        time: [times[2]],
+        week1: [],
+        week2: [],
+        week3: [],
+        week4: [],
+        week5: [],
+        week6: [],
+        week7: [],
     },
     {
-        key: 4,
-        col: [
-            { key: id++, name: labels.value[2] },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' }
-        ]
+        time: [times[3]],
+        week1: [],
+        week2: [],
+        week3: [],
+        week4: [],
+        week5: [],
+        week6: [],
+        week7: [],
     },
     {
-        key: 5,
-        col: [
-            { key: id++, name: labels.value[3] },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' }
-        ]
+        time: [times[4]],
+        week1: [],
+        week2: [],
+        week3: [],
+        week4: [],
+        week5: [],
+        week6: [],
+        week7: [],
     },
     {
-        key: 6,
-        col: [
-            { key: id++, name: labels.value[4] },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' }
-        ]
+        time: [times[5]],
+        week1: [],
+        week2: [],
+        week3: [],
+        week4: [],
+        week5: [],
+        week6: [],
+        week7: [],
     },
     {
-        key: 7,
-        col: [
-            { key: id++, name: labels.value[5] },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' }
-        ]
-    },
-    {
-        key: 8,
-        col: [
-            { key: id++, name: labels.value[6] },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' },
-            { key: id++, name: '-' }
-        ]
+        time: [times[6]],
+        week1: [],
+        week2: [],
+        week3: [],
+        week4: [],
+        week5: [],
+        week6: [],
+        week7: [],
     }
 ]);
+const drag = ref(false);
 const ending = ref(null);
 const dragging = ref(null);
-
-const handleDragStart = (e, col, item) => {
-    dragging.value = [col, item];
+const startDrag = (e, index1, index2) => {
+    if (drag.value === false) return;
+    dragging.value = [index1, index2];
 }
-const handleDragEnd = (e) => {
+const enterDrag = (e, index1, index2) => {
+    if (drag.value === false) return;
+    ending.value = [index1, index2];
+}
+const endDrag = (e) => {
+    if (drag.value === false) return;
     if (ending.value[0] === dragging.value[0] &&
-        ending.value[1].key === dragging.value[1].key) {
+        ending.value[1] === dragging.value[1]) {
         return;
     }
-    let newItems = [...items.value];
-    const src = newItems[dragging.value[0]].col.indexOf(dragging.value[1]);
-    const dst = newItems[ending.value[0]].col.indexOf(ending.value[1]);
-    console.log(src, dst);
-    if (src === 0 || dst === 0 || dragging.value[0] === 0 || ending.value[0] === 0)
+    if (dragging.value[1] === 'time' || ending.value[1] === 'time')
         return;
+
+    var newData = [...data.value];
 
     if (dragging.value[0] === ending.value[0]) {
-        let item = newItems[dragging.value[0]].col;
-        item.splice(src, 1, ...item.splice(dst, 1, item[src]));
-        newItems.splice(dragging.value[0], 1, { ...newItems[dragging.value[0]], col: item });
+        let item = { ...newData[dragging.value[0]] };
+        item[ending.value[1]].push(item[dragging.value[1]][e.oldIndex]);
+        item[dragging.value[1]].splice(e.oldIndex, 1);
+
+        newData[dragging.value[0]] = { ...item };
     }
     else {
-        let item1 = newItems[dragging.value[0]].col;
-        let item2 = newItems[ending.value[0]].col;
-        item1.splice(src, 1, ...item2.splice(dst, 1, item1[src]));
+        let item1 = { ...newData[dragging.value[0]] };
+        let item2 = { ...newData[ending.value[0]] };
+        item2[ending.value[1]].push(item1[dragging.value[1]][e.oldIndex]);
+        item1[dragging.value[1]].splice(e.oldIndex, 1);
 
-        newItems.splice(dragging.value[0], 1, { ...newItems[dragging.value[0]], col: item1 });
-        newItems.splice(ending.value[0], 1, { ...newItems[ending.value[0]], col: item2 });
+        newData[dragging.value[0]] = { ...item1 };
+        newData[ending.value[0]] = { ...item2 };
     }
 
-    items.value = newItems;
-    dragging.value = null;
-    ending.value = null;
-}
-const handleDragOver = (e) => {
-    e.dataTransfer.dropEffect = "move";
-}
-const handleDragEnter = (e, col, item) => {
-    e.dataTransfer.effectAllowed = "move";
-    ending.value = [col, item];
+    data.value = [...newData];
 }
 </script>
 
@@ -447,45 +535,77 @@ const handleDragEnter = (e, col, item) => {
             background-color: #409EFF;
             color: #fff;
         }
+
+        .button-choose {
+            background-color: #409EFF;
+            color: #fff;
+        }
+
+        .button-choose:hover {
+            background-color: #fff;
+            color: #0a85ff;
+        }
     }
 
     .schedule {
         display: flex;
         justify-content: center;
 
-        .items {
-            display: flex;
-            flex-direction: row;
+        .table-out {
+            table-layout: fixed;
+            width: 100%;
+            text-align: center;
+            border-collapse: collapse;
+            border-spacing: 0;
 
-            .col {
-                display: flex;
-                flex-direction: column;
+            thead tr th {
+                padding: 20px 15px;
+                font-weight: 500;
+                background: #e3e3e3;
+                transition: background .3s ease;
+                border: 1px solid #eee;
 
-                .item {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    padding: 10px;
-                    margin: 0;
-                    border: solid 1px #eee;
-                    background-color: #fff;
-                    // min-width: 110px;
-                    min-height: 40px;
+                &:first-child {
+                    border-top-left-radius: 5px;
+                    border-left: none;
+                    border-top: none;
                 }
 
-                @media screen and (min-width: 1330px) {
+                &:last-child {
+                    border-top-right-radius: 5px;
+                    border-right: none;
+                    border-top: none;
+                }
+            }
+
+            tbody .tr-out {
+                .td-out {
+                    border: 1px solid #eee;
+                    transition: background .3s;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    padding: 10px;
+
                     .item {
-                        min-width: 109px;
+                        padding: 5px 10px;
+                        transition: background .3s;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
                     }
                 }
 
-                .item:hover {
-                    background-color: #eee;
-                    cursor: move;
+                .move {
+                    margin: 2px;
+                    padding: 10px;
+                    background-color: #f1f1f1;
+                    border-radius: 5px;
                 }
 
-                .item0 {
-                    background-color: #e3e3e3;
+                .move:hover {
+                    background-color: #b6dbff;
+                    cursor: move;
                 }
             }
         }
