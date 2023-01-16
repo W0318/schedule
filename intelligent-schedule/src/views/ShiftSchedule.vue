@@ -63,7 +63,7 @@
                 <tbody>
                     <tr v-for='(row, index1) in data' class="tr-out">
                         <td class="td-out">
-                            {{ times[index1] }}
+                            {{ times.period[index1] }}
                         </td>
                         <template v-for='(col, index2) in row'>
                             <td class="td-out td" :id="'td' + index1 + '-' + index2"
@@ -119,7 +119,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
 import moment from "moment";
 import draggable from 'vuedraggable';
 import { Delete, Edit, Postcard } from '@element-plus/icons-vue';
@@ -151,8 +151,8 @@ var endTime = '22:00';
 var minutes = moment('2023-1-1 ' + endTime).diff(moment('2023-1-1 ' + startTime), 'minutes');
 var hours = Math.ceil(minutes / 120);
 var start = startTime;
-const times = ref(new Array(hours).fill(''));
-times.value = times.value.map(() => {
+var times = reactive({ period: new Array(hours).fill('') });
+times.period = times.period.map(() => {
     let temp = start.split(':');
     temp[0] = parseInt(temp[0]) + 2 + '';
     let end = temp.join(':');
@@ -361,7 +361,218 @@ var addIndex = null;
 //修改门店
 const changeStore = () => {
     //从数据库中获取数据，更新data、时间段
-    
+
+    startTime = '9:00';
+    endTime = '21:00';
+    minutes = moment('2023-1-1 ' + endTime).diff(moment('2023-1-1 ' + startTime), 'minutes');
+    hours = Math.ceil(minutes / 120);
+    start = startTime;
+    times = reactive({ period: new Array(hours).fill('') });
+    times.period = times.period.map(() => {
+        let temp = start.split(':');
+        temp[0] = parseInt(temp[0]) + 2 + '';
+        let end = temp.join(':');
+        let time = start + '-' + end;
+        start = end;
+        return time;
+    });
+
+    const stores = [
+        {
+            storeId: 'store1',
+            storeName: '安踏运动鞋',
+        },
+        {
+            storeId: 'store2',
+            storeName: '特步运动鞋',
+        },
+        {
+            storeId: 'store3',
+            storeName: '乔丹运动鞋',
+        }
+    ];
+    const storeValue = ref(stores[0].storeName);
+
+    //表格最左侧时间段
+    var startTime = '8:00';
+    var endTime = '22:00';
+    var minutes = moment('2023-1-1 ' + endTime).diff(moment('2023-1-1 ' + startTime), 'minutes');
+    var hours = Math.ceil(minutes / 120);
+    var start = startTime;
+    times = reactive({ period: new Array(hours).fill('') });
+    times.period = times.period.map(() => {
+        let temp = start.split(':');
+        temp[0] = parseInt(temp[0]) + 2 + '';
+        let end = temp.join(':');
+        let time = start + '-' + end;
+        start = end;
+        return time;
+    });
+
+    //表格单元格数据
+    var id = 0;
+    data.value = [
+        {
+            week1: [
+                { key: id++, employeeId: 'employee1', employeeName: 'www', position: '门店经理' },
+                { key: id++, employeeId: 'employee2', employeeName: 'aaa', position: '副经理' },
+                { key: id++, employeeId: 'employee3', employeeName: 'zzz', position: '小组长' }
+            ],
+            week2: [
+                { key: id++, employeeId: 'employee4', employeeName: 'yyy', position: '门店经理' },
+                { key: id++, employeeId: 'employee5', employeeName: 'bbb', position: '店员' }
+            ],
+            week3: [
+                { key: id++, employeeId: 'employee6', employeeName: 'zzz', position: '门店经理' }
+            ],
+            week4: [],
+            week5: [],
+            week6: [],
+            week7: [],
+        },
+        {
+            week1: [],
+            week2: [],
+            week3: [],
+            week4: [],
+            week5: [],
+            week6: [],
+            week7: [],
+        },
+        {
+            week1: [],
+            week2: [],
+            week3: [],
+            week4: [],
+            week5: [],
+            week6: [],
+            week7: [],
+        },
+        {
+            week1: [],
+            week2: [],
+            week3: [],
+            week4: [],
+            week5: [],
+            week6: [],
+            week7: [],
+        },
+        {
+            week1: [],
+            week2: [],
+            week3: [],
+            week4: [],
+            week5: [],
+            week6: [],
+            week7: [],
+        },
+        {
+            week1: [],
+            week2: [],
+            week3: [],
+            week4: [],
+            week5: [],
+            week6: [],
+            week7: [],
+        }
+    ];
+
+    //所有员工数据
+    employees.value = [
+        {
+            employeeId: 'employee1',
+            employeeName: 'www',
+            position: '门店经理'
+        },
+        {
+            employeeId: 'employee2',
+            employeeName: 'aaa',
+            position: '副经理'
+        },
+        {
+            employeeId: 'employee3',
+            employeeName: 'zzz',
+            position: '小组长'
+        },
+        {
+            employeeId: 'employee4',
+            employeeName: 'yyy',
+            position: '门店经理'
+        },
+        {
+            employeeId: 'employee5',
+            employeeName: 'bbb',
+            position: '店员'
+        },
+        {
+            employeeId: 'employee6',
+            employeeName: 'zzz',
+            position: '门店经理'
+        }
+    ];
+    employeesAvail.value = [...employees.value];
+
+    //按周查看|按日查看 的切换
+    week_day.value = 'week';
+
+    //全部查看|按岗位分组|按员工分组 的切换
+    viewValue.value = viewMethods[0].value;
+
+    //周切换
+    week1.value = moment().startOf('isoWeek').format('M月D日') + '-' + moment().endOf('isoWeek').format('M月D日');
+    week2.value = moment().add(1, 'w').startOf('isoWeek').format('M月D日') + '-' + moment().add(1, 'w').endOf('isoWeek').format('M月D日');
+    week3.value = moment().add(2, 'w').startOf('isoWeek').format('M月D日') + '-' + moment().add(2, 'w').endOf('isoWeek').format('M月D日');
+    current.value = moment();
+    curWeek.value = week1.value;
+    labels.value = [
+        '周一 ' + current.value.startOf('isoWeek').format('M月D日'),
+        '周二 ' + current.value.startOf('isoWeek').add(1, 'days').format('M月D日'),
+        '周三 ' + current.value.startOf('isoWeek').add(2, 'days').format('M月D日'),
+        '周四 ' + current.value.startOf('isoWeek').add(3, 'days').format('M月D日'),
+        '周五 ' + current.value.startOf('isoWeek').add(4, 'days').format('M月D日'),
+        '周六 ' + current.value.startOf('isoWeek').add(5, 'days').format('M月D日'),
+        '周日 ' + current.value.startOf('isoWeek').add(6, 'days').format('M月D日'),
+    ];
+    current.value = moment();
+    weekIndex = 0;
+    lastIndex = 0;
+    leftWeek = moment();
+    rightWeek = moment().add(2, 'w');
+
+    //被点击单元格的坐标s
+    arrTd = [];
+
+    //编辑button的文本切换
+    edit.value = '编辑';
+
+    //表格标签
+    tabel.value = {
+        time: '时间',
+        week1: labels.value[0],
+        week2: labels.value[1],
+        week3: labels.value[2],
+        week4: labels.value[3],
+        week5: labels.value[4],
+        week6: labels.value[5],
+        week7: labels.value[6],
+    };
+
+    //是否可拖拽drag，拖拽起点dragging，拖拽终点ending
+    drag.value = false;
+    ending.value = null;
+    dragging.value = null;
+
+    //是否显示添加员工对话框
+    showDialog.value = false;
+    //对话框里的员工下拉框
+    employeeValue.value = '请选择要添加的员工';
+    //已处于选中单元格中的员工s
+    addIndex = null;
+
+    var tds = document.querySelectorAll('td');
+    for (var i = 1; i < tds.length; i++) {
+        tds[i].style.backgroundColor = '';
+    }
 }
 
 //修改按周查看|按日查看
@@ -408,6 +619,32 @@ const chooseWeek = (button, index) => {
             week7: labels.value[6],
         }
         viewValue.value = viewMethods[0].value;
+
+        //全部查看|按岗位分组|按员工分组 的切换
+        viewValue.value = viewMethods[0].value;
+
+        //被点击单元格的坐标s
+        arrTd = [];
+
+        //编辑button的文本切换
+        edit.value = '编辑';
+
+        //是否可拖拽drag，拖拽起点dragging，拖拽终点ending
+        drag.value = false;
+        ending.value = null;
+        dragging.value = null;
+
+        //是否显示添加员工对话框
+        showDialog.value = false;
+        //对话框里的员工下拉框
+        employeeValue.value = '请选择要添加的员工';
+        //已处于选中单元格中的员工s
+        addIndex = null;
+
+        var tds = document.querySelectorAll('td');
+        for (var i = 1; i < tds.length; i++) {
+            tds[i].style.backgroundColor = '';
+        }
 
         //从数据库中获取数据，更新data
     }
