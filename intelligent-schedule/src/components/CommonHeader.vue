@@ -17,7 +17,7 @@
                 <template #dropdown>
                     <el-dropdown-menu>
                         <el-dropdown-item>个人中心</el-dropdown-item>
-                        <el-dropdown-item>退出</el-dropdown-item>
+                        <el-dropdown-item @click="logout">退出</el-dropdown-item>
                     </el-dropdown-menu>
                 </template>
             </el-dropdown>
@@ -28,12 +28,21 @@
 <script setup>
 import { Menu } from '@element-plus/icons-vue';
 import store from '@/store';
+import Cookie from 'js-cookie'
+import { useRouter } from 'vue-router'
 // const headerName = {...store.state.tabsList}
 const handleMenu = () => {
     store.commit('collapseMenu')
     // console.log(headerName,'headerName')
+   
 }
 
+const router = useRouter();
+const logout =()=>{
+    Cookie.remove('token')
+    //跳转回登录页面
+    router.push({ path: 'login' })
+}
 </script>
 <style lang="less" scoped>
 .header-container {

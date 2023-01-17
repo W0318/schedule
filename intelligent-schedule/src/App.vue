@@ -4,10 +4,13 @@
   </div>
 </template>
 
-<script>
-export default{
-  name:'App'
-}
+<script setup>
+// export default{
+//   name:'App'
+// }
+import { useStore } from 'vuex';
+const store = useStore();
+store.commit('addMenu')
 </script>
 <style lang="less">
 html,body,h3{

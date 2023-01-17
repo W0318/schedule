@@ -153,16 +153,22 @@ const clickMenu=(item)=>{
     store.commit('selectMenu',item)
 }
 
+const asyncmenuData = store.state.menu
+// const asyncmenuData = computed(()=>{
+//     return store.state.menu
+// })
 //没有子菜单
 const noChildren = computed(() => {
-    return menuData.filter(item => !item.children)
+    return asyncmenuData.filter(item => !item.children)
 })
 
 
 // //有子菜单
 const hasChildren = computed(() => {
-    return menuData.filter(item => item.children)
+    return asyncmenuData.filter(item => item.children)
 })
+
+
 const isCollapse = computed(() => {
    return store.state.isCollapse
 })

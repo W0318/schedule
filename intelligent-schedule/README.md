@@ -35,3 +35,8 @@ npm i @babel/preset-env
 npm i @babel-core
 npm install @babel/core @babel/preset-env
 npm install vuex@next --save
+
+npm install js-cookie --save
+npm install mockjs
+npm install axios
+npm install babel-plugin-transform-remove-strict-mode
