@@ -8,7 +8,7 @@
             <span>{{ current.format('YYYY年M月') }}</span>
         </div>
 
-        <div class="view-weeks">
+        <div class="view-options">
             <div class="view">
                 <el-button type="primary" :class="week_day === 'week' ? 'view-choose' : 'view-notchoose'"
                     @click="chooseWorD('week')">按周查看</el-button>
@@ -16,18 +16,30 @@
                     @click="chooseWorD('day')">按日查看</el-button>
             </div>
 
-            <div class="weekView">
+            <div class="optionView">
                 <el-icon :size="25" @click="shift('left')">
                     <ArrowLeft />
                 </el-icon>
-                <div class="weeks">
-                    <span :class="curWeek === week1 ? 'weeks-cur' : 'weeks-other'" @click="chooseWeek(week1, 0)">{{
+                <div v-if="week_day === 'week'" class="options">
+                    <span :class="curWeek === week1 ? 'options-cur' : 'options-other'" @click="chooseWeek(week1, 0)">{{
                         week1
                     }}</span>
-                    <span :class="curWeek === week2 ? 'weeks-cur' : 'weeks-other'" @click="chooseWeek(week2, 1)">{{
+                    <span :class="curWeek === week2 ? 'options-cur' : 'options-other'" @click="chooseWeek(week2, 1)">{{
                         week2
                     }}</span>
-                    <span :class="curWeek === week3 ? 'weeks-cur' : 'weeks-other'" @click="chooseWeek(week3, 2)">{{
+                    <span :class="curWeek === week3 ? 'options-cur' : 'options-other'" @click="chooseWeek(week3, 2)">{{
+                        week3
+                    }}</span>
+                </div>
+
+                <div v-else class="options">
+                    <span :class="curWeek === week1 ? 'options-cur' : 'options-other'" @click="chooseWeek(week1, 0)">{{
+                        week1
+                    }}</span>
+                    <span :class="curWeek === week2 ? 'options-cur' : 'options-other'" @click="chooseWeek(week2, 1)">{{
+                        week2
+                    }}</span>
+                    <span :class="curWeek === week3 ? 'options-cur' : 'options-other'" @click="chooseWeek(week3, 2)">{{
                         week3
                     }}</span>
                 </div>
@@ -44,15 +56,16 @@
             </el-select>
 
             <div class="buttonView">
-                <el-button type="primary" :icon="Delete" @click="handleDelete">删除</el-button>
+                <el-button type="primary" :icon="Delete" @click="handleDelete" title="删除单元格内容">
+                    删除</el-button>
                 <el-button :class="edit === '取消' ? 'button-choose' : null" type="primary" :icon="Edit"
                     @click="handleEdit">{{ edit }}</el-button>
-                <el-button type="primary" :icon="Postcard">一键生成排班</el-button>
+                <el-button v-if="week_day === 'week'" type="primary" :icon="Postcard">一键生成排班</el-button>
             </div>
         </div>
 
         <div class="schedule">
-            <table class="table-out">
+            <table v-if="week_day === 'week'" class="table-out">
                 <thead>
                     <tr>
                         <template v-for='(item, index) in tabel'>
@@ -95,6 +108,34 @@
                     </tr>
                 </tbody>
             </table>
+
+            <table v-if="week_day === 'day'" class="table-out">
+                <tbody>
+                    <tr v-for='(row, index1) in dayData' class="tr-out">
+                        <td id="td-time" class="td-out" style="background-color: #e3e3e3;">
+                            {{ times.period[index1] }}
+                        </td>
+                        <template v-for='(item, index2) in row'>
+                            <td class="td-out" :class="drag === true ? 'move-day' : null"
+                                :id="'td' + index1 + '-' + index2" :title="(JSON.stringify(item) !== '{}') ?
+                                (item.employeeName + ' ' + item.position) : null"
+                                @click="drag === false ? handleClickTd(index1, index2) : null"
+                                :draggable="drag === true ? true : false"
+                                @dragstart="handleDragStart($event, index1, index2)"
+                                @dragover.prevent="handleDragOver($event)"
+                                @dragenter="handleDragEnter($event, index1, index2)" @dragend="handleDragEnd($event)">
+                                <span v-if="JSON.stringify(item) !== '{}'">{{
+                                    item.employeeName + ' ' + item.position
+                                }}</span>
+                                <el-icon v-else-if="drag === true" :size="22" class="icon-add"
+                                    @click="showAddView([], index1, index2)">
+                                    <CirclePlus />
+                                </el-icon>
+                            </td>
+                        </template>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
         <el-dialog v-model="showDialog" title="添加员工" width="30%" center draggable>
@@ -129,7 +170,7 @@ import { ElMessage, ElMessageBox } from 'element-plus';
  * 初始化获取数据库数据：stores、startTime、endTime、data、employees
  */
 // 门店切换，最好按storeName字母拼音顺序排序
-const stores = [
+const stores = ref([
     {
         storeId: 'store1',
         storeName: '安踏运动鞋',
@@ -142,8 +183,8 @@ const stores = [
         storeId: 'store3',
         storeName: '乔丹运动鞋',
     }
-];
-const storeValue = ref(stores[0].storeName);
+]);
+const storeValue = ref(stores.value[0].storeName);
 
 //表格最左侧时间段
 var startTime = '8:00';
@@ -237,6 +278,20 @@ const data = ref([
         week7: [],
     }
 ]);
+const dayData = ref([
+    [
+        { key: id++, employeeId: 'employee1', employeeName: 'www', position: '门店经理' },
+        { key: id++, employeeId: 'employee2', employeeName: 'aaa', position: '副经理' },
+        { key: id++, employeeId: 'employee3', employeeName: 'zzz', position: '小组长' },
+        {}, {}, {}
+    ],
+    [{}, {}, {}, {}, {}, {}],
+    [{}, {}, {}, {}, {}, {}],
+    [{}, {}, {}, {}, {}, {}],
+    [{}, {}, {}, {}, {}, {}],
+    [{}, {}, {}, {}, {}, {}],
+    [{}, {}, {}, {}, {}, {}]
+]);
 
 //所有员工数据
 const employees = ref([
@@ -297,7 +352,7 @@ const viewMethods = [
 
 /* 需修改变量 */
 //按周查看|按日查看 的切换
-const week_day = ref('week');
+const week_day = ref('day');
 
 //全部查看|按岗位分组|按员工分组 的切换
 const viewValue = ref(viewMethods[0].value);
@@ -376,22 +431,6 @@ const changeStore = () => {
         start = end;
         return time;
     });
-
-    const stores = [
-        {
-            storeId: 'store1',
-            storeName: '安踏运动鞋',
-        },
-        {
-            storeId: 'store2',
-            storeName: '特步运动鞋',
-        },
-        {
-            storeId: 'store3',
-            storeName: '乔丹运动鞋',
-        }
-    ];
-    const storeValue = ref(stores[0].storeName);
 
     //表格最左侧时间段
     var startTime = '8:00';
@@ -577,9 +616,56 @@ const changeStore = () => {
 
 //修改按周查看|按日查看
 const chooseWorD = (button) => {
+    //获取数据库data、dayData
     if (button === 'week' && week_day.value === 'day'
         || button === 'day' && week_day.value === 'week') {
-        week_day.value === 'week' ? week_day.value = 'day' : week_day.value = 'week'
+        week_day.value === 'week' ? week_day.value = 'day' : week_day.value = 'week';
+        //全部查看|按岗位分组|按员工分组 的切换
+        viewValue.value = viewMethods[0].value;
+
+        //周切换
+        week1.value = moment().startOf('isoWeek').format('M月D日') + '-' + moment().endOf('isoWeek').format('M月D日');
+        week2.value = moment().add(1, 'w').startOf('isoWeek').format('M月D日') + '-' + moment().add(1, 'w').endOf('isoWeek').format('M月D日');
+        week3.value = moment().add(2, 'w').startOf('isoWeek').format('M月D日') + '-' + moment().add(2, 'w').endOf('isoWeek').format('M月D日');
+        current.value = moment();
+        curWeek.value = week1.value;
+        labels.value = [
+            '周一 ' + current.value.startOf('isoWeek').format('M月D日'),
+            '周二 ' + current.value.startOf('isoWeek').add(1, 'days').format('M月D日'),
+            '周三 ' + current.value.startOf('isoWeek').add(2, 'days').format('M月D日'),
+            '周四 ' + current.value.startOf('isoWeek').add(3, 'days').format('M月D日'),
+            '周五 ' + current.value.startOf('isoWeek').add(4, 'days').format('M月D日'),
+            '周六 ' + current.value.startOf('isoWeek').add(5, 'days').format('M月D日'),
+            '周日 ' + current.value.startOf('isoWeek').add(6, 'days').format('M月D日'),
+        ];
+        current.value = moment();
+        weekIndex = 0;
+        lastIndex = 0;
+        leftWeek = moment();
+        rightWeek = moment().add(2, 'w');
+
+        //被点击单元格的坐标s
+        arrTd = [];
+
+        //编辑button的文本切换
+        edit.value = '编辑';
+
+        //是否可拖拽drag，拖拽起点dragging，拖拽终点ending
+        drag.value = false;
+        ending.value = null;
+        dragging.value = null;
+
+        //是否显示添加员工对话框
+        showDialog.value = false;
+        //对话框里的员工下拉框
+        employeeValue.value = '请选择要添加的员工';
+        //已处于选中单元格中的员工s
+        addIndex = null;
+
+        var tds = document.querySelectorAll('td');
+        for (var i = 1; i < tds.length; i++) {
+            tds[i].style.backgroundColor = '';
+        }
     }
 }
 
@@ -773,14 +859,26 @@ const handleDelete = () => {
             }
         )
             .then(() => {
-                let newData = [...data.value];
-                arrTd.map(value => {
-                    newData[value[0]][value[1]] = [];
-                    let td = document.getElementById('td' + value[0] + '-' + value[1]);
-                    console.log(td)
-                    td.style.backgroundColor = '';
-                })
-                data.value = [...newData];
+                if (week_day.value === 'week') {
+                    let newData = [...data.value];
+                    arrTd.map(value => {
+                        newData[value[0]][value[1]] = [];
+                        let td = document.getElementById('td' + value[0] + '-' + value[1]);
+                        console.log(td)
+                        td.style.backgroundColor = '';
+                    })
+                    data.value = [...newData];
+                }
+                else {
+                    let newDayData = [...dayData.value];
+                    arrTd.map(value => {
+                        newDayData[value[0]][value[1]] = {};
+                        let td = document.getElementById('td' + value[0] + '-' + value[1]);
+                        td.style.backgroundColor = '';
+                    })
+                    dayData.value = [...newDayData];
+                }
+
                 arrTd.splice(0, arrTd.length);
 
                 ElMessage({
@@ -801,7 +899,8 @@ const handleEdit = () => {
     if (edit.value === '编辑') {
         var tds = document.querySelectorAll('td');
         for (var i = 1; i < tds.length; i++) {
-            tds[i].style.backgroundColor = '';
+            if (tds[i].id !== 'td-time')
+                tds[i].style.backgroundColor = '';
         }
     }
 
@@ -832,10 +931,17 @@ const showAddView = (added, index1, index2) => {
     showDialog.value = true;
 }
 const addEmplyee = () => {
-    let newData = [...data.value];
-    newData[addIndex[0]][addIndex[1]].push(employeeValue.value);
-    console.log(newData)
-    data.value = [...newData];
+    if (week_day.value === 'week') {
+        let newData = [...data.value];
+        newData[addIndex[0]][addIndex[1]].push(employeeValue.value);
+        console.log(newData)
+        data.value = [...newData];
+    }
+    else {
+        let newData = [...dayData.value];
+        newData[addIndex[0]][addIndex[1]] = employeeValue.value;
+        dayData.value = [...newData];
+    }
 
     showDialog.value = false;
 }
@@ -852,6 +958,52 @@ const deleteItem = (index1, index2, index) => {
     data.value = [...newData];
 }
 
+//按日查看拖拽
+const handleDragStart = (e, row, col) => {
+    // console.log(row, col);
+    dragging.value = [row, col];
+}
+const handleDragEnd = (e) => {
+    if (ending.value[0] === dragging.value[0] &&
+        ending.value[1] === dragging.value[1]) {
+        return;
+    }
+    if (dragging.value[1] === 'time' || ending.value[1] === 'time')
+        return;
+
+    var newData = [...dayData.value];
+
+    if (dragging.value[0] === ending.value[0]) {
+        let item = { ...newData[dragging.value[0]] };
+        let temp = item[dragging.value[1]];
+        item[dragging.value[1]] = item[ending.value[1]];
+        item[ending.value[1]] = temp;
+
+        newData[dragging.value[0]] = { ...item };
+    }
+    else {
+        let item1 = { ...newData[dragging.value[0]] };
+        let item2 = { ...newData[ending.value[0]] };
+        let temp = item1[dragging.value[1]];
+        item1[dragging.value[1]] = item2[ending.value[1]];
+        item2[ending.value[1]] = temp;
+
+        newData[dragging.value[0]] = { ...item1 };
+        newData[ending.value[0]] = { ...item2 };
+    }
+
+    dayData.value = [...newData];
+    dragging.value = null;
+    ending.value = null;
+}
+const handleDragOver = (e) => {
+    e.dataTransfer.dropEffect = "move";
+}
+const handleDragEnter = (e, row, col) => {
+    // console.log(row, col);
+    e.dataTransfer.effectAllowed = "move";
+    ending.value = [row, col];
+}
 </script>
 
 <style lang="less" scoped>
@@ -874,7 +1026,7 @@ const deleteItem = (index1, index2, index) => {
         margin-bottom: 10px;
     }
 
-    .view-weeks {
+    .view-options {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -907,7 +1059,7 @@ const deleteItem = (index1, index2, index) => {
             }
         }
 
-        .weekView {
+        .optionView {
             display: flex;
             justify-self: center;
 
@@ -922,7 +1074,7 @@ const deleteItem = (index1, index2, index) => {
                 cursor: pointer;
             }
 
-            .weeks {
+            .options {
                 margin: 0 10px;
                 display: flex;
 
@@ -937,7 +1089,7 @@ const deleteItem = (index1, index2, index) => {
                     cursor: pointer;
                 }
 
-                .weeks-cur {
+                .options-cur {
                     border-bottom: #409EFF 2px solid;
                 }
             }
@@ -1058,6 +1210,11 @@ const deleteItem = (index1, index2, index) => {
                 }
 
                 .move:hover {
+                    background-color: #b6dbff;
+                    cursor: move;
+                }
+
+                .move-day:hover {
                     background-color: #b6dbff;
                     cursor: move;
                 }
