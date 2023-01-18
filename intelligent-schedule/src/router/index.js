@@ -8,6 +8,7 @@ import MyStore from '../views/StoreManagement/MyStore.vue'
 import Employee from '../views/StoreManagement/Employee.vue'
 import SchedulingCalendar from '../views/ShiftSchedule/SchedulingCalendar.vue'
 import PersonalizationRules from '../views/ShiftSchedule/PersonalizationRules.vue'
+import MySchedule from '../views/MySchedule.vue'
 
 import Login from '../views/Login.vue'
 // //1.创建路由组件
@@ -81,7 +82,11 @@ const routes = [
                 name: "MenuManagement",
                 component: MenuManagement,
             },
-
+            {
+                path: "/mySchedule",
+                name: "MySchedule",
+                component: MySchedule,
+            }
         ]
     },
     {

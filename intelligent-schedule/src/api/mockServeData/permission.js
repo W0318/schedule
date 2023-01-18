@@ -135,6 +135,13 @@ export default {
                             icon: "Calendar",
                             url: 'ShiftSchedule/ShiftSchedule'
                         },
+                        {
+                            path: '/mySchedule',
+                            name: 'MySchedule',
+                            lable: "我的排班日历",
+                            icon: "Timer",
+                            url: 'MySchedule/MySchedule'
+                        },
                     ],
                     token: Mock.Random.guid(),
                     Message: '获取成功'
