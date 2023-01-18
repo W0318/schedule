@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 // import LogIn from './components/LogIn.vue'
 import ElementPlus from 'element-plus'
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import 'element-plus/dist/index.css'
 import router from './router'
 // 统一导入 element 图标
@@ -29,7 +30,9 @@ router.beforeEach((to, from, next) => {
     }
 })
 // app.config.globalProperties.$api = api
-app.use(ElementPlus)
+app.use(ElementPlus, {
+    locale: zhCn,
+})
     .use(router)
     .use(store)
     .mount('#app')

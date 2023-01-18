@@ -17,31 +17,42 @@
             </div>
 
             <div class="optionView">
+                <el-button class="option-back" @click="backToCurrent">
+                    <span v-if="week_day === 'week'">返回本周</span>
+                    <span v-else>返回当天</span>
+                </el-button>
+
                 <el-icon :size="25" @click="shift('left')">
                     <ArrowLeft />
                 </el-icon>
                 <div v-if="week_day === 'week'" class="options">
-                    <span :class="curWeek === week1 ? 'options-cur' : 'options-other'" @click="chooseWeek(week1, 0)">{{
-                        week1
-                    }}</span>
-                    <span :class="curWeek === week2 ? 'options-cur' : 'options-other'" @click="chooseWeek(week2, 1)">{{
-                        week2
-                    }}</span>
-                    <span :class="curWeek === week3 ? 'options-cur' : 'options-other'" @click="chooseWeek(week3, 2)">{{
-                        week3
-                    }}</span>
+                    <span class="option-week" :class="curWeek === week1 ? 'options-cur' : 'options-other'"
+                        @click="chooseOption(week1, 0)">{{
+                            week1
+                        }}</span>
+                    <span class="option-week" :class="curWeek === week2 ? 'options-cur' : 'options-other'"
+                        @click="chooseOption(week2, 1)">{{
+                            week2
+                        }}</span>
+                    <span class="option-week" :class="curWeek === week3 ? 'options-cur' : 'options-other'"
+                        @click="chooseOption(week3, 2)">{{
+                            week3
+                        }}</span>
                 </div>
 
                 <div v-else class="options">
-                    <span :class="curWeek === week1 ? 'options-cur' : 'options-other'" @click="chooseWeek(week1, 0)">{{
-                        week1
-                    }}</span>
-                    <span :class="curWeek === week2 ? 'options-cur' : 'options-other'" @click="chooseWeek(week2, 1)">{{
-                        week2
-                    }}</span>
-                    <span :class="curWeek === week3 ? 'options-cur' : 'options-other'" @click="chooseWeek(week3, 2)">{{
-                        week3
-                    }}</span>
+                    <span class="option-day" :class="curDay === day1 ? 'options-cur' : 'options-other'"
+                        @click="chooseOption(day1, 0)">{{
+                            day1
+                        }}</span>
+                    <span class="option-day" :class="curDay === day2 ? 'options-cur' : 'options-other'"
+                        @click="chooseOption(day2, 1)">{{
+                            day2
+                        }}</span>
+                    <span class="option-day" :class="curDay === day3 ? 'options-cur' : 'options-other'"
+                        @click="chooseOption(day3, 2)">{{
+                            day3
+                        }}</span>
                 </div>
                 <el-icon :size="25" @click="shift('right')">
                     <ArrowRight />
@@ -94,7 +105,7 @@
                                             <span v-if="viewValue === '全部查看'">
                                                 {{ element.employeeName + ' ' + element.position }}
                                             </span>
-                                            <span v-if="viewValue === '按岗位分组'">{{ element.position }}</span>
+                                            <span v-else-if="viewValue === '按岗位分组'">{{ element.position }}</span>
                                             <span v-else>{{ element.employeeName }}</span>
                                         </div>
                                     </template>
@@ -124,9 +135,13 @@
                                 @dragstart="handleDragStart($event, index1, index2)"
                                 @dragover.prevent="handleDragOver($event)"
                                 @dragenter="handleDragEnter($event, index1, index2)" @dragend="handleDragEnd($event)">
-                                <span v-if="JSON.stringify(item) !== '{}'">{{
-                                    item.employeeName + ' ' + item.position
-                                }}</span>
+                                <div v-if="JSON.stringify(item) !== '{}'">
+                                    <span v-if="viewValue === '全部查看'">
+                                        {{ item.employeeName + ' ' + item.position }}
+                                    </span>
+                                    <span v-else-if="viewValue === '按岗位分组'">{{ item.position }}</span>
+                                    <span v-else>{{ item.employeeName }}</span>
+                                </div>
                                 <el-icon v-else-if="drag === true" :size="22" class="icon-add"
                                     @click="showAddView([], index1, index2)">
                                     <CirclePlus />
@@ -352,7 +367,7 @@ const viewMethods = [
 
 /* 需修改变量 */
 //按周查看|按日查看 的切换
-const week_day = ref('day');
+const week_day = ref('week');
 
 //全部查看|按岗位分组|按员工分组 的切换
 const viewValue = ref(viewMethods[0].value);
@@ -373,10 +388,15 @@ const labels = ref([
     '周日 ' + current.value.startOf('isoWeek').add(6, 'days').format('M月D日'),
 ]);
 current.value = moment();
-var weekIndex = 0;
+var optionIndex = 0;
 var lastIndex = 0;
-var leftWeek = moment();
-var rightWeek = moment().add(2, 'w');
+var leftOption = moment();
+var rightOption = moment().add(2, 'w');
+//日切换
+const day1 = ref(moment().format('M月D日'));
+const day2 = ref(moment().add(1, 'days').format('M月D日'));
+const day3 = ref(moment().add(2, 'days').format('M月D日'));
+const curDay = ref(day1.value);
 
 //被点击单元格的坐标s
 var arrTd = [];
@@ -573,10 +593,10 @@ const changeStore = () => {
         '周日 ' + current.value.startOf('isoWeek').add(6, 'days').format('M月D日'),
     ];
     current.value = moment();
-    weekIndex = 0;
+    optionIndex = 0;
     lastIndex = 0;
-    leftWeek = moment();
-    rightWeek = moment().add(2, 'w');
+    leftOption = moment();
+    rightOption = moment().add(2, 'w');
 
     //被点击单元格的坐标s
     arrTd = [];
@@ -617,11 +637,8 @@ const changeStore = () => {
 //修改按周查看|按日查看
 const chooseWorD = (button) => {
     //获取数据库data、dayData
-    if (button === 'week' && week_day.value === 'day'
-        || button === 'day' && week_day.value === 'week') {
-        week_day.value === 'week' ? week_day.value = 'day' : week_day.value = 'week';
-        //全部查看|按岗位分组|按员工分组 的切换
-        viewValue.value = viewMethods[0].value;
+    if (button === 'week' && week_day.value === 'day') {
+        week_day.value = 'week';
 
         //周切换
         week1.value = moment().startOf('isoWeek').format('M月D日') + '-' + moment().endOf('isoWeek').format('M月D日');
@@ -639,60 +656,10 @@ const chooseWorD = (button) => {
             '周日 ' + current.value.startOf('isoWeek').add(6, 'days').format('M月D日'),
         ];
         current.value = moment();
-        weekIndex = 0;
+        optionIndex = 0;
         lastIndex = 0;
-        leftWeek = moment();
-        rightWeek = moment().add(2, 'w');
-
-        //被点击单元格的坐标s
-        arrTd = [];
-
-        //编辑button的文本切换
-        edit.value = '编辑';
-
-        //是否可拖拽drag，拖拽起点dragging，拖拽终点ending
-        drag.value = false;
-        ending.value = null;
-        dragging.value = null;
-
-        //是否显示添加员工对话框
-        showDialog.value = false;
-        //对话框里的员工下拉框
-        employeeValue.value = '请选择要添加的员工';
-        //已处于选中单元格中的员工s
-        addIndex = null;
-
-        var tds = document.querySelectorAll('td');
-        for (var i = 1; i < tds.length; i++) {
-            tds[i].style.backgroundColor = '';
-        }
-    }
-}
-
-//选择周
-const chooseWeek = (button, index) => {
-    if (button !== curWeek) {
-        curWeek.value = button;
-
-        if (weekIndex + index - lastIndex < 0) {
-            current.value = current.value.subtract(-(weekIndex + index - lastIndex), 'w');
-        }
-        else if (weekIndex + index - lastIndex > 0) {
-            current.value = current.value.add(weekIndex + index - lastIndex, 'w');
-        }
-
-        labels.value = [
-            '周一 ' + current.value.startOf('isoWeek').format('M月D日'),
-            '周二 ' + current.value.startOf('isoWeek').add(1, 'days').format('M月D日'),
-            '周三 ' + current.value.startOf('isoWeek').add(2, 'days').format('M月D日'),
-            '周四 ' + current.value.startOf('isoWeek').add(3, 'days').format('M月D日'),
-            '周五 ' + current.value.startOf('isoWeek').add(4, 'days').format('M月D日'),
-            '周六 ' + current.value.startOf('isoWeek').add(5, 'days').format('M月D日'),
-            '周日 ' + current.value.startOf('isoWeek').add(6, 'days').format('M月D日'),
-        ];
-        current.value = current.value.startOf('isoWeek');
-        weekIndex = 0;
-        lastIndex = index;
+        leftOption = moment();
+        rightOption = moment().add(2, 'w');
 
         tabel.value = {
             time: '时间',
@@ -704,7 +671,102 @@ const chooseWeek = (button, index) => {
             week6: labels.value[5],
             week7: labels.value[6],
         }
-        viewValue.value = viewMethods[0].value;
+    }
+    else if (button === 'day' && week_day.value === 'week') {
+        week_day.value = 'day';
+
+        //日切换
+        day1.value = moment().format('M月D日');
+        day2.value = moment().add(1, 'days').format('M月D日');
+        day3.value = moment().add(2, 'days').format('M月D日');
+        current.value = moment();
+        curDay.value = day1.value;
+        leftOption = moment();
+        rightOption = moment().add(2, 'days');
+    }
+
+    //全部查看|按岗位分组|按员工分组 的切换
+    viewValue.value = viewMethods[0].value;
+
+    //被点击单元格的坐标s
+    arrTd = [];
+
+    //编辑button的文本切换
+    edit.value = '编辑';
+
+    //是否可拖拽drag，拖拽起点dragging，拖拽终点ending
+    drag.value = false;
+    ending.value = null;
+    dragging.value = null;
+
+    //是否显示添加员工对话框
+    showDialog.value = false;
+    //对话框里的员工下拉框
+    employeeValue.value = '请选择要添加的员工';
+    //已处于选中单元格中的员工s
+    addIndex = null;
+
+    var tds = document.querySelectorAll('td');
+    for (var i = 1; i < tds.length; i++) {
+        tds[i].style.backgroundColor = '';
+    }
+}
+
+//选择周
+const chooseOption = (button, index) => {
+    // console.log(optionIndex, index, lastIndex)
+    if (button !== curWeek) {
+        if (week_day.value === 'week') {
+            curWeek.value = button;
+
+            if (optionIndex + index - lastIndex < 0) {
+                current.value = current.value.subtract(-(optionIndex + index - lastIndex), 'w');
+            }
+            else if (optionIndex + index - lastIndex > 0) {
+                current.value = current.value.add(optionIndex + index - lastIndex, 'w');
+            }
+
+            labels.value = [
+                '周一 ' + current.value.startOf('isoWeek').format('M月D日'),
+                '周二 ' + current.value.startOf('isoWeek').add(1, 'days').format('M月D日'),
+                '周三 ' + current.value.startOf('isoWeek').add(2, 'days').format('M月D日'),
+                '周四 ' + current.value.startOf('isoWeek').add(3, 'days').format('M月D日'),
+                '周五 ' + current.value.startOf('isoWeek').add(4, 'days').format('M月D日'),
+                '周六 ' + current.value.startOf('isoWeek').add(5, 'days').format('M月D日'),
+                '周日 ' + current.value.startOf('isoWeek').add(6, 'days').format('M月D日'),
+            ];
+            current.value = current.value.startOf('isoWeek');
+            optionIndex = 0;
+            lastIndex = index;
+
+            tabel.value = {
+                time: '时间',
+                week1: labels.value[0],
+                week2: labels.value[1],
+                week3: labels.value[2],
+                week4: labels.value[3],
+                week5: labels.value[4],
+                week6: labels.value[5],
+                week7: labels.value[6],
+            }
+
+            //从数据库中获取数据，更新data
+        }
+        else {
+            curDay.value = button;
+
+            if (optionIndex + index - lastIndex < 0) {
+                current.value = current.value.subtract(-(optionIndex + index - lastIndex), 'days');
+            }
+            else if (optionIndex + index - lastIndex > 0) {
+                current.value = current.value.add(optionIndex + index - lastIndex, 'days');
+            }
+
+            optionIndex = 0;
+            lastIndex = index;
+
+            //从数据库中获取数据，更新dayData
+        }
 
         //全部查看|按岗位分组|按员工分组 的切换
         viewValue.value = viewMethods[0].value;
@@ -729,29 +791,126 @@ const chooseWeek = (button, index) => {
 
         var tds = document.querySelectorAll('td');
         for (var i = 1; i < tds.length; i++) {
-            tds[i].style.backgroundColor = '';
+            if (tds[i].id !== 'td-time')
+                tds[i].style.backgroundColor = '';
         }
-
-        //从数据库中获取数据，更新data
     }
 }
 //左右箭头
 const shift = (direction) => {
+    console.log(leftOption, rightOption, optionIndex)
     if (direction === 'left') {
-        leftWeek = leftWeek.subtract(1, 'w');
-        rightWeek = rightWeek.subtract(1, 'w');
-        weekIndex = weekIndex - 1;
-        week3.value = week2.value;
-        week2.value = week1.value;
-        week1.value = leftWeek.startOf('isoWeek').format('M月D日') + '-' + leftWeek.endOf('isoWeek').format('M月D日');
+        if (week_day.value === 'week') {
+            leftOption = leftOption.subtract(1, 'w');
+            rightOption = rightOption.subtract(1, 'w');
+            optionIndex = optionIndex - 1;
+            week3.value = week2.value;
+            week2.value = week1.value;
+            week1.value = leftOption.startOf('isoWeek').format('M月D日') + '-' + leftOption.endOf('isoWeek').format('M月D日');
+        }
+        else {
+            leftOption = leftOption.subtract(1, 'days');
+            rightOption = rightOption.subtract(1, 'days');
+            optionIndex = optionIndex - 1;
+            day3.value = day2.value;
+            day2.value = day1.value;
+            day1.value = leftOption.format('M月D日');
+        }
     }
     else {
-        leftWeek = leftWeek.add(1, 'w');
-        rightWeek = rightWeek.add(1, 'w');
-        weekIndex = weekIndex + 1;
-        week1.value = week2.value;
-        week2.value = week3.value;
-        week3.value = rightWeek.startOf('isoWeek').format('M月D日') + '-' + rightWeek.endOf('isoWeek').format('M月D日');
+        if (week_day.value === 'week') {
+            leftOption = leftOption.add(1, 'w');
+            rightOption = rightOption.add(1, 'w');
+            optionIndex = optionIndex + 1;
+            week1.value = week2.value;
+            week2.value = week3.value;
+            week3.value = rightOption.startOf('isoWeek').format('M月D日') + '-' + rightOption.endOf('isoWeek').format('M月D日');
+        }
+        else {
+            leftOption = leftOption.add(1, 'days');
+            rightOption = rightOption.add(1, 'days');
+            optionIndex = optionIndex + 1;
+            day1.value = day2.value;
+            day2.value = day3.value;
+            day3.value = rightOption.format('M月D日');
+        }
+    }
+}
+//返回本周/当天
+const backToCurrent = () => {
+    if (week_day.value === 'week') {
+        //周切换
+        week1.value = moment().startOf('isoWeek').format('M月D日') + '-' + moment().endOf('isoWeek').format('M月D日');
+        week2.value = moment().add(1, 'w').startOf('isoWeek').format('M月D日') + '-' + moment().add(1, 'w').endOf('isoWeek').format('M月D日');
+        week3.value = moment().add(2, 'w').startOf('isoWeek').format('M月D日') + '-' + moment().add(2, 'w').endOf('isoWeek').format('M月D日');
+        current.value = moment();
+        curWeek.value = week1.value;
+        labels.value = [
+            '周一 ' + current.value.startOf('isoWeek').format('M月D日'),
+            '周二 ' + current.value.startOf('isoWeek').add(1, 'days').format('M月D日'),
+            '周三 ' + current.value.startOf('isoWeek').add(2, 'days').format('M月D日'),
+            '周四 ' + current.value.startOf('isoWeek').add(3, 'days').format('M月D日'),
+            '周五 ' + current.value.startOf('isoWeek').add(4, 'days').format('M月D日'),
+            '周六 ' + current.value.startOf('isoWeek').add(5, 'days').format('M月D日'),
+            '周日 ' + current.value.startOf('isoWeek').add(6, 'days').format('M月D日'),
+        ];
+        current.value = moment();
+        optionIndex = 0;
+        lastIndex = 0;
+        leftOption = moment();
+        rightOption = moment().add(2, 'w');
+
+        tabel.value = {
+            time: '时间',
+            week1: labels.value[0],
+            week2: labels.value[1],
+            week3: labels.value[2],
+            week4: labels.value[3],
+            week5: labels.value[4],
+            week6: labels.value[5],
+            week7: labels.value[6],
+        }
+
+        //从数据库中获取数据，更新data
+    }
+    else {
+        //日切换
+        day1.value = moment().format('M月D日');
+        day2.value = moment().add(1, 'days').format('M月D日');
+        day3.value = moment().add(2, 'days').format('M月D日');
+        current.value = moment();
+        curDay.value = day1.value;
+        leftOption = moment();
+        rightOption = moment().add(2, 'days');
+
+        //从数据库中获取数据，更新dayData
+    }
+
+    //全部查看|按岗位分组|按员工分组 的切换
+    viewValue.value = viewMethods[0].value;
+
+    //被点击单元格的坐标s
+    arrTd = [];
+
+    //编辑button的文本切换
+    edit.value = '编辑';
+
+    //是否可拖拽drag，拖拽起点dragging，拖拽终点ending
+    drag.value = false;
+    ending.value = null;
+    dragging.value = null;
+
+    //是否显示添加员工对话框
+    showDialog.value = false;
+    //对话框里的员工下拉框
+    employeeValue.value = '请选择要添加的员工';
+    //已处于选中单元格中的员工s
+    addIndex = null;
+
+    var tds = document.querySelectorAll('td');
+    for (var i = 1; i < tds.length; i++) {
+        if (tds[i].id !== 'td-time')
+            tds[i].style.backgroundColor = '';
     }
 }
 
@@ -1063,6 +1222,11 @@ const handleDragEnter = (e, row, col) => {
             display: flex;
             justify-self: center;
 
+            .option-back {
+                align-self: center;
+                margin-right: 10px;
+            }
+
             .el-icon {
                 color: #409EFF;
                 padding: 5px;
@@ -1079,14 +1243,22 @@ const handleDragEnter = (e, row, col) => {
                 display: flex;
 
                 span {
-                    margin: 0 40px;
-                    padding: 5px 10px;
                     color: gray;
                 }
 
                 span:hover {
                     color: #000;
                     cursor: pointer;
+                }
+
+                .option-week {
+                    margin: 0 25px;
+                    padding: 5px 10px;
+                }
+
+                .option-day {
+                    margin: 0 45px;
+                    padding: 5px 25px;
                 }
 
                 .options-cur {
