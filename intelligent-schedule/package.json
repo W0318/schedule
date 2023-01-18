@@ -13,6 +13,7 @@
     "babel-loader": "^9.1.2",
     "babel-plugin-transform-remove-strict-mode": "^0.0.2",
     "core-js": "^3.8.3",
+    "echarts": "^5.4.1",
     "element-plus": "^2.2.28",
     "js-cookie": "^3.0.1",
     "less": "^4.1.2",

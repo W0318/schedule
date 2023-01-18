@@ -40,3 +40,5 @@ npm install js-cookie --save
 npm install mockjs
 npm install axios
 npm install babel-plugin-transform-remove-strict-mode
+
+npm install echarts -S

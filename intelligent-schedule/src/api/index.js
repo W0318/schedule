@@ -23,4 +23,17 @@ export const getMenu=(data) => {
   return request.post('/permission/getMenu',data)
 }
   
+export const getEchartsData=() => {
+  console.log('拦截到请求')
+return request.get('/home/getStatisticalData')
+}
+export default {
+    getCountData(params){
+        return request({
+            url:'/home/getCountData',
+            method :'get',
+            mock:true,
+        })
+    }
+}
 
