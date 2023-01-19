@@ -1,6 +1,6 @@
 <template>
     <el-menu default-active="2" class="el-menu-vertical-demo" :collapse="isCollapse" @open="handleOpen"
-        @close="handleClose" text-color="" active-text-color="#ffd04b" background-color="#545c64">
+        @close="handleClose" text-color="" active-text-color="#409EFF" background-color="#fff">
         <h3>{{ isCollapse ? '后台' : '智能排班系统' }}</h3>
         <el-menu-item v-on:click="clickMenu(item)" v-for="item in noChildren" :key="item.name" :index="item.name">
             <el-icon>
@@ -183,7 +183,7 @@ const isCollapse = computed(() => {
 .el-menu{
     height: 100vh;
     h3 {
-        color: #fff;
+        color: rgb(27, 27, 27);
         text-align: center;
         line-height: 48px;
         font-size: 16px;
