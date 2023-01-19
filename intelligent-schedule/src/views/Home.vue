@@ -307,7 +307,8 @@ export default {
   .top {
     display: flex;
     flex: 1;
-    margin-bottom: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
     .component1 {
       background-color: #fff;
       border-radius: 15px;
@@ -397,7 +398,7 @@ export default {
   .button {
     display: flex;
     flex: 1;
-    margin-top: 10px;
+    margin-top: 5px;
     .component1 {
       margin-left: 10px;
       background-color: #fff;
