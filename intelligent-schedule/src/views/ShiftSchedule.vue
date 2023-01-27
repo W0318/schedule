@@ -437,36 +437,10 @@ var addIndex = null;
 const changeStore = () => {
     //从数据库中获取数据，更新data、时间段
 
+    //表格最左侧时间段
     startTime = '9:00';
     endTime = '21:00';
-    minutes = moment('2023-1-1 ' + endTime).diff(moment('2023-1-1 ' + startTime), 'minutes');
-    hours = Math.ceil(minutes / 120);
-    start = startTime;
-    times = reactive({ period: new Array(hours).fill('') });
-    times.period = times.period.map(() => {
-        let temp = start.split(':');
-        temp[0] = parseInt(temp[0]) + 2 + '';
-        let end = temp.join(':');
-        let time = start + '-' + end;
-        start = end;
-        return time;
-    });
-
-    //表格最左侧时间段
-    var startTime = '8:00';
-    var endTime = '22:00';
-    var minutes = moment('2023-1-1 ' + endTime).diff(moment('2023-1-1 ' + startTime), 'minutes');
-    var hours = Math.ceil(minutes / 120);
-    var start = startTime;
-    times = reactive({ period: new Array(hours).fill('') });
-    times.period = times.period.map(() => {
-        let temp = start.split(':');
-        temp[0] = parseInt(temp[0]) + 2 + '';
-        let end = temp.join(':');
-        let time = start + '-' + end;
-        start = end;
-        return time;
-    });
+    initTime();
 
     //表格单元格数据
     var id = 0;
@@ -574,64 +548,10 @@ const changeStore = () => {
     //按周查看|按日查看 的切换
     week_day.value = 'week';
 
-    //全部查看|按岗位分组|按员工分组 的切换
-    viewValue.value = viewMethods[0].value;
-
     //周切换
-    week1.value = moment().startOf('isoWeek').format('M月D日') + '-' + moment().endOf('isoWeek').format('M月D日');
-    week2.value = moment().add(1, 'w').startOf('isoWeek').format('M月D日') + '-' + moment().add(1, 'w').endOf('isoWeek').format('M月D日');
-    week3.value = moment().add(2, 'w').startOf('isoWeek').format('M月D日') + '-' + moment().add(2, 'w').endOf('isoWeek').format('M月D日');
-    current.value = moment();
-    curWeek.value = week1.value;
-    labels.value = [
-        '周一 ' + current.value.startOf('isoWeek').format('M月D日'),
-        '周二 ' + current.value.startOf('isoWeek').add(1, 'days').format('M月D日'),
-        '周三 ' + current.value.startOf('isoWeek').add(2, 'days').format('M月D日'),
-        '周四 ' + current.value.startOf('isoWeek').add(3, 'days').format('M月D日'),
-        '周五 ' + current.value.startOf('isoWeek').add(4, 'days').format('M月D日'),
-        '周六 ' + current.value.startOf('isoWeek').add(5, 'days').format('M月D日'),
-        '周日 ' + current.value.startOf('isoWeek').add(6, 'days').format('M月D日'),
-    ];
-    current.value = moment();
-    optionIndex = 0;
-    lastIndex = 0;
-    leftOption = moment();
-    rightOption = moment().add(2, 'w');
+    initWeeks();
 
-    //被点击单元格的坐标s
-    arrTd = [];
-
-    //编辑button的文本切换
-    edit.value = '编辑';
-
-    //表格标签
-    tabel.value = {
-        time: '时间',
-        week1: labels.value[0],
-        week2: labels.value[1],
-        week3: labels.value[2],
-        week4: labels.value[3],
-        week5: labels.value[4],
-        week6: labels.value[5],
-        week7: labels.value[6],
-    };
-
-    //是否可拖拽drag，拖拽起点dragging，拖拽终点ending
-    drag.value = false;
-    ending.value = null;
-    dragging.value = null;
-
-    //是否显示添加员工对话框
-    showDialog.value = false;
-    //对话框里的员工下拉框
-    employeeValue.value = '请选择要添加的员工';
-    //已处于选中单元格中的员工s
-    addIndex = null;
-
-    var tds = document.querySelectorAll('td');
-    for (var i = 1; i < tds.length; i++) {
-        tds[i].style.backgroundColor = '';
-    }
+    initVariable();
 }
 
 //修改按周查看|按日查看
@@ -641,75 +561,16 @@ const chooseWorD = (button) => {
         week_day.value = 'week';
 
         //周切换
-        week1.value = moment().startOf('isoWeek').format('M月D日') + '-' + moment().endOf('isoWeek').format('M月D日');
-        week2.value = moment().add(1, 'w').startOf('isoWeek').format('M月D日') + '-' + moment().add(1, 'w').endOf('isoWeek').format('M月D日');
-        week3.value = moment().add(2, 'w').startOf('isoWeek').format('M月D日') + '-' + moment().add(2, 'w').endOf('isoWeek').format('M月D日');
-        current.value = moment();
-        curWeek.value = week1.value;
-        labels.value = [
-            '周一 ' + current.value.startOf('isoWeek').format('M月D日'),
-            '周二 ' + current.value.startOf('isoWeek').add(1, 'days').format('M月D日'),
-            '周三 ' + current.value.startOf('isoWeek').add(2, 'days').format('M月D日'),
-            '周四 ' + current.value.startOf('isoWeek').add(3, 'days').format('M月D日'),
-            '周五 ' + current.value.startOf('isoWeek').add(4, 'days').format('M月D日'),
-            '周六 ' + current.value.startOf('isoWeek').add(5, 'days').format('M月D日'),
-            '周日 ' + current.value.startOf('isoWeek').add(6, 'days').format('M月D日'),
-        ];
-        current.value = moment();
-        optionIndex = 0;
-        lastIndex = 0;
-        leftOption = moment();
-        rightOption = moment().add(2, 'w');
-
-        tabel.value = {
-            time: '时间',
-            week1: labels.value[0],
-            week2: labels.value[1],
-            week3: labels.value[2],
-            week4: labels.value[3],
-            week5: labels.value[4],
-            week6: labels.value[5],
-            week7: labels.value[6],
-        }
+        initWeeks();
     }
     else if (button === 'day' && week_day.value === 'week') {
         week_day.value = 'day';
 
         //日切换
-        day1.value = moment().format('M月D日');
-        day2.value = moment().add(1, 'days').format('M月D日');
-        day3.value = moment().add(2, 'days').format('M月D日');
-        current.value = moment();
-        curDay.value = day1.value;
-        leftOption = moment();
-        rightOption = moment().add(2, 'days');
+        initDays();
     }
 
-    //全部查看|按岗位分组|按员工分组 的切换
-    viewValue.value = viewMethods[0].value;
-
-    //被点击单元格的坐标s
-    arrTd = [];
-
-    //编辑button的文本切换
-    edit.value = '编辑';
-
-    //是否可拖拽drag，拖拽起点dragging，拖拽终点ending
-    drag.value = false;
-    ending.value = null;
-    dragging.value = null;
-
-    //是否显示添加员工对话框
-    showDialog.value = false;
-    //对话框里的员工下拉框
-    employeeValue.value = '请选择要添加的员工';
-    //已处于选中单元格中的员工s
-    addIndex = null;
-
-    var tds = document.querySelectorAll('td');
-    for (var i = 1; i < tds.length; i++) {
-        tds[i].style.backgroundColor = '';
-    }
+    initVariable();
 }
 
 //选择周
@@ -768,32 +629,7 @@ const chooseOption = (button, index) => {
             //从数据库中获取数据，更新dayData
         }
 
-        //全部查看|按岗位分组|按员工分组 的切换
-        viewValue.value = viewMethods[0].value;
-
-        //被点击单元格的坐标s
-        arrTd = [];
-
-        //编辑button的文本切换
-        edit.value = '编辑';
-
-        //是否可拖拽drag，拖拽起点dragging，拖拽终点ending
-        drag.value = false;
-        ending.value = null;
-        dragging.value = null;
-
-        //是否显示添加员工对话框
-        showDialog.value = false;
-        //对话框里的员工下拉框
-        employeeValue.value = '请选择要添加的员工';
-        //已处于选中单元格中的员工s
-        addIndex = null;
-
-        var tds = document.querySelectorAll('td');
-        for (var i = 1; i < tds.length; i++) {
-            if (tds[i].id !== 'td-time')
-                tds[i].style.backgroundColor = '';
-        }
+        initVariable();
     }
 }
 //左右箭头
@@ -840,78 +676,18 @@ const shift = (direction) => {
 const backToCurrent = () => {
     if (week_day.value === 'week') {
         //周切换
-        week1.value = moment().startOf('isoWeek').format('M月D日') + '-' + moment().endOf('isoWeek').format('M月D日');
-        week2.value = moment().add(1, 'w').startOf('isoWeek').format('M月D日') + '-' + moment().add(1, 'w').endOf('isoWeek').format('M月D日');
-        week3.value = moment().add(2, 'w').startOf('isoWeek').format('M月D日') + '-' + moment().add(2, 'w').endOf('isoWeek').format('M月D日');
-        current.value = moment();
-        curWeek.value = week1.value;
-        labels.value = [
-            '周一 ' + current.value.startOf('isoWeek').format('M月D日'),
-            '周二 ' + current.value.startOf('isoWeek').add(1, 'days').format('M月D日'),
-            '周三 ' + current.value.startOf('isoWeek').add(2, 'days').format('M月D日'),
-            '周四 ' + current.value.startOf('isoWeek').add(3, 'days').format('M月D日'),
-            '周五 ' + current.value.startOf('isoWeek').add(4, 'days').format('M月D日'),
-            '周六 ' + current.value.startOf('isoWeek').add(5, 'days').format('M月D日'),
-            '周日 ' + current.value.startOf('isoWeek').add(6, 'days').format('M月D日'),
-        ];
-        current.value = moment();
-        optionIndex = 0;
-        lastIndex = 0;
-        leftOption = moment();
-        rightOption = moment().add(2, 'w');
-
-        tabel.value = {
-            time: '时间',
-            week1: labels.value[0],
-            week2: labels.value[1],
-            week3: labels.value[2],
-            week4: labels.value[3],
-            week5: labels.value[4],
-            week6: labels.value[5],
-            week7: labels.value[6],
-        }
+        initWeeks();
 
         //从数据库中获取数据，更新data
     }
     else {
         //日切换
-        day1.value = moment().format('M月D日');
-        day2.value = moment().add(1, 'days').format('M月D日');
-        day3.value = moment().add(2, 'days').format('M月D日');
-        current.value = moment();
-        curDay.value = day1.value;
-        leftOption = moment();
-        rightOption = moment().add(2, 'days');
+        initDays();
 
         //从数据库中获取数据，更新dayData
     }
 
-    //全部查看|按岗位分组|按员工分组 的切换
-    viewValue.value = viewMethods[0].value;
-
-    //被点击单元格的坐标s
-    arrTd = [];
-
-    //编辑button的文本切换
-    edit.value = '编辑';
-
-    //是否可拖拽drag，拖拽起点dragging，拖拽终点ending
-    drag.value = false;
-    ending.value = null;
-    dragging.value = null;
-
-    //是否显示添加员工对话框
-    showDialog.value = false;
-    //对话框里的员工下拉框
-    employeeValue.value = '请选择要添加的员工';
-    //已处于选中单元格中的员工s
-    addIndex = null;
-
-    var tds = document.querySelectorAll('td');
-    for (var i = 1; i < tds.length; i++) {
-        if (tds[i].id !== 'td-time')
-            tds[i].style.backgroundColor = '';
-    }
+    initVariable();
 }
 
 //开始拖拽、拖拽终点、结束拖拽
@@ -932,18 +708,13 @@ const endDrag = (e) => {
 
     var flag = false;
     data.value[ending.value[0]][ending.value[1]].map((value) => {
-        if (value.employeeId === data.value[ending.value[0]][ending.value[1]][e.oldIndex].employeeId) {
+        if (value.employeeId === data.value[dragging.value[0]][dragging.value[1]][e.oldIndex].employeeId) {
             flag = true;
             return;
         }
     })
     if (flag === true) {
-        ElMessage({
-            showClose: true,
-            message: '不能给同一个员工分配同一时间段的工作',
-            type: 'warning',
-            grouping: true
-        })
+        message('不能给同一个员工分配同一时间段的工作');
         return;
     }
 
@@ -992,20 +763,10 @@ const handleClickTd = (row, col) => {
 //点击删除button删除单元格内容
 const handleDelete = () => {
     if (edit.value === '取消') {
-        ElMessage({
-            showClose: true,
-            message: '正处于编辑状态，不可删除',
-            type: 'warning',
-            grouping: true
-        })
+        message('正处于编辑状态，不可删除');
     }
     else if (arrTd.length === 0) {
-        ElMessage({
-            showClose: true,
-            message: '请选择要删除内容的单元格',
-            type: 'warning',
-            grouping: true
-        })
+        message('请选择要删除内容的单元格');
     }
     else {
         ElMessageBox.confirm(
@@ -1162,6 +923,102 @@ const handleDragEnter = (e, row, col) => {
     // console.log(row, col);
     e.dataTransfer.effectAllowed = "move";
     ending.value = [row, col];
+}
+
+//工具类
+const message = (str) => {
+    return (
+        ElMessage({
+            showClose: true,
+            message: str,
+            type: 'warning',
+            grouping: true
+        })
+    );
+}
+const initWeeks = () => {
+    week1.value = moment().startOf('isoWeek').format('M月D日') + '-' + moment().endOf('isoWeek').format('M月D日');
+    week2.value = moment().add(1, 'w').startOf('isoWeek').format('M月D日') + '-' + moment().add(1, 'w').endOf('isoWeek').format('M月D日');
+    week3.value = moment().add(2, 'w').startOf('isoWeek').format('M月D日') + '-' + moment().add(2, 'w').endOf('isoWeek').format('M月D日');
+    current.value = moment();
+    curWeek.value = week1.value;
+    labels.value = [
+        '周一 ' + current.value.startOf('isoWeek').format('M月D日'),
+        '周二 ' + current.value.startOf('isoWeek').add(1, 'days').format('M月D日'),
+        '周三 ' + current.value.startOf('isoWeek').add(2, 'days').format('M月D日'),
+        '周四 ' + current.value.startOf('isoWeek').add(3, 'days').format('M月D日'),
+        '周五 ' + current.value.startOf('isoWeek').add(4, 'days').format('M月D日'),
+        '周六 ' + current.value.startOf('isoWeek').add(5, 'days').format('M月D日'),
+        '周日 ' + current.value.startOf('isoWeek').add(6, 'days').format('M月D日'),
+    ];
+    current.value = moment();
+    optionIndex = 0;
+    lastIndex = 0;
+    leftOption = moment();
+    rightOption = moment().add(2, 'w');
+
+    //表格标签
+    tabel.value = {
+        time: '时间',
+        week1: labels.value[0],
+        week2: labels.value[1],
+        week3: labels.value[2],
+        week4: labels.value[3],
+        week5: labels.value[4],
+        week6: labels.value[5],
+        week7: labels.value[6],
+    };
+}
+const initDays = () => {
+    day1.value = moment().format('M月D日');
+    day2.value = moment().add(1, 'days').format('M月D日');
+    day3.value = moment().add(2, 'days').format('M月D日');
+    current.value = moment();
+    curDay.value = day1.value;
+    leftOption = moment();
+    rightOption = moment().add(2, 'days');
+}
+const initTime = () => {
+    var minutes = moment('2023-1-1 ' + endTime).diff(moment('2023-1-1 ' + startTime), 'minutes');
+    var hours = Math.ceil(minutes / 120);
+    var start = startTime;
+    var times = reactive({ period: new Array(hours).fill('') });
+    times.period = times.period.map(() => {
+        let temp = start.split(':');
+        temp[0] = parseInt(temp[0]) + 2 + '';
+        let end = temp.join(':');
+        let time = start + '-' + end;
+        start = end;
+        return time;
+    });
+}
+const initVariable = () => {
+    //全部查看|按岗位分组|按员工分组 的切换
+    viewValue.value = viewMethods[0].value;
+
+    //被点击单元格的坐标s
+    arrTd = [];
+
+    //编辑button的文本切换
+    edit.value = '编辑';
+
+    //是否可拖拽drag，拖拽起点dragging，拖拽终点ending
+    drag.value = false;
+    ending.value = null;
+    dragging.value = null;
+
+    //是否显示添加员工对话框
+    showDialog.value = false;
+    //对话框里的员工下拉框
+    employeeValue.value = '请选择要添加的员工';
+    //已处于选中单元格中的员工s
+    addIndex = null;
+
+    var tds = document.querySelectorAll('td');
+    for (var i = 1; i < tds.length; i++) {
+        if (tds[i].id !== 'td-time')
+            tds[i].style.backgroundColor = '';
+    }
 }
 </script>
 
