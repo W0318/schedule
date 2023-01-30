@@ -36,17 +36,17 @@ public class UserController {
         employeeIdMapper.insert(employeeId);
         return Result.success();
     }
-    @PostMapping("/login")
-    public Result<?> login(@RequestBody EmployeeId employeeId){
-        // 使用昵称登录判断
-        EmployeeId one = userService.getOne(Wrappers.<EmployeeId>lambdaQuery()
-                .eq(User::getNickName, user.getName()).eq(User::getPassword, user.getPassword()));
-        if (!ObjectUtils.isEmpty(one)){
-            return Result.success(one);
-        }else {
-            return Result.error("-1","用户名或密码错误");
-        }
-    }
+//    @PostMapping("/login")
+//    public Result<?> login(@RequestBody EmployeeId employeeId){
+//        // 使用昵称登录判断
+//        EmployeeId one = userService.getOne(Wrappers.<EmployeeId>lambdaQuery()
+//                .eq(User::getNickName, user.getName()).eq(User::getPassword, user.getPassword()));
+//        if (!ObjectUtils.isEmpty(one)){
+//            return Result.success(one);
+//        }else {
+//            return Result.error("-1","用户名或密码错误");
+//        }
+//    }
 
 
 }
