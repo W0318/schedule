@@ -1,0 +1,8 @@
+server:
+  port: 8081
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: zk.0521+
+    url: jdbc:mysql://49.234.210.20:3306/schedule?useSSL=false&useUnicode=true&characterEncoding=utf8
