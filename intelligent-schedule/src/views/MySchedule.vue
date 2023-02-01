@@ -50,10 +50,19 @@
             </div>
         </div>
     </div>
+    <div>{{ emp }}</div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
+
+const emp = ref('emp');
+fetch("http://localhost:8081/employee/all")
+    .then(res => res.json())
+    .then(resJson => {
+        console.log(resJson);
+        emp.value = resJson;
+    })
 
 const calendar = ref();
 const selectDate = (val) => {
