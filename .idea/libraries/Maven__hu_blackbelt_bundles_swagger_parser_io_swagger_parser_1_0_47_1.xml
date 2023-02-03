@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: hu.blackbelt.bundles.swagger-parser:io.swagger.parser:1.0.47_1">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/hu/blackbelt/bundles/swagger-parser/io.swagger.parser/1.0.47_1/io.swagger.parser-1.0.47_1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/hu/blackbelt/bundles/swagger-parser/io.swagger.parser/1.0.47_1/io.swagger.parser-1.0.47_1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/hu/blackbelt/bundles/swagger-parser/io.swagger.parser/1.0.47_1/io.swagger.parser-1.0.47_1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
