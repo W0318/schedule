@@ -9,7 +9,7 @@
       <el-input type="password" v-model="form.password" placeholder="请输入密码" />
     </el-form-item>
     <el-form-item>
-      <el-button @click="submit" style="margin-left :30px ;margin-top:10px" type="primary">登录</el-button>
+      <el-button @click="login" style="margin-left :30px ;margin-top:10px" type="primary">登录</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -18,6 +18,7 @@
 import Mock from 'mockjs'
 import Cookie from 'js-cookie'
 import {getMenu} from '../api'
+import axios from "axios";
 export default {
   data() {
     return{
@@ -74,7 +75,25 @@ export default {
             }
         })
 
-    }
+    },
+
+    login:function () {
+      axios.post('/user/login', {
+        userName: this.userName,
+        userPassword: this.userPassword,
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'}   //跨域
+      }).then(function (dat) {
+        if (dat.data == '0')
+          alert("用户不存在")
+        else if (dat.data == '1')
+          alert("登录失败，账号或密码错误")
+        else if (dat.data == '2')
+            //当前窗体跳转
+          window.location.href = '/successLogin.html'
+      }).catch(function () {
+        console.log("传输失败")
+      })
+    },
   }
 };
 

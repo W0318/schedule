@@ -1,7 +1,7 @@
-package com.example.springboot.controller;
+package com.example.springboot.bean.controller;
 
-import com.example.springboot.bean.User;
-import com.example.springboot.services.UserServices;
+import com.example.springboot.bean.bean.User;
+import com.example.springboot.bean.services.UserServices;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,6 @@ import javax.servlet.http.HttpSession;
  * @Date: 2019/12/31 16:37
  * @Version 1.0
  */
-
 @Api(description="用户登录注册")
 @Slf4j
 @Controller
