@@ -21,13 +21,14 @@ public class EmployeeController {
 @PostMapping("/login")
 @ResponseBody
 // 注意login函数接收数据的方式为@RequestBody,而register函数接收数据的方式为@RequestParam，这与前端axios发送数据的方式不同有关。稍后详解
-public String login2(@RequestBody Map map){
+public int login2(@RequestBody Map map){
     Employee user = employeeService.login(map.get("username").toString(),map.get("password").toString());
     if(user != null){
-        return "index";
+        int root = user.getRoot();
+        return root;
     }
     else {
-        return "login";
+        return 0;
     }
 }
 //    @GetMapping("/selectById/{employeeId}")

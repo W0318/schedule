@@ -14,7 +14,7 @@ public interface EmployeeMapper {
 //    @Select("SELECT * from employee where employeeId = #{employeeId}")
 //    public Employee getEmployeeById(String employeeId);
 
-    @Select("select employeeId,username from User where username=#{username} and passsword = #{password}")
+    @Select("select employeeId,username,root from employee where username=#{username} and password = #{password}")
     Employee login(String username,String password);
 
 //    @Select("select email from User where email = #{email}")

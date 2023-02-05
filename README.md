@@ -14,3 +14,4 @@
 # 1.2.1 修排班表改bug，浓缩代码 
 # 1.2.2 添加了SpringBoot后端工程，添加了部分依赖 Spring Web；MySQL Driver；Lombok；MyBatis Framework；后端数据接口生成待测试
 # 1.2.3 实现数据的获取但前后端依旧没有打通（比如登录的校验）
+# 1.2.4 登录初步完成
