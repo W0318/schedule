@@ -1,8 +1,9 @@
-server:
-  port: 3231
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://49.234.210.20:3306/schedule?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&serverTimezone=GMT%2B8
     username: root
-    password: 123
-    url: jdbc:mysql://49.234.210.20:3306/schedule?useSSL=false&useUnicode=true&characterEncoding=utf8
+    password: zk.0521+
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    initialization-mode: always
+server:
+  port: 8082

@@ -6,7 +6,7 @@ export default {
         // 判断账号和密码是否对应
         if (username === 'admin' && password === 'admin') {
             return {
-                code: 20000,
+                code: 200,
                 data: {
                     menu: [
                         {
@@ -118,7 +118,7 @@ export default {
             }
         }else if(username === '123' && password === '123'){
             return {
-                code: 20000,
+                code: 200,
                 data: {
                     menu: [
                         {

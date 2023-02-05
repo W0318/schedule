@@ -53,7 +53,7 @@ export default {
                 getMenu(this.form)
                 .then(({data})=>{
                     console.log(data)
-                    if(data.code === 20000){
+                    if(data.code === 200){
                         //将token信息存入cookie中用于不同页面间的通讯
                         Cookie.set('token',data.data.token)
 
@@ -77,22 +77,20 @@ export default {
 
     },
 
-    login:function () {
-      axios.post('/user/login', {
-        userName: this.userName,
-        userPassword: this.userPassword,
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'}   //跨域
-      }).then(function (dat) {
-        if (dat.data == '0')
-          alert("用户不存在")
-        else if (dat.data == '1')
-          alert("登录失败，账号或密码错误")
-        else if (dat.data == '2')
-            //当前窗体跳转
-          window.location.href = '/successLogin.html'
-      }).catch(function () {
-        console.log("传输失败")
-      })
+    login(){
+      var that = this
+      axios.post('http://localhost:8082/employee/login',{//请求登录接口
+        username:this.form.username,
+        password:this.form.password
+      }).then(function (response) {
+        console.log(response.data);
+        that.response = response.data;
+        that.$emit("lisentcurrent",[that.response]);
+      }).catch(function (error) {
+        console.log(error);
+      });
+      console.log("pass",that.response)
+      this.$router.push('/home')
     },
   }
 };
