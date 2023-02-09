@@ -69,7 +69,7 @@
             <div class="buttonView">
                 <el-button type="primary" :icon="Delete" @click="handleDelete" title="删除单元格内容">
                     删除</el-button>
-                <el-button :class="edit === '取消' ? 'button-choose' : null" type="primary" :icon="Edit"
+                <el-button :class="edit === '完成' ? 'button-choose' : null" type="primary" :icon="Edit"
                     @click="handleEdit">{{ edit }}</el-button>
                 <el-button v-if="week_day === 'week'" type="primary" :icon="Postcard">一键生成排班</el-button>
             </div>
@@ -85,21 +85,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for='(row, index1) in data' class="tr-out">
-                        <td class="td-out">
-                            {{ times.period[index1] }}
+                    <tr v-for='(time, i) in times' class="tr-out">
+                        <td class="td-out" :class="'out-' + i">
+                            {{ time[0] }}
                         </td>
-                        <template v-for='(col, index2) in row'>
-                            <td class="td-out td" :id="'td' + index1 + '-' + index2"
-                                @click="drag === false ? handleClickTd(index1, index2) : null">
-                                <draggable :model-value="col" group="people" animation="300" item-key="key"
-                                    @start="startDrag($event, index1, index2)" @end="endDrag($event)"
-                                    @dragenter="enterDrag($event, index1, index2)">
+                        <template v-for="(value, j) in tableData[0]">
+                            <td v-if="time[1] !== -1 && j < 5" class="td-out td" :id="'td' + week_day + time[1] + '-' + j"
+                                :rowspan="weekdaySpans[time[1]]"
+                                @click="(drag === false && time[1] !== 6) ? handleClickTd(time[1], j) : null">
+                                <draggable v-if="time[1] !== 6" :model-value="tableData[time[1]][j]" group="people"
+                                    animation="300" item-key="key" @start="startDrag($event, time[1], j)"
+                                    @end="endDrag($event)" @dragenter="enterDrag($event, time[1], j)">
                                     <template #item="{ element, index }">
                                         <div class="item" :class="(drag === true) ? 'move' : null"
                                             :title="element.employeeName + ' ' + element.position">
                                             <el-icon v-if="drag === true" :size="19" class="icon-delete"
-                                                @click="deleteItem(index1, index2, index)">
+                                                @click="deleteItem(time[1], j, index)">
                                                 <CircleClose />
                                             </el-icon>
                                             <span v-if="viewValue === '全部查看'">
@@ -110,8 +111,34 @@
                                         </div>
                                     </template>
                                 </draggable>
-                                <el-icon v-if="drag === true" :size="22" class="icon-add"
-                                    @click="showAddView(col, index1, index2)">
+                                <el-icon v-if="drag === true && time[1] !== 6" :size="22" class="icon-add"
+                                    @click="showAddView(tableData[time[1]][j], time[1], j)">
+                                    <CirclePlus />
+                                </el-icon>
+                            </td>
+                            <td v-else-if="time[2] !== -1 && j >= 5" class="td-out td" :id="'td' + week_day + time[2] + '-' + j"
+                                :rowspan="weekendSpans[time[2]]"
+                                @click="(drag === false && time[2] !== 0) ? handleClickTd(time[2], j) : null">
+                                <draggable v-if="time[2] !== 0" :model-value="tableData[time[2] - 1][j]" group="people"
+                                    animation="300" item-key="key" @start="startDrag($event, time[2] - 1, j)"
+                                    @end="endDrag($event)" @dragenter="enterDrag($event, time[2] - 1, j)">
+                                    <template #item="{ element, index }">
+                                        <div class="item" :class="(drag === true) ? 'move' : null"
+                                            :title="element.employeeName + ' ' + element.position">
+                                            <el-icon v-if="drag === true" :size="19" class="icon-delete"
+                                                @click="deleteItem(time[2] - 1, j, index)">
+                                                <CircleClose />
+                                            </el-icon>
+                                            <span v-if="viewValue === '全部查看'">
+                                                {{ element.employeeName + ' ' + element.position }}
+                                            </span>
+                                            <span v-else-if="viewValue === '按岗位分组'">{{ element.position }}</span>
+                                            <span v-else>{{ element.employeeName }}</span>
+                                        </div>
+                                    </template>
+                                </draggable>
+                                <el-icon v-if="drag === true && time[2] !== 0" :size="22" class="icon-add"
+                                    @click="showAddView(tableData[time[2] - 1][j], time[2] - 1, j)">
                                     <CirclePlus />
                                 </el-icon>
                             </td>
@@ -124,11 +151,13 @@
                 <tbody>
                     <tr v-for='(row, index1) in dayData' class="tr-out">
                         <td id="td-time" class="td-out" style="background-color: #e3e3e3;">
-                            {{ times.period[index1] }}
+                            {{
+                            (current.day() !== 0 && current.day() !== 6) ? weekdayTimes[index1] : weekendTimes[index1]
+                            }}
                         </td>
                         <template v-for='(item, index2) in row'>
-                            <td class="td-out" :class="drag === true ? 'move-day' : null"
-                                :id="'td' + index1 + '-' + index2" :title="(JSON.stringify(item) !== '{}') ?
+                            <td class="td-out td" :class="drag === true ? 'move-day' : null"
+                                :id="'td' + week_day + index1 + '-' + index2" :title="(JSON.stringify(item) !== '{}') ?
                                 (item.employeeName + ' ' + item.position) : null"
                                 @click="drag === false ? handleClickTd(index1, index2) : null"
                                 :draggable="drag === true ? true : false"
@@ -156,7 +185,7 @@
         <el-dialog v-model="showDialog" title="添加员工" width="30%" center draggable>
             <el-form>
                 <el-form-item label="员工">
-                    <el-select v-model="employeeValue" filterable>
+                    <el-select v-model="employeeValue" value-key="employeeId" filterable>
                         <el-option v-for="employee in employeesAvail" :key="employee.employeeId"
                             :label="employee.employeeName + '(' + employee.position + ')'" :value="employee" />
                     </el-select>
@@ -164,7 +193,7 @@
             </el-form>
             <template #footer>
                 <span class="dialog-footer">
-                    <el-button @click="showDialog = false">取消</el-button>
+                    <el-button @click="showDialog = false">完成</el-button>
                     <el-button type="primary" @click="addEmplyee">
                         确定
                     </el-button>
@@ -201,111 +230,48 @@ const stores = ref([
 ]);
 const storeValue = ref(stores.value[0].storeName);
 
-//表格最左侧时间段
-var startTime = '8:00';
-var endTime = '22:00';
-var minutes = moment('2023-1-1 ' + endTime).diff(moment('2023-1-1 ' + startTime), 'minutes');
-var hours = Math.ceil(minutes / 120);
-var start = startTime;
-var times = reactive({ period: new Array(hours).fill('') });
-times.period = times.period.map(() => {
-    let temp = start.split(':');
-    temp[0] = parseInt(temp[0]) + 2 + '';
-    let end = temp.join(':');
-    let time = start + '-' + end;
-    start = end;
-    return time;
-});
-
 //表格单元格数据
 var id = 0;
-const data = ref([
-    {
-        week1: [
+var data = [
+    [
+        [], [], [], [
             { key: id++, employeeId: 'employee1', employeeName: 'www', position: '门店经理' },
             { key: id++, employeeId: 'employee2', employeeName: 'aaa', position: '副经理' },
             { key: id++, employeeId: 'employee3', employeeName: 'zzz', position: '小组长' }
-        ],
-        week2: [
+        ], [], []
+    ],
+    [
+        [
             { key: id++, employeeId: 'employee4', employeeName: 'yyy', position: '门店经理' },
             { key: id++, employeeId: 'employee5', employeeName: 'bbb', position: '店员' }
         ],
-        week3: [
+        [], [], [], [], []
+    ],
+    [[], [], [], [], [], []],
+    [[], [], [], [], [], []],
+    [[], [], [], [], [], []],
+    [
+        [
             { key: id++, employeeId: 'employee6', employeeName: 'zzz', position: '门店经理' }
         ],
-        week4: [],
-        week5: [],
-        week6: [],
-        week7: [],
-    },
-    {
-        week1: [],
-        week2: [],
-        week3: [],
-        week4: [],
-        week5: [],
-        week6: [],
-        week7: [],
-    },
-    {
-        week1: [],
-        week2: [],
-        week3: [],
-        week4: [],
-        week5: [],
-        week6: [],
-        week7: [],
-    },
-    {
-        week1: [],
-        week2: [],
-        week3: [],
-        week4: [],
-        week5: [],
-        week6: [],
-        week7: [],
-    },
-    {
-        week1: [],
-        week2: [],
-        week3: [],
-        week4: [],
-        week5: [],
-        week6: [],
-        week7: [],
-    },
-    {
-        week1: [],
-        week2: [],
-        week3: [],
-        week4: [],
-        week5: [],
-        week6: [],
-        week7: [],
-    },
-    {
-        week1: [],
-        week2: [],
-        week3: [],
-        week4: [],
-        week5: [],
-        week6: [],
-        week7: [],
-    }
-]);
+        [], [], [], [], []
+    ],
+    [[], [], [], [], [], []]
+];
+const tableData = ref();
+tableData.value = data[0].map(function (col, i) {
+    return data.map(function (row) {
+        return row[i];
+    })
+});
 const dayData = ref([
+    [{}, {}, {}, {}, {}, {}, {}, {}], [{}, {}, {}, {}, {}, {}, {}, {}], [{}, {}, {}, {}, {}, {}, {}, {}],
     [
         { key: id++, employeeId: 'employee1', employeeName: 'www', position: '门店经理' },
         { key: id++, employeeId: 'employee2', employeeName: 'aaa', position: '副经理' },
         { key: id++, employeeId: 'employee3', employeeName: 'zzz', position: '小组长' },
-        {}, {}, {}
-    ],
-    [{}, {}, {}, {}, {}, {}],
-    [{}, {}, {}, {}, {}, {}],
-    [{}, {}, {}, {}, {}, {}],
-    [{}, {}, {}, {}, {}, {}],
-    [{}, {}, {}, {}, {}, {}],
-    [{}, {}, {}, {}, {}, {}]
+        {}, {}, {}, {}, {}
+    ], [{}, {}, {}, {}, {}, {}, {}, {}], [{}, {}, {}, {}, {}, {}, {}, {}]
 ]);
 
 //所有员工数据
@@ -364,6 +330,26 @@ const viewMethods = [
         value: '按员工分组'
     }
 ]
+
+//表格最左侧时间段
+const times = [
+    ["8:30-9:30", 0, 0],
+    ["9:30-11:00", -1, 1],
+    ["11:00-12:00", 1, -1],
+    ["12:00-14:00", -1, 2],
+    ["14:00-17:00", 2, 3],
+    ["17:00-19:00", 3, 4],
+    ["19:00-20:00", 4, -1],
+    ["20:00-21:00", -1, 5],
+    ["21:00-22:00", 5, -1],
+    ["22:00-23:00", -1, 6],
+    ["23:00-24:00", 6, -1]
+];
+const weekdayTimes = ["8:30-11:00", "11:00-14:00", "14:00-17:00", "17:00-19:00", "19:00-21:00", "21:00-23:00"];
+const weekendTimes = ["9:30-12:00", "12:00-14:00", "14:00-17:00", "17:00-20:00", "20:00-22:00", "22:00-24:00"];
+const weekdaySpans = [2, 2, 1, 1, 2, 2, 1];
+const weekendSpans = [1, 2, 1, 1, 2, 2, 2];
+
 
 /* 需修改变量 */
 //按周查看|按日查看 的切换
@@ -437,78 +423,6 @@ var addIndex = null;
 const changeStore = () => {
     //从数据库中获取数据，更新data、时间段
 
-    //表格最左侧时间段
-    startTime = '9:00';
-    endTime = '21:00';
-    initTime();
-
-    //表格单元格数据
-    var id = 0;
-    data.value = [
-        {
-            week1: [
-                { key: id++, employeeId: 'employee1', employeeName: 'www', position: '门店经理' },
-                { key: id++, employeeId: 'employee2', employeeName: 'aaa', position: '副经理' },
-                { key: id++, employeeId: 'employee3', employeeName: 'zzz', position: '小组长' }
-            ],
-            week2: [
-                { key: id++, employeeId: 'employee4', employeeName: 'yyy', position: '门店经理' },
-                { key: id++, employeeId: 'employee5', employeeName: 'bbb', position: '店员' }
-            ],
-            week3: [
-                { key: id++, employeeId: 'employee6', employeeName: 'zzz', position: '门店经理' }
-            ],
-            week4: [],
-            week5: [],
-            week6: [],
-            week7: [],
-        },
-        {
-            week1: [],
-            week2: [],
-            week3: [],
-            week4: [],
-            week5: [],
-            week6: [],
-            week7: [],
-        },
-        {
-            week1: [],
-            week2: [],
-            week3: [],
-            week4: [],
-            week5: [],
-            week6: [],
-            week7: [],
-        },
-        {
-            week1: [],
-            week2: [],
-            week3: [],
-            week4: [],
-            week5: [],
-            week6: [],
-            week7: [],
-        },
-        {
-            week1: [],
-            week2: [],
-            week3: [],
-            week4: [],
-            week5: [],
-            week6: [],
-            week7: [],
-        },
-        {
-            week1: [],
-            week2: [],
-            week3: [],
-            week4: [],
-            week5: [],
-            week6: [],
-            week7: [],
-        }
-    ];
 
     //所有员工数据
     employees.value = [
@@ -573,7 +487,7 @@ const chooseWorD = (button) => {
     initVariable();
 }
 
-//选择周
+//选择周|日
 const chooseOption = (button, index) => {
     // console.log(optionIndex, index, lastIndex)
     if (button !== curWeek) {
@@ -694,10 +608,12 @@ const backToCurrent = () => {
 const startDrag = (e, index1, index2) => {
     if (drag.value === false) return;
     dragging.value = [index1, index2];
+    // console.log(index1, index2);
 }
 const enterDrag = (e, index1, index2) => {
     if (drag.value === false) return;
     ending.value = [index1, index2];
+    // console.log(index1, index2);
 }
 const endDrag = (e) => {
     if (drag.value === false) return;
@@ -707,8 +623,8 @@ const endDrag = (e) => {
     }
 
     var flag = false;
-    data.value[ending.value[0]][ending.value[1]].map((value) => {
-        if (value.employeeId === data.value[dragging.value[0]][dragging.value[1]][e.oldIndex].employeeId) {
+    tableData.value[ending.value[0]][ending.value[1]].map((value) => {
+        if (value.employeeId === tableData.value[dragging.value[0]][dragging.value[1]][e.oldIndex].employeeId) {
             flag = true;
             return;
         }
@@ -718,7 +634,7 @@ const endDrag = (e) => {
         return;
     }
 
-    var newData = [...data.value];
+    var newData = [...tableData.value];
 
     if (dragging.value[0] === ending.value[0]) {
         let item = { ...newData[dragging.value[0]] };
@@ -737,13 +653,13 @@ const endDrag = (e) => {
         newData[ending.value[0]] = { ...item2 };
     }
 
-    data.value = [...newData];
+    tableData.value = [...newData];
 }
 
 //点击多选单元格
 const handleClickTd = (row, col) => {
     var flag = 0;
-    var td = document.getElementById('td' + row + '-' + col);
+    var td = document.getElementById('td' + week_day.value + row + '-' + col);
 
     arrTd.map((value, index) => {
         if (value.toString() === [row, col].toString()) {
@@ -762,7 +678,7 @@ const handleClickTd = (row, col) => {
 }
 //点击删除button删除单元格内容
 const handleDelete = () => {
-    if (edit.value === '取消') {
+    if (edit.value === '完成') {
         message('正处于编辑状态，不可删除');
     }
     else if (arrTd.length === 0) {
@@ -780,20 +696,23 @@ const handleDelete = () => {
         )
             .then(() => {
                 if (week_day.value === 'week') {
-                    let newData = [...data.value];
+                    let newData = [...tableData.value];
                     arrTd.map(value => {
-                        newData[value[0]][value[1]] = [];
-                        let td = document.getElementById('td' + value[0] + '-' + value[1]);
-                        console.log(td)
+                        if (value[1] < 5)
+                            newData[value[0]][value[1]] = [];
+                        else
+                            newData[value[0] - 1][value[1]] = [];
+                        let td = document.getElementById('td' + week_day.value + value[0] + '-' + value[1]);
+                        // console.log(td)
                         td.style.backgroundColor = '';
                     })
-                    data.value = [...newData];
+                    tableData.value = [...newData];
                 }
                 else {
                     let newDayData = [...dayData.value];
                     arrTd.map(value => {
                         newDayData[value[0]][value[1]] = {};
-                        let td = document.getElementById('td' + value[0] + '-' + value[1]);
+                        let td = document.getElementById('td' + week_day.value + value[0] + '-' + value[1]);
                         td.style.backgroundColor = '';
                     })
                     dayData.value = [...newDayData];
@@ -814,7 +733,7 @@ const handleDelete = () => {
             })
     }
 }
-//点击编辑|取消
+//点击编辑|完成
 const handleEdit = () => {
     if (edit.value === '编辑') {
         var tds = document.querySelectorAll('td');
@@ -825,7 +744,7 @@ const handleEdit = () => {
     }
 
     drag.value = (drag.value === true ? false : true);
-    edit.value = (edit.value === '编辑' ? '取消' : '编辑');
+    edit.value = (edit.value === '编辑' ? '完成' : '编辑');
 }
 
 //显示添加员工对话框、添加员工
@@ -847,15 +766,16 @@ const showAddView = (added, index1, index2) => {
         return !isInclude;
     });
     employeesAvail.value = [...newEAvil];
+    console.log(employeesAvail)
 
     showDialog.value = true;
 }
 const addEmplyee = () => {
     if (week_day.value === 'week') {
-        let newData = [...data.value];
+        let newData = [...tableData.value];
         newData[addIndex[0]][addIndex[1]].push(employeeValue.value);
         console.log(newData)
-        data.value = [...newData];
+        tableData.value = [...newData];
     }
     else {
         let newData = [...dayData.value];
@@ -869,13 +789,13 @@ const addEmplyee = () => {
 const deleteItem = (index1, index2, index) => {
     // console.log(index1, index2, index);
 
-    let newData = [...data.value];
+    let newData = [...tableData.value];
     let item = { ...newData[index1] };
 
     item[index2].splice(index, 1);
     newData[index1] = { ...item };
 
-    data.value = [...newData];
+    tableData.value = [...newData];
 }
 
 //按日查看拖拽
@@ -977,20 +897,6 @@ const initDays = () => {
     curDay.value = day1.value;
     leftOption = moment();
     rightOption = moment().add(2, 'days');
-}
-const initTime = () => {
-    var minutes = moment('2023-1-1 ' + endTime).diff(moment('2023-1-1 ' + startTime), 'minutes');
-    var hours = Math.ceil(minutes / 120);
-    var start = startTime;
-    var times = reactive({ period: new Array(hours).fill('') });
-    times.period = times.period.map(() => {
-        let temp = start.split(':');
-        temp[0] = parseInt(temp[0]) + 2 + '';
-        let end = temp.join(':');
-        let time = start + '-' + end;
-        start = end;
-        return time;
-    });
 }
 const initVariable = () => {
     //全部查看|按岗位分组|按员工分组 的切换
@@ -1194,7 +1100,7 @@ const initVariable = () => {
                     padding: 10px;
 
                     .item {
-                        padding: 5px 10px;
+                        padding: 3px 10px;
                         transition: background .3s;
                         overflow: hidden;
                         white-space: nowrap;
@@ -1225,6 +1131,49 @@ const initVariable = () => {
                         border-radius: 10px;
                         padding: 5px;
                     }
+                }
+
+                #tdweek6-0,
+                #tdweek6-1,
+                #tdweek6-2,
+                #tdweek6-3,
+                #tdweek6-4,
+                #tdweek0-5,
+                #tdweek0-6 {
+                    background: #fff url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxsaW5lIHgxPSIwIiB5MT0iMCIgeDI9IjEwMCUiIHkyPSIxMDAlIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjEiLz48L3N2Zz4=) no-repeat 100% center;
+                }
+
+                #tdweek6-0:hover,
+                #tdweek6-1:hover,
+                #tdweek6-2:hover,
+                #tdweek6-3:hover,
+                #tdweek6-4:hover,
+                #tdweek0-5:hover,
+                #tdweek0-6:hover {
+                    cursor: default;
+                }
+
+                .out-0,
+                .out-2,
+                .out-6,
+                .out-7,
+                .out-8,
+                .out-9,
+                .out-10 {
+                    height: 20px;
+                }
+
+                .out-1 {
+                    height: 30px;
+                }
+
+                .out-3,
+                .out-5 {
+                    height: 40px;
+                }
+
+                .out-4 {
+                    height: 60px;
                 }
 
                 .td:hover {

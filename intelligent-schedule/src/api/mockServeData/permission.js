@@ -114,9 +114,9 @@ export default {
                     token: Mock.Random.guid(),
                     Message: '获取成功'
                 }
-                
+
             }
-        }else if(username === '123' && password === '123'){
+        } else if (username === '123' && password === '123') {
             return {
                 code: 20000,
                 data: {
@@ -147,7 +147,7 @@ export default {
                     Message: '获取成功'
                 }
             }
-        }else {
+        } else {
             return {
                 code: -999,
                 data: {

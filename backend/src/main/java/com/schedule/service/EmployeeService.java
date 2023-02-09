@@ -15,4 +15,8 @@ public class EmployeeService {
     public List<Employee> getAllEmployee(){
         return employeeMapper.getAllEmployee();
     }
+
+    public Employee getEmployeeById(String employeeId){
+        return employeeMapper.getEmployeeById(employeeId);
+    }
 }

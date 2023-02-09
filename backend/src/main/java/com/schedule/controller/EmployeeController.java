@@ -12,8 +12,13 @@ public class EmployeeController {
     @Autowired
     EmployeeService employeeService;
 
-    @GetMapping("/all")
+    @GetMapping("/selectAll")
     public List<Employee> getAllEmployee(){
         return employeeService.getAllEmployee();
+    }
+
+    @GetMapping("/selectById/{employeeId}")
+    public Employee getEmployeeById(@PathVariable("employeeId") String employeeId){
+        return employeeService.getEmployeeById(employeeId);
     }
 }
