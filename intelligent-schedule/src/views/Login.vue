@@ -17,7 +17,8 @@
 
 import Mock from 'mockjs'
 import Cookie from 'js-cookie'
-import {getMenu} from '../api'
+import {getLogin, getMenu} from '../api'
+import axios from "axios";
 export default {
   data() {
     return{
@@ -49,32 +50,54 @@ export default {
             if(vaild){
                 console.log(vaild)
                 // console.log(this.form)
-                getMenu(this.form)
+                getLogin(this.form)
                 .then(({data})=>{
                     console.log(data)
-                    if(data.code === 20000){
+                    getMenu(data).then(({data})=>{
+                      if(data.code === 200){
                         //将token信息存入cookie中用于不同页面间的通讯
                         Cookie.set('token',data.data.token)
 
                         //获取菜单的数据，存入store
-                        // data.data.menu 
+                        // data.data.menu
                         this.$store.commit('setMenu',data.data.menu)
 
 
                         //跳转到首页
                         this.$router.push('/home')
-                    } else{
+                      } else{
                         this.$message.error(data.data.message)
-                    }
-                }).catch((err)=>{
-                    console.log(err)
-                })
+                      }
+                    }).catch((err)=>{
+                      console.log(err)
+                    })
+                        }
+
+
+                    )
+
             }else{
                 console.log(vaild)
             }
         })
 
-    }
+    },
+
+    login(){
+      var that = this
+      axios.post('http://localhost:8082/employee/login',{//请求登录接口
+        username:this.form.username,
+        password:this.form.password
+      }).then(function (response) {
+        console.log(response.data);
+        that.response = response.data;
+        that.$emit("lisentcurrent",[that.response]);
+      }).catch(function (error) {
+        console.log(error);
+      });
+      console.log("pass",that.response)
+      this.$router.push('/home')
+    },
   }
 };
 

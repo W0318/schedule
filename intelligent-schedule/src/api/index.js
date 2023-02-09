@@ -17,10 +17,20 @@ export const getData = () => {
 //         })
 //     }
 // }
+export const getLogin=(data) => {
+    console.log(data)
+    console.log('拦截到请求')
+    return request.post('http://localhost:8082/employee/login',{//请求登录接口
+        username:data.username,
+        password:data.password
+    })
+  // return request.post('/permission/getMenu',data)
+}
+
 export const getMenu=(data) => {
     console.log(data)
     console.log('拦截到请求')
-  return request.post('/permission/getMenu',data)
+    return request.post('/permission/getMenu',data)
 }
   
 export const getEchartsData=() => {
