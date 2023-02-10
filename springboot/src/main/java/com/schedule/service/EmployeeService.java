@@ -12,8 +12,8 @@ public class EmployeeService {
     @Autowired
     EmployeeMapper employeeMapper;
 
-    public List<Employee> getAllEmployee() {
-        return employeeMapper.getAllEmployee();
+    public List<Employee> getAllEmployee(String storeId) {
+        return employeeMapper.getAllEmployee(storeId);
     }
 
     public Employee getEmployeeById(String employeeId) {
@@ -22,5 +22,9 @@ public class EmployeeService {
 
     public Employee login(String a, String b) {
         return employeeMapper.login(a, b);
+    }
+
+    public List<Employee> getWeekEmployees(String employeeIds) {
+        return employeeMapper.getWeekEmployees(employeeIds);
     }
 }
