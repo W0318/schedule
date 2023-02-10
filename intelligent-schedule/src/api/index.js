@@ -47,3 +47,22 @@ export default {
   }
 }
 
+export const getWorkday = (employeeId) => {
+  return request.get('http://localhost:8082/scheduling/getWorkday/' + employeeId);
+}
+
+export const getDaywork = (employeeId, day) => {
+  return request.get('http://localhost:8082/scheduling/getDaywork/' + employeeId + '/' + day);
+}
+
+export const getAllStore = () => {
+  return request.get('http://localhost:8082/store/all');
+}
+
+export const getAllEmployee = (storeId) => {
+  return request.get('http://localhost:8082/employee/all/' + storeId);
+}
+
+export const getAWeekwork = (Monday, Sunday) => {
+  return request.get('http://localhost:8082/scheduling/getAWeekwork/' + Monday + '/' + Sunday);
+}

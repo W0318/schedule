@@ -90,8 +90,8 @@
                             {{ time[0] }}
                         </td>
                         <template v-for="(value, j) in tableData[0]">
-                            <td v-if="time[1] !== -1 && j < 5" class="td-out td" :id="'td' + week_day + time[1] + '-' + j"
-                                :rowspan="weekdaySpans[time[1]]"
+                            <td v-if="time[1] !== -1 && j < 5" class="td-out td"
+                                :id="'td' + week_day + time[1] + '-' + j" :rowspan="weekdaySpans[time[1]]"
                                 @click="(drag === false && time[1] !== 6) ? handleClickTd(time[1], j) : null">
                                 <draggable v-if="time[1] !== 6" :model-value="tableData[time[1]][j]" group="people"
                                     animation="300" item-key="key" @start="startDrag($event, time[1], j)"
@@ -116,8 +116,8 @@
                                     <CirclePlus />
                                 </el-icon>
                             </td>
-                            <td v-else-if="time[2] !== -1 && j >= 5" class="td-out td" :id="'td' + week_day + time[2] + '-' + j"
-                                :rowspan="weekendSpans[time[2]]"
+                            <td v-else-if="time[2] !== -1 && j >= 5" class="td-out td"
+                                :id="'td' + week_day + time[2] + '-' + j" :rowspan="weekendSpans[time[2]]"
                                 @click="(drag === false && time[2] !== 0) ? handleClickTd(time[2], j) : null">
                                 <draggable v-if="time[2] !== 0" :model-value="tableData[time[2] - 1][j]" group="people"
                                     animation="300" item-key="key" @start="startDrag($event, time[2] - 1, j)"
@@ -204,31 +204,33 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue';
+import { ref } from 'vue';
 import moment from "moment";
 import draggable from 'vuedraggable';
 import { Delete, Edit, Postcard } from '@element-plus/icons-vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
+import { getAllStore, getAllEmployee, getAWeekwork } from '@/api';
 
 /**
  * 初始化获取数据库数据：stores、startTime、endTime、data、employees
  */
-// 门店切换，最好按storeName字母拼音顺序排序
-const stores = ref([
-    {
-        storeId: 'store1',
-        storeName: '安踏运动鞋',
-    },
-    {
-        storeId: 'store2',
-        storeName: '特步运动鞋',
-    },
-    {
-        storeId: 'store3',
-        storeName: '乔丹运动鞋',
-    }
-]);
-const storeValue = ref(stores.value[0].storeName);
+// 门店切换
+const stores = ref([]);
+const storeValue = ref();
+var currentStoreId;
+//所有员工数据
+const employees = ref([]);
+const employeesAvail = ref([]);
+getAllStore().then((datas) => {
+    stores.value = datas.data;
+    storeValue.value = stores.value[0].storeName;
+    currentStoreId = stores.value[0].storeId;
+
+    getAllEmployee(stores.value[0].storeId).then((datas) => {
+        employees.value = datas.data;
+        employeesAvail.value = [...employees.value];
+    });
+});
 
 //表格单元格数据
 var id = 0;
@@ -258,12 +260,16 @@ var data = [
     ],
     [[], [], [], [], [], []]
 ];
-const tableData = ref();
-tableData.value = data[0].map(function (col, i) {
-    return data.map(function (row) {
-        return row[i];
-    })
-});
+const tableData = ref([]);
+getAWeekwork(moment().startOf('isoWeek').format('YYYY-MM-DD'), moment().endOf('isoWeek').format('YYYY-MM-DD'))
+    .then((datas) => {
+        data = datas.data;
+        tableData.value = data[0].map(function (col, i) {
+            return data.map(function (row) {
+                return row[i];
+            })
+        });
+    });
 const dayData = ref([
     [{}, {}, {}, {}, {}, {}, {}, {}], [{}, {}, {}, {}, {}, {}, {}, {}], [{}, {}, {}, {}, {}, {}, {}, {}],
     [
@@ -274,40 +280,6 @@ const dayData = ref([
     ], [{}, {}, {}, {}, {}, {}, {}, {}], [{}, {}, {}, {}, {}, {}, {}, {}]
 ]);
 
-//所有员工数据
-const employees = ref([
-    {
-        employeeId: 'employee1',
-        employeeName: 'www',
-        position: '门店经理'
-    },
-    {
-        employeeId: 'employee2',
-        employeeName: 'aaa',
-        position: '副经理'
-    },
-    {
-        employeeId: 'employee3',
-        employeeName: 'zzz',
-        position: '小组长'
-    },
-    {
-        employeeId: 'employee4',
-        employeeName: 'yyy',
-        position: '门店经理'
-    },
-    {
-        employeeId: 'employee5',
-        employeeName: 'bbb',
-        position: '店员'
-    },
-    {
-        employeeId: 'employee6',
-        employeeName: 'zzz',
-        position: '门店经理'
-    }
-]);
-const employeesAvail = ref([...employees.value]);
 
 
 
@@ -423,41 +395,6 @@ var addIndex = null;
 const changeStore = () => {
     //从数据库中获取数据，更新data、时间段
 
-
-    //所有员工数据
-    employees.value = [
-        {
-            employeeId: 'employee1',
-            employeeName: 'www',
-            position: '门店经理'
-        },
-        {
-            employeeId: 'employee2',
-            employeeName: 'aaa',
-            position: '副经理'
-        },
-        {
-            employeeId: 'employee3',
-            employeeName: 'zzz',
-            position: '小组长'
-        },
-        {
-            employeeId: 'employee4',
-            employeeName: 'yyy',
-            position: '门店经理'
-        },
-        {
-            employeeId: 'employee5',
-            employeeName: 'bbb',
-            position: '店员'
-        },
-        {
-            employeeId: 'employee6',
-            employeeName: 'zzz',
-            position: '门店经理'
-        }
-    ];
-    employeesAvail.value = [...employees.value];
 
     //按周查看|按日查看 的切换
     week_day.value = 'week';
