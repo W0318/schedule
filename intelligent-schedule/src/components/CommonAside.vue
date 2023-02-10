@@ -1,7 +1,7 @@
 <template>
     <el-menu default-active="2" class="el-menu-vertical-demo" :collapse="isCollapse" @open="handleOpen"
         @close="handleClose" text-color="" active-text-color="#409EFF" background-color="#fff">
-        <h3>{{ isCollapse ? '后台' : '智能排班系统' }}</h3>
+        <h3>{{ isCollapse? '后台': '智能排班系统' }}</h3>
         <el-menu-item v-on:click="clickMenu(item)" v-for="item in noChildren" :key="item.name" :index="item.name">
             <el-icon>
                 <component :is="item.icon"></component>
@@ -147,10 +147,10 @@ const handleClose = (key, keyPath) => {
     console.log(key, keyPath)
 }
 const router = useRouter();
-const clickMenu=(item)=>{
+const clickMenu = (item) => {
     console.log(item)
-    router.push({path:`${item.path}`})
-    store.commit('selectMenu',item)
+    router.push({ path: `${item.path}` })
+    store.commit('selectMenu', item)
 }
 
 const asyncmenuData = store.state.menu
@@ -170,7 +170,7 @@ const hasChildren = computed(() => {
 
 
 const isCollapse = computed(() => {
-   return store.state.isCollapse
+    return store.state.isCollapse
 })
 
 </script>
@@ -180,16 +180,19 @@ const isCollapse = computed(() => {
     width: 201px;
     min-height: 400px;
 }
-.el-menu{
+
+.el-menu {
     height: 100vh;
+
     h3 {
         color: rgb(27, 27, 27);
         text-align: center;
         line-height: 48px;
         font-size: 16px;
         font-weight: 400;
-        
+
     }
+
     border-right: none;
 }
 </style>

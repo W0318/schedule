@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="form"  class="login-container" label-width="150px" :model="form" :inline="true">
+  <el-form ref="form" class="login-container" label-width="150px" :model="form" :inline="true">
     <!-- :rules="rules" -->
     <h3 class="login_title">系统登录</h3>
     <el-form-item class="login_username" label="用户名">
@@ -17,85 +17,85 @@
 
 import Mock from 'mockjs'
 import Cookie from 'js-cookie'
-import {getLogin, getMenu} from '../api'
+import { getLogin, getMenu } from '../api'
 import axios from "axios";
 export default {
   data() {
-    return{
-        form:{
-            username:'',
-            password:'',
-        },
-        rules:{
-            username:[
-                {required: true,trigger:'blur',message:'请输入用户名'}
+    return {
+      form: {
+        username: '',
+        password: '',
+      },
+      rules: {
+        username: [
+          { required: true, trigger: 'blur', message: '请输入用户名' }
 
-            ],
-            password:[
-                {required: true,trigger:'blur',message:'请输入密码'}
-            ]
-        }
+        ],
+        password: [
+          { required: true, trigger: 'blur', message: '请输入密码' }
+        ]
+      }
 
     }
-  },methods:{
-    submit(){
-        // // token信息
-        // const token = Mock.Random.guid();
-        // //将token信息存入cookie用于不同页面的通讯
-        // Cookie.set('token',token)
+  }, methods: {
+    submit() {
+      // // token信息
+      // const token = Mock.Random.guid();
+      // //将token信息存入cookie用于不同页面的通讯
+      // Cookie.set('token',token)
 
-        // 校验通过
-        this.$refs.form.validate((vaild)=>{
-            // console.log(getMenu(from))
-            if(vaild){
-                console.log(vaild)
-                // console.log(this.form)
-                getLogin(this.form)
-                .then(({data})=>{
-                    console.log(data)
-                    getMenu(data).then(({data})=>{
-                      if(data.code === 200){
-                        //将token信息存入cookie中用于不同页面间的通讯
-                        Cookie.set('token',data.data.token)
+      // 校验通过
+      this.$refs.form.validate((vaild) => {
+        // console.log(getMenu(from))
+        if (vaild) {
+          console.log(vaild)
+          // console.log(this.form)
+          getLogin(this.form)
+            .then(({ data }) => {
+              console.log(data)
+              getMenu(data).then(({ data }) => {
+                if (data.code === 200) {
+                  //将token信息存入cookie中用于不同页面间的通讯
+                  Cookie.set('token', data.data.token)
 
-                        //获取菜单的数据，存入store
-                        // data.data.menu
-                        this.$store.commit('setMenu',data.data.menu)
-
-
-                        //跳转到首页
-                        this.$router.push('/home')
-                      } else{
-                        this.$message.error(data.data.message)
-                      }
-                    }).catch((err)=>{
-                      console.log(err)
-                    })
-                        }
+                  //获取菜单的数据，存入store
+                  // data.data.menu
+                  this.$store.commit('setMenu', data.data.menu)
 
 
-                    )
-
-            }else{
-                console.log(vaild)
+                  //跳转到首页
+                  this.$router.push('/home')
+                } else {
+                  this.$message.error(data.data.message)
+                }
+              }).catch((err) => {
+                console.log(err)
+              })
             }
-        })
+
+
+            )
+
+        } else {
+          console.log(vaild)
+        }
+      })
 
     },
 
-    login(){
+    login() {
       var that = this
-      axios.post('http://localhost:8082/employee/login',{//请求登录接口
-        username:this.form.username,
-        password:this.form.password
+      axios.post('http://localhost:8082/employee/login', {//请求登录接口
+        username: this.form.username,
+        password: this.form.password
       }).then(function (response) {
         console.log(response.data);
         that.response = response.data;
-        that.$emit("lisentcurrent",[that.response]);
+        that.$emit("lisentcurrent", [that.response]);
       }).catch(function (error) {
         console.log(error);
       });
-      console.log("pass",that.response)
+      console.log("pass", that.response)
       this.$router.push('/home')
     },
   }
@@ -118,9 +118,11 @@ export default {
     margin-bottom: 40px;
     color: #505458;
   }
+
   .login_username {
     align-items: center;
   }
+
   .el-input {
     width: 198px;
   }

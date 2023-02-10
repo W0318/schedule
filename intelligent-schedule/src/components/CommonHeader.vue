@@ -3,18 +3,16 @@
     <div class="l-content">
       <el-button v-on:click="handleMenu" type="info">
         <el-icon color="#333">
-            <Menu />
-          </el-icon>
+          <Menu />
+        </el-icon>
       </el-button>
-      
+
       <!-- 面包屑 -->
       <!-- <span class="text">{{首页}}</span> -->
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item
-          v-for="item in {...store.state.tabsList }"
-          :key="item.path"
-          :to="{ path: item.path }"
-        >{{ item.lable }}</el-breadcrumb-item>
+        <el-breadcrumb-item v-for="item in {...store.state.tabsList }" :key="item.path" :to="{ path: item.path }">{{
+          item.lable
+        }}</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="r-content">
@@ -76,11 +74,13 @@ const logout = () => {
   .l-content {
     display: flex;
     align-items: center;
+
     /deep/.el-breadcrumb__item {
       .el-breadcrumb__inner {
         font-weight: bold;
         margin-left: 10px;
         font-size: 16px;
+
         &.is-link {
           color: rgb(58, 58, 58);
         }
