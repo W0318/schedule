@@ -102,8 +102,8 @@ export default {
   mounted() {
     getData().then(({ data }) => {
       console.log(data);
-      // const{tableData} = data.data
-      // this.tableData = tableData
+      const{tableData} = data.data
+      this.tableData = tableData
       //准备基础dom ，初始化echarts实例
       const echarts1 = echarts.init(this.$refs.echarts1);
       //指定图标配置项和数据

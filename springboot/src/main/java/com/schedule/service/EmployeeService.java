@@ -9,14 +9,17 @@ import java.util.List;
 
 @Service
 public class EmployeeService {
+
     @Autowired
     EmployeeMapper employeeMapper;
-
+    public Employee login(String a,String b) {
+        return employeeMapper.login(a,b);
+    }
     public List<Employee> getAllEmployee(){
-        return employeeMapper.getAllEmployee();
+        return (List<Employee>) employeeMapper.login("123","123");
     }
 
-    public Employee getEmployeeById(String employeeId){
-        return employeeMapper.getEmployeeById(employeeId);
-    }
+//    public Employee getEmployeeById(String employeeId){
+//        return employeeMapper.getEmployeeById(employeeId);
+//    }
 }
