@@ -43,54 +43,47 @@
         </el-calendar>
         <div class="schedule">
             <div class="title">
-                <span>值班安排</span>
+                <span>工作安排 {{ chooseDate }}</span>
             </div>
             <div v-for="(item, index) in assigns">
                 <div class="assign">{{ item }}</div>
             </div>
         </div>
     </div>
-    <div>{{ emp }}</div>
 </template>
 
 <script setup>
+import { getWorkday, getDaywork } from '@/api';
+import moment from 'moment';
 import { ref } from 'vue';
-
-const emp = ref('emp');
-fetch("http://localhost:8081/employee/all")
-    .then(res => res.json())
-    .then(resJson => {
-        console.log(resJson);
-        emp.value = resJson;
-    })
 
 const calendar = ref();
 const selectDate = (val) => {
     calendar.value.selectDate(val)
 };
 
-//登录用户一月里有工作的日子
-const assignAll = ref([
-    '2023-01-01',
-    '2023-01-02',
-    '2023-01-10',
-    '2023-01-13',
-    '2023-01-18',
-    '2023-01-19',
-    '2023-01-23',
-    '2023-01-24',
-    '2023-01-31'
-]);
+//登录用户有工作的日子
+const assignAll = ref([]);
+getWorkday('1').then((datas) => {
+    assignAll.value = datas.data;
+    console.log(assignAll.value)
+});
 
-const assigns = ref([
-    '2023年1月18日 8:00-10:00',
-    '2023年1月18日 10:00-12:00'
-]);
+const chooseDate = ref(moment().format('YYYY-MM-DD'));
+const assigns = ref([]);
+getDaywork('1', chooseDate.value).then((datas) => {
+    assigns.value = datas.data;
+    console.log(assigns.value)
+});
 
 const handleClick = (day) => {
-    console.log(day)
+    console.log(day);
+    chooseDate.value = day;
 
-    //根据用户和选中时间day检索数据库
+    getDaywork('1', day).then((datas) => {
+        assigns.value = datas.data;
+        console.log(assigns.value)
+    });
 }
 </script>
 
