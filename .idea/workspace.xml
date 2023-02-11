@@ -4,9 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< Updated upstream
     <list default="true" id="f06cbee8-5cfc-4df2-ac96-0e1104ffbd0a" name="变更" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
+=======
+    <list default="true" id="f06cbee8-5cfc-4df2-ac96-0e1104ffbd0a" name="变更" comment="" />
+>>>>>>> Stashed changes
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -38,6 +42,22 @@
   }
 }</component>
   <component name="RunManager" selected="Spring Boot.SpringbootApplication">
+<<<<<<< Updated upstream
+=======
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="schedule" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="schedule" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+>>>>>>> Stashed changes
     <configuration name="SpringbootApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <module name="springboot" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.schedule.SpringbootApplication" />
@@ -84,6 +104,11 @@
       <workItem from="1676101345462" duration="67000" />
       <workItem from="1676101428828" duration="38000" />
       <workItem from="1676101477719" duration="54000" />
+<<<<<<< Updated upstream
+=======
+      <workItem from="1676101665570" duration="293000" />
+      <workItem from="1676101972915" duration="16000" />
+>>>>>>> Stashed changes
     </task>
     <servers />
   </component>
