@@ -8,6 +8,11 @@ import java.util.List;
 
 @Mapper
 public interface StoreMapper {
+    /**
+     * @author 吴佳丽
+     * <p>
+     * ///////////////////////////////////////////////////////////////////////////////////////////////
+     */
     @Select("SELECT * FROM store")
     List<Store> getAllStore();
 }
