@@ -12,6 +12,11 @@ public class EmployeeService {
     @Autowired
     EmployeeMapper employeeMapper;
 
+    /**
+     * @author 吴佳丽
+     * <p>
+     * ///////////////////////////////////////////////////////////////////////////////////////////////
+     */
     public List<Employee> getAllEmployee(String storeId) {
         return employeeMapper.getAllEmployee(storeId);
     }
@@ -20,11 +25,17 @@ public class EmployeeService {
         return employeeMapper.getEmployeeById(employeeId);
     }
 
-    public Employee login(String a, String b) {
-        return employeeMapper.login(a, b);
+    public List<Employee> getEmployees(String employeeIds) {
+        return employeeMapper.getEmployees(employeeIds);
     }
 
-    public List<Employee> getWeekEmployees(String employeeIds) {
-        return employeeMapper.getWeekEmployees(employeeIds);
+
+    /**
+     * @author 朱凯
+     * <p>
+     * ///////////////////////////////////////////////////////////////////////////////////////////////
+     */
+    public Employee login(String a, String b) {
+        return employeeMapper.login(a, b);
     }
 }

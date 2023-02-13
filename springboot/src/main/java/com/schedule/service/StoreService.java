@@ -12,6 +12,11 @@ public class StoreService {
     @Autowired
     StoreMapper storeMapper;
 
+    /**
+     * @author 吴佳丽
+     * <p>
+     * ///////////////////////////////////////////////////////////////////////////////////////////////
+     */
     public List<Store> getAllStore() {
         return storeMapper.getAllStore();
     }
