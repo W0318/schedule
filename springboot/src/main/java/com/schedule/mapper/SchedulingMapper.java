@@ -18,23 +18,32 @@ public interface SchedulingMapper {
     List<Date> getEmployeeWorkday(String employeeId);
 
     @Select("SELECT CONCAT(startTime, '-', endTime) period FROM scheduling WHERE (employeeIds LIKE concat(#{employeeId},'%') OR employeeIds LIKE concat('%',#{employeeId}) OR employeeIds = '1') AND day = #{day} ORDER BY startTime")
-    List<String> getEmployeeDaywork(String employeeId, Date day);
+    List<String> getEmployeeDayWork(String employeeId, Date day);
 
     @Select("SELECT * FROM scheduling WHERE day >= #{Monday} AND day <= #{Sunday} AND storeId = #{storeId} ORDER BY day, startTime")
-    List<Scheduling> getAWeekwork(Date Monday, Date Sunday, String storeId);
+    List<Scheduling> getAWeekWork(Date Monday, Date Sunday, String storeId);
 
     @Select("SELECT * FROM scheduling WHERE day = #{day} AND storeId = #{storeId} ORDER BY startTime")
-    List<Scheduling> getADaywork(Date day, String storeId);
+    List<Scheduling> getADayWork(Date day, String storeId);
 
     @Select("SELECT * FROM scheduling WHERE id = #{id}")
     Scheduling getById(int id);
+
+    @Select("SELECT * FROM scheduling WHERE day = #{day} AND startTime = #{startTime}")
+    Scheduling getByTime(Date day, Time startTime);
 
     @Delete("DELETE FROM scheduling WHERE id in (${ids})")
     int deleteScheduling(String ids);
 
     @Insert("INSERT INTO scheduling(storeId, employeeIds, day, startTime, endTime, periodName) VALUES (#{storeId}, #{employeeIds}, #{day}, #{startTime}, #{endTime}, #{periodName})")
-    int insertScheduling(String storeId, String employeeIds, Date day, Time startTime, Time endTime, String periodName);
+    void insertScheduling(String storeId, String employeeIds, Date day, Time startTime, Time endTime, String periodName);
 
     @Update("UPDATE scheduling SET employeeIds = #{employeeIds} WHERE id = #{id}")
-    int updateScheduling(String employeeIds, int id);
+    void updateScheduling(String employeeIds, int id);
+
+    @Update("UPDATE scheduling SET employeeIds = #{employeeIds} WHERE day = #{day} AND startTime = #{startTime}")
+    void updateEmployeeIds(String employeeIds, Date day, Time startTime);
+
+    @Delete("DELETE FROM scheduling WHERE day = #{day} AND startTime = #{startTime}")
+    void deleteEmployeeIds(Date day, Time startTime);
 }
