@@ -68,16 +68,29 @@ export const getAWeekwork = (Monday, Sunday, storeId) => {
 }
 
 export const getADaywork = (day, week, storeId) => {
-  return request.get('http://localhost:8082/scheduling/getADayWork/' + day + '/' + week + '/' +storeId);
+  return request.get('http://localhost:8082/scheduling/getADayWork/' + day + '/' + week + '/' + storeId);
 }
 
 export const deleteScheduling = (ids) => {
   return request.get('http://localhost:8082/scheduling/deleteScheduling/' + ids);
 }
 
-export const test = (tableData, week) => {
+export const deleteDaySchedule = (employeeIds, day, week, startIndex) => {
+  return request.post('http://localhost:8082/scheduling/deleteDaySchedule', {
+    employeeIds: employeeIds,
+    day: day,
+    week: week,
+    startIndex: startIndex
+  });
+}
+
+export const updateWeekData = (tableData, week) => {
   return request.post('http://localhost:8082/scheduling/replaceScheduling', {
     tableData: tableData,
     week: week
-  })
+  });
+}
+
+export const replaceDaySchedule = (employeeIds, storeId, day, week) => {
+  return request.get('http://localhost:8082/scheduling/replaceDaySchedule/' + employeeIds + '/' + storeId + '/' + day + '/' + week);
 }

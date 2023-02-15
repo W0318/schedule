@@ -162,14 +162,14 @@
                         </td>
                         <template v-for='(item, index2) in row'>
                             <td class="td-out td" :class="drag === true ? 'move-day' : null"
-                                :id="'td' + week_day + index1 + '-' + index2" :title="(JSON.stringify(item) !== '{}') ?
+                                :id="'td' + week_day + index1 + '-' + index2" :title="(item.employeeId !== null && JSON.stringify(item) !== '{}') ?
                                 (item.employeeName + ' ' + item.position) : null"
                                 @click="drag === false ? handleClickTd(index1, index2) : null"
                                 :draggable="drag === true ? true : false"
                                 @dragstart="handleDragStart($event, index1, index2)"
                                 @dragover.prevent="handleDragOver($event)"
                                 @dragenter="handleDragEnter($event, index1, index2)" @dragend="handleDragEnd($event)">
-                                <div v-if="item.employeeId !== null">
+                                <div v-if="item.employeeId !== null && JSON.stringify(item) !== '{}'">
                                     <span v-if="viewValue === '全部查看'">
                                         {{ item.employeeName + ' ' + item.position }}
                                     </span>
@@ -214,7 +214,16 @@ import moment from "moment";
 import draggable from 'vuedraggable';
 import { Delete, Edit, Postcard } from '@element-plus/icons-vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { getAllStore, getAllEmployee, getAWeekwork, getADaywork, deleteScheduling, test } from '@/api';
+import {
+    getAllStore,
+    getAllEmployee,
+    getAWeekwork,
+    getADaywork,
+    deleteScheduling,
+    updateWeekData,
+    deleteDaySchedule,
+    replaceDaySchedule
+} from '@/api';
 
 /**
  * 初始化获取数据库数据：stores、data、employees
@@ -640,12 +649,33 @@ const handleDelete = () => {
                 }
                 else {
                     var newDayData = [...dayData.value];
-                    arrTd.map(value => {
+                    var updateIndexs = [];
+                    var updateEmployeeIds = "";
+                    arrTd.map((value, index) => {
+                        if (JSON.stringify(newDayData[value[0]][value[1]]) !== '{}'
+                            && newDayData[value[0]][value[1]].employeeId !== null)
+                            updateIndexs.push(value[0]);
                         newDayData[value[0]][value[1]] = {};
                         let td = document.getElementById('td' + week_day.value + value[0] + '-' + value[1]);
                         td.style.backgroundColor = '';
                     })
                     dayData.value = [...newDayData];
+
+                    updateIndexs = [...new Set(updateIndexs)];
+                    updateIndexs.map((value, index) => {
+                        let employeeIds = "";
+                        newDayData[value].map(v => {
+                            if (v.employeeId !== null && JSON.stringify(v) !== '{}' && employeeIds === "")
+                                employeeIds += v.employeeId;
+                            else if (v.employeeId !== null && JSON.stringify(v) !== '{}')
+                                employeeIds += "," + v.employeeId;
+                        });
+                        if (index === 0)
+                            updateEmployeeIds += employeeIds;
+                        else
+                            updateEmployeeIds += "=" + employeeIds;
+                    });
+                    deleteDaySchedule(updateEmployeeIds, current.value.format('YYYY-MM-DD'), weekIndex[current.value.day()], updateIndexs.join(','));
                 }
 
                 arrTd.splice(0, arrTd.length);
@@ -655,12 +685,12 @@ const handleDelete = () => {
                     message: '删除成功',
                 })
             })
-        // .catch(() => {
-        //     ElMessage({
-        //         type: 'info',
-        //         message: '取消删除',
-        //     })
-        // })
+            .catch(() => {
+                ElMessage({
+                    type: 'info',
+                    message: '取消删除',
+                })
+            })
     }
 }
 //点击编辑|完成
@@ -673,26 +703,48 @@ const handleEdit = () => {
         }
     }
     else {
-        var tb = tableData.value.map(row => {
-            row = row.map(item => {
-                item = item.map((two, index) => {
-                    if (index === 0) {
-                        var tb1 = [];
-                        two.map(em => {
-                            tb1.push(JSON.stringify(em));
-                        });
-                        return tb1.join('>');
-                    }
-                    else return two;
+        if (week_day.value === 'week') {
+            var tb = tableData.value.map(row => {
+                row = row.map(item => {
+                    item = item.map((two, index) => {
+                        if (index === 0) {
+                            var tb1 = [];
+                            two.map(em => {
+                                tb1.push(JSON.stringify(em));
+                            });
+                            return tb1.join('>');
+                        }
+                        else return two;
+                    });
+                    return item.join('+');
                 });
-                return item.join('+');
+                return row.join('-');
             });
-            return row.join('-');
-        });
-        var week = current.value.startOf('W').format("YYYY-MM-DD");
-        for (var i = 1; i < 7; i++)
-            week += "," + current.value.startOf('W').add(i, 'days').format("YYYY-MM-DD");
-        test(tb.join('<'), week);
+            var week = current.value.startOf('W').format("YYYY-MM-DD");
+            for (var i = 1; i < 7; i++)
+                week += "," + current.value.startOf('W').add(i, 'days').format("YYYY-MM-DD");
+            updateWeekData(tb.join('<'), week);
+        }
+        else {
+            var updateEmployeeIds = "";
+            dayData.value.map((value, index) => {
+                var employeeIds = "";
+                var flag = 0;
+                value.map((v, i) => {
+                    if (JSON.stringify(v) !== '{}' && v.employeeId !== null && flag === 0) {
+                        employeeIds += v.employeeId;
+                        flag = 1;
+                    }
+                    else if (JSON.stringify(v) !== '{}' && v.employeeId !== null)
+                        employeeIds += "," + v.employeeId;
+                });
+                if (index === 0)
+                    updateEmployeeIds += employeeIds;
+                else
+                    updateEmployeeIds += "=" + employeeIds;
+            });
+            replaceDaySchedule(updateEmployeeIds, storeValue.value, current.value.format('YYYY-MM-DD'), current.value.day());
+        }
     }
 
     drag.value = (drag.value === true ? false : true);
@@ -705,18 +757,38 @@ const showAddView = (added, index1, index2) => {
     addIndex = [index1, index2];
 
     var newEAvil = [...employees.value];
-    newEAvil = newEAvil.filter(item => {
-        var isInclude = false;
+    if (week_day.value === 'week') {
+        newEAvil = newEAvil.filter(item => {
+            var isInclude = false;
 
-        added.map((value) => {
-            if (value.employeeId === item.employeeId) {
-                isInclude = true;
-                return;
-            }
-        })
-        // console.log(isInclude);
-        return !isInclude;
-    });
+            added.map((value) => {
+                if (value.employeeId === item.employeeId) {
+                    isInclude = true;
+                    return;
+                }
+            })
+            // console.log(isInclude);
+            return !isInclude;
+        });
+    }
+    else {
+        newEAvil = newEAvil.filter(item => {
+            var isInclude = false;
+
+            console.log(dayData.value[index1])
+            dayData.value[index1].map(value => {
+                console.log(value)
+                if (JSON.stringify(value) !== '{}' && value.employeeId !== null) {
+                    if (value.employeeId === item.employeeId) {
+                        isInclude = true;
+                        return;
+                    }
+                }
+            });
+            // console.log(isInclude);
+            return !isInclude;
+        });
+    }
     employeesAvail.value = [...newEAvil];
     console.log(employeesAvail)
 
@@ -731,7 +803,7 @@ const addEmplyee = () => {
     }
     else {
         let newData = [...dayData.value];
-        newData[addIndex[0]][addIndex[1]][0] = employeeValue.value;
+        newData[addIndex[0]][addIndex[1]] = employeeValue.value;
         dayData.value = [...newData];
     }
 
@@ -764,24 +836,49 @@ const handleDragEnd = (e) => {
         return;
 
     var newData = [...dayData.value];
+    var flag = false;
+    var start = newData[dragging.value[0]][dragging.value[1]];
+    var end = newData[ending.value[0]][ending.value[1]];
+    dayData.value[dragging.value[0]].map(value => {
+        if (flag === true) return;
+        if (JSON.stringify(value) !== '{}' && value.employeeId !== null) {
+            if (JSON.stringify(end) !== '{}' && end.employeeId !== null && value.employeeId === end.employeeId) {
+                flag = true;
+                return;
+            }
+        }
+    });
+    dayData.value[ending.value[0]].map(value => {
+        if (flag === true) return;
+        if (JSON.stringify(value) !== '{}' && value.employeeId !== null) {
+            if (JSON.stringify(start) !== '{}' && start.employeeId !== null && value.employeeId === start.employeeId) {
+                flag = true;
+                return;
+            }
+        }
+    });
+    if (flag === true) {
+        message('不能给同一个员工分配同一时间段的工作');
+        return;
+    }
 
     if (dragging.value[0] === ending.value[0]) {
-        let item = { ...newData[dragging.value[0]] };
+        let item = [...newData[dragging.value[0]]];
         let temp = item[dragging.value[1]];
         item[dragging.value[1]] = item[ending.value[1]];
         item[ending.value[1]] = temp;
 
-        newData[dragging.value[0]] = { ...item };
+        newData[dragging.value[0]] = [...item];
     }
     else {
-        let item1 = { ...newData[dragging.value[0]] };
-        let item2 = { ...newData[ending.value[0]] };
+        let item1 = [...newData[dragging.value[0]]];
+        let item2 = [...newData[ending.value[0]]];
         let temp = item1[dragging.value[1]];
         item1[dragging.value[1]] = item2[ending.value[1]];
         item2[ending.value[1]] = temp;
 
-        newData[dragging.value[0]] = { ...item1 };
-        newData[ending.value[0]] = { ...item2 };
+        newData[dragging.value[0]] = [...item1];
+        newData[ending.value[0]] = [...item2];
     }
 
     dayData.value = [...newData];
