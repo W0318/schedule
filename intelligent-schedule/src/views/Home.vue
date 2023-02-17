@@ -3,30 +3,34 @@
     <el-row class="top">
       <el-card class="component1">
         <el-clo>
+          <text class="text-title">排班统计</text>
           <div class="select-border">
             <text class="text-name">门 店 名 称 :</text>
-            <el-select v-model="value" class="select" placeholder="浙江分公司" size="large">
+
+            <el-select v-model="options.value" class="select" placeholder="浙江分公司"  size="large">
               <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
+                  v-for="item in options"
+                  :key="item.storeId"
+                  :label="item.storeName"
+                  :value="item.storeId"
+                  @click="changeInfo(item)"
+              >
+              </el-option>
             </el-select>
           </div>
           <div class="classify">
-            <text class="text-title">排班统计</text>
+
             <el-card
-              class="card"
-              shadow="never"
-              v-for="item in countData"
-              :key="item.name"
-              :body-style="{display: 'flex',padding:0 }"
+                class="card"
+                shadow="never"
+                v-for="item in countData"
+                :key="item.name"
+                :body-style="{display: 'flex',padding:0 }"
             >
               <div class="detail">
-                <div class="my-icon" :style="{background : item.color}"></div>
-                <p class="desc">{{item.name}}</p>
-                <p class="num">{{item.value}}</p>
+<!--                <div class="my-icon" :style="{background : item.color}"></div>-->
+                <p class="desc">{{ item.name }}</p>
+                <p class="num">{{ item.value }}</p>
               </div>
             </el-card>
           </div>
@@ -53,62 +57,94 @@
     <!-- <div class="button"></div> -->
   </div>
 </template>
-  
+
 <script>
-import { getData } from "@/api";
+import {
+  getData,
+  getStore,
+} from "@/api";
 import * as echarts from "echarts";
+// import {ref} from "vue";
+
+
+// let value;
 export default {
+  // value:ref(''),
   data() {
     return {
+      newStoreId:'',
+      StoreData: [],
       tableData: [],
-      options: [
-        {
-          value: "浙江分公司",
-          label: "浙江分公司"
-        },
-        {
-          value: "上海分公司",
-          label: "上海分公司"
-        },
-        {
-          value: "江苏分公司",
-          label: "江苏分公司"
-        }
-      ],
+      options: [{
+        storeId: '店id',
+        storeName: '店名',
+        address:'地点',
+        manger:"负责人",
+        size:'面积',
+        workers:'1',
+      }],
       countData: [
         {
-          name: "本月总班数",
-          value: 870,
+          name: "公司负责人: ",
+          value: "小明",
           color: "#409EFF"
         },
         {
-          name: "已值班数",
-          value: 17,
+          name: "在值员工数: ",
+          value: 23,
           color: "#f28d3c"
         },
         {
-          name: "剩余值班数",
-          value: 4,
+          name: "地址: ",
+          value: "上塘街道湖州街51号",
           color: "#f23c3c"
         },
         {
-          name: "缺勤班数",
-          value: 1,
+          name: "店面面积: ",
+          value: 200,
           color: "#409EFF"
         }
       ]
     };
   },
+  // setup(){
+  //   const changeInfo=(e)=>{
+  //     this.$data.newStoreId=e
+  //     // this.data.newStoreId=e
+  //     console.log(e)
+  //   }
+  //   return {changeInfo}
+  // },
+  methods:{
+    // eslint-disable-next-line vue/no-dupe-keys
+     changeInfo(e){
+      this.newStoreId=e
+      // this.data.newStoreId=e
+      //  console.log(this.newStoreId)
+      console.log(e)
+       this.countData[0].value=e.manger
+       this.countData[2].value=e.address
+       this.countData[1].value=e.workers
+       this.countData[3].value=e.size
+    }
+  },
   mounted() {
-    getData().then(({ data }) => {
-      console.log(data);
-      const{tableData} = data.data
+
+    getStore().then((datas) => {
+      this.options = datas.data;
+      // this.options.value = this.options.
+      console.log(datas.data)
+    });
+    getData().then(({data}) => {
+      // console.log(data);
+      console.log(this.newStoreId)
+      const {tableData} = data.data
       this.tableData = tableData
       //准备基础dom ，初始化echarts实例
       const echarts1 = echarts.init(this.$refs.echarts1);
       //指定图标配置项和数据
       var echarts1Option = {};
-      const { orderData } = data.data;
+      const {orderData} = data.data;
       echarts1Option.grid = {
         left: "3%",
         right: "4%",
@@ -116,11 +152,12 @@ export default {
         containLabel: true
       };
       // const xAxis = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"];
-      const legendData = ["数据1", "数据2"];
+      const legendData = ["昨天客流数据", "今日客流数据", "明日客流数据"];
       const xAxisData = {
         type: "category",
         boundaryGap: false,
-        data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
+        data: ["8:00", "8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30",
+          "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00"]
       };
       echarts1Option.legend = {
         data: legendData
@@ -175,7 +212,7 @@ export default {
         toolbox: {
           show: true,
           feature: {
-            dataView: { readOnly: false },
+            dataView: {readOnly: false},
             restore: {},
             saveAsImage: {}
           }
@@ -213,14 +250,14 @@ export default {
         ],
         series: [
           {
-            name: "数据a",
+            name: "本周每日值班人数",
             type: "bar",
             // xAxisIndex: 1,
             yAxisIndex: 1,
             data: [100, 140, 230, 130, 100, 90, 130]
           },
           {
-            name: "数据b",
+            name: "上周每日值班人数",
             type: "line",
             yAxisIndex: 1,
             data: [150, 100, 200, 140, 130, 110, 130]
@@ -284,10 +321,10 @@ export default {
               }
             },
             data: [
-              { value: 1048, name: "偏好1" },
-              { value: 335, name: "偏好2" },
-              { value: 310, name: "偏好3" },
-              { value: 251, name: "其他" },
+              {value: 1048, name: "偏好1"},
+              {value: 335, name: "偏好2"},
+              {value: 310, name: "偏好3"},
+              {value: 251, name: "其他"},
             ]
           }
         ]
@@ -295,10 +332,12 @@ export default {
       const echarts3 = echarts.init(this.$refs.echarts3);
       echarts3.setOption(echarts3Option);
     });
+
   }
+
 };
 </script>
-  <style lang="less" scoped>
+<style lang="less" scoped>
 .container {
   display: flex;
   flex-direction: column;
@@ -309,6 +348,7 @@ export default {
     flex: 1;
     margin-top: 5px;
     margin-bottom: 5px;
+
     .component1 {
       background-color: #fff;
       border-radius: 15px;
@@ -317,7 +357,13 @@ export default {
       flex-direction: column;
       margin-right: 10px;
       align-items: center;
-
+      .text-title {
+        color: #000;
+        font-weight: bold;
+        font-size: 18px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
       .select-border {
         display: flex;
         height: 60px;
@@ -329,9 +375,11 @@ export default {
         background-color: #6292f4;
 
         align-items: center;
+
         .select {
           border-radius: 15px;
         }
+
         .text-name {
           color: #fff;
           font-weight: 700;
@@ -340,36 +388,35 @@ export default {
           margin-right: 20px;
         }
       }
+
       .classify {
         display: flex;
         flex-direction: column;
-        .text-title {
-          color: #000;
-          font-weight: bold;
-          font-size: 18px;
-          margin-top: 20px;
-          margin-bottom: 20px;
-        }
+
         .card {
           padding: 6px;
           margin: 0;
           border: 1px solid white;
           border-block-end-color: var(--el-card-border-color);
           border-block-start-color: var(--el-card-border-color);
+
           .my-icon {
             width: 10px;
             height: 40px;
             margin-top: 10px;
             margin-right: 20px;
           }
+
           .detail {
             display: flex;
+
             .desc {
               line-height: 20px;
               height: 20px;
-              width: 340px;
+              width: 120px;
               font-size: 20px;
             }
+
             .num {
               line-height: 20px;
               height: 20px;
@@ -379,6 +426,7 @@ export default {
         }
       }
     }
+
     .component2 {
       margin-left: 10px;
       background-color: #fff;
@@ -387,6 +435,7 @@ export default {
       flex: 7;
       flex-direction: column;
       padding: 20px;
+
       .text-title {
         color: #000;
         font-weight: bold;
@@ -395,10 +444,12 @@ export default {
       }
     }
   }
+
   .button {
     display: flex;
     flex: 1;
     margin-top: 5px;
+
     .component1 {
       margin-left: 10px;
       background-color: #fff;
@@ -407,6 +458,7 @@ export default {
       flex: 1;
       flex-direction: column;
       padding: 20px;
+
       .text-title {
         color: #000;
         font-weight: bold;
@@ -415,6 +467,7 @@ export default {
         margin-bottom: 20px;
       }
     }
+
     .component2 {
       margin-right: 10px;
       background-color: #fff;
@@ -423,6 +476,7 @@ export default {
       flex: 2;
       flex-direction: column;
       padding: 20px;
+
       .text-title {
         color: #000;
         font-weight: bold;
