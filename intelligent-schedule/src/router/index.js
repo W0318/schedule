@@ -86,6 +86,41 @@ const routes = [
                 path: "/mySchedule",
                 name: "MySchedule",
                 component: MySchedule,
+            },
+            {
+                path: "/personalizationrules/addRules",
+                name: "addRules",
+                component: () => import('../views/ShiftSchedule/AddRules'),
+            },
+            {
+                path: "/addStore/myStore",
+                name: "myStore",
+                component: () => import('../views/StoreManagement/MyStore'),
+            },
+            {
+                path: "/myStore/addStore",
+                name: "addStore",
+                component: () => import('../views/StoreManagement/AddStore'),
+            },
+            {
+                path: "/myStore/addEmployee",
+                name: "addEmployee",
+                component: () => import('../views/StoreManagement/AddEmployee'),
+            },
+            {
+                path: "/myStore/employee",
+                name: "employee",
+                component: () => import('../views/StoreManagement/Employee'),
+            },
+            {
+                path: "/scheduleSetting/addShiftManagement",
+                name: "addShiftManagement",
+                component: () => import('../views/ScheduleSetting/AddShiftManagement'),
+            },
+            {
+                path: "/scheduleSetting/shiftManagement",
+                name: "shiftManagement",
+                component: () => import('../views/ScheduleSetting/ShiftManagement'),
             }
         ]
     },
