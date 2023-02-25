@@ -8,21 +8,26 @@ import java.util.List;
 
 @Mapper
 public interface EmployeeMapper {
+    /**
+     * @author 吴佳丽
+     * <p>
+     * ///////////////////////////////////////////////////////////////////////////////////////////////
+     */
     @Select("SELECT * from employee WHERE storeId = #{storeId}")
     List<Employee> getAllEmployee(String storeId);
 
     @Select("SELECT * from employee where employeeId = #{employeeId}")
     Employee getEmployeeById(String employeeId);
 
+    @Select("SELECT * FROM employee WHERE employeeId in (${employeeIds})")
+    List<Employee> getEmployees(String employeeIds);
+
+
+    /**
+     * @author 朱凯
+     * <p>
+     * ///////////////////////////////////////////////////////////////////////////////////////////////
+     */
     @Select("select * from employee where employeeId=#{username} and password = #{password}")
     Employee login(String username, String password);
-
-    @Select("SELECT * FROM employee WHERE employeeId in (${employeeIds})")
-    List<Employee> getWeekEmployees(String employeeIds);
 }
-
-/**
- * 待解决bug记录
- * 1: 一个员工好像可以在多个店里工作
- * 2: 检查员工是否是选中店的员工
- * */

@@ -44,11 +44,11 @@ export const getEchartsData = () => {
 
 
 export const getWorkday = (employeeId) => {
-  return request.get('http://localhost:8082/scheduling/getWorkday/' + employeeId);
+  return request.get('http://localhost:8082/scheduling/getWorkDay/' + employeeId);
 }
 
 export const getDaywork = (employeeId, day) => {
-  return request.get('http://localhost:8082/scheduling/getDaywork/' + employeeId + '/' + day);
+  return request.get('http://localhost:8082/scheduling/getDayWork/' + employeeId + '/' + day);
 }
 
 export const getAllStore = () => {
@@ -59,6 +59,34 @@ export const getAllEmployee = (storeId) => {
   return request.get('http://localhost:8082/employee/all/' + storeId);
 }
 
-export const getAWeekwork = (Monday, Sunday) => {
-  return request.get('http://localhost:8082/scheduling/getAWeekwork/' + Monday + '/' + Sunday);
+export const getAWeekwork = (Monday, Sunday, storeId) => {
+  return request.get('http://localhost:8082/scheduling/getAWeekWork/' + Monday + '/' + Sunday + '/' + storeId);
+}
+
+export const getADaywork = (day, week, storeId) => {
+  return request.get('http://localhost:8082/scheduling/getADayWork/' + day + '/' + week + '/' + storeId);
+}
+
+export const deleteScheduling = (ids) => {
+  return request.get('http://localhost:8082/scheduling/deleteScheduling/' + ids);
+}
+
+export const deleteDaySchedule = (employeeIds, day, week, startIndex) => {
+  return request.post('http://localhost:8082/scheduling/deleteDaySchedule', {
+    employeeIds: employeeIds,
+    day: day,
+    week: week,
+    startIndex: startIndex
+  });
+}
+
+export const updateWeekData = (tableData, week) => {
+  return request.post('http://localhost:8082/scheduling/replaceScheduling', {
+    tableData: tableData,
+    week: week
+  });
+}
+
+export const replaceDaySchedule = (employeeIds, storeId, day, week) => {
+  return request.get('http://localhost:8082/scheduling/replaceDaySchedule/' + employeeIds + '/' + storeId + '/' + day + '/' + week);
 }

@@ -9,9 +9,10 @@ import java.sql.Time;
 @Data
 public class Scheduling implements Serializable {
     private int id;
+    private String storeId;
     private String employeeIds;
     private Date day;
-    private String periodName;
     private Time startTime;
     private Time endTime;
+    private String periodName;
 }

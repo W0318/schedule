@@ -17,6 +17,11 @@ public class StoreController  {
     @Autowired
     StoreService storeService;
 
+    /**
+     * @author 吴佳丽
+     * <p>
+     * ///////////////////////////////////////////////////////////////////////////////////////////////
+     */
     @GetMapping("/all")
     public List<Store> getAllStore() {
         return storeService.getAllStore();

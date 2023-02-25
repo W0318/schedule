@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <el-select v-model="storeValue" filterable class="store" size="large" @change="changeStore">
-            <el-option v-for="store in stores" :key="store.storeId" :label="store.storeName" :value="store.storeName" />
+            <el-option v-for="store in stores" :key="store.storeId" :label="store.storeName" :value="store.storeId" />
         </el-select>
 
         <div class="time">
@@ -84,7 +84,9 @@
                         </template>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody v-loading="loading" element-loading-text="Loading..." :element-loading-spinner="svg"
+                    element-loading-svg-view-box="-10, -10, 50, 50"
+                    element-loading-background="rgba(130, 130, 130, 0.7)">
                     <tr v-for='(time, i) in times' class="tr-out">
                         <td class="td-out" :class="'out-' + i">
                             {{ time[0] }}
@@ -93,7 +95,7 @@
                             <td v-if="time[1] !== -1 && j < 5" class="td-out td"
                                 :id="'td' + week_day + time[1] + '-' + j" :rowspan="weekdaySpans[time[1]]"
                                 @click="(drag === false && time[1] !== 6) ? handleClickTd(time[1], j) : null">
-                                <draggable v-if="time[1] !== 6" :model-value="tableData[time[1]][j]" group="people"
+                                <draggable v-if="time[1] !== 6" :model-value="tableData[time[1]][j][0]" group="people"
                                     animation="300" item-key="key" @start="startDrag($event, time[1], j)"
                                     @end="endDrag($event)" @dragenter="enterDrag($event, time[1], j)">
                                     <template #item="{ element, index }">
@@ -112,16 +114,17 @@
                                     </template>
                                 </draggable>
                                 <el-icon v-if="drag === true && time[1] !== 6" :size="22" class="icon-add"
-                                    @click="showAddView(tableData[time[1]][j], time[1], j)">
+                                    @click="showAddView(tableData[time[1]][j][0], time[1], j)">
                                     <CirclePlus />
                                 </el-icon>
                             </td>
                             <td v-else-if="time[2] !== -1 && j >= 5" class="td-out td"
                                 :id="'td' + week_day + time[2] + '-' + j" :rowspan="weekendSpans[time[2]]"
                                 @click="(drag === false && time[2] !== 0) ? handleClickTd(time[2], j) : null">
-                                <draggable v-if="time[2] !== 0" :model-value="tableData[time[2] - 1][j]" group="people"
-                                    animation="300" item-key="key" @start="startDrag($event, time[2] - 1, j)"
-                                    @end="endDrag($event)" @dragenter="enterDrag($event, time[2] - 1, j)">
+                                <draggable v-if="time[2] !== 0" :model-value="tableData[time[2] - 1][j][0]"
+                                    group="people" animation="300" item-key="key"
+                                    @start="startDrag($event, time[2] - 1, j)" @end="endDrag($event)"
+                                    @dragenter="enterDrag($event, time[2] - 1, j)">
                                     <template #item="{ element, index }">
                                         <div class="item" :class="(drag === true) ? 'move' : null"
                                             :title="element.employeeName + ' ' + element.position">
@@ -138,7 +141,7 @@
                                     </template>
                                 </draggable>
                                 <el-icon v-if="drag === true && time[2] !== 0" :size="22" class="icon-add"
-                                    @click="showAddView(tableData[time[2] - 1][j], time[2] - 1, j)">
+                                    @click="showAddView(tableData[time[2] - 1][j][0], time[2] - 1, j)">
                                     <CirclePlus />
                                 </el-icon>
                             </td>
@@ -148,7 +151,9 @@
             </table>
 
             <table v-if="week_day === 'day'" class="table-out">
-                <tbody>
+                <tbody v-loading="loading" element-loading-text="Loading..." :element-loading-spinner="svg"
+                    element-loading-svg-view-box="-10, -10, 50, 50"
+                    element-loading-background="rgba(130, 130, 130, 0.7)">
                     <tr v-for='(row, index1) in dayData' class="tr-out">
                         <td id="td-time" class="td-out" style="background-color: #e3e3e3;">
                             {{
@@ -157,14 +162,14 @@
                         </td>
                         <template v-for='(item, index2) in row'>
                             <td class="td-out td" :class="drag === true ? 'move-day' : null"
-                                :id="'td' + week_day + index1 + '-' + index2" :title="(JSON.stringify(item) !== '{}') ?
+                                :id="'td' + week_day + index1 + '-' + index2" :title="(item.employeeId !== null && JSON.stringify(item) !== '{}') ?
                                 (item.employeeName + ' ' + item.position) : null"
                                 @click="drag === false ? handleClickTd(index1, index2) : null"
                                 :draggable="drag === true ? true : false"
                                 @dragstart="handleDragStart($event, index1, index2)"
                                 @dragover.prevent="handleDragOver($event)"
                                 @dragenter="handleDragEnter($event, index1, index2)" @dragend="handleDragEnd($event)">
-                                <div v-if="JSON.stringify(item) !== '{}'">
+                                <div v-if="item.employeeId !== null && JSON.stringify(item) !== '{}'">
                                     <span v-if="viewValue === '全部查看'">
                                         {{ item.employeeName + ' ' + item.position }}
                                     </span>
@@ -193,7 +198,7 @@
             </el-form>
             <template #footer>
                 <span class="dialog-footer">
-                    <el-button @click="showDialog = false">完成</el-button>
+                    <el-button @click="showDialog = false">取消</el-button>
                     <el-button type="primary" @click="addEmplyee">
                         确定
                     </el-button>
@@ -209,77 +214,60 @@ import moment from "moment";
 import draggable from 'vuedraggable';
 import { Delete, Edit, Postcard } from '@element-plus/icons-vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { getAllStore, getAllEmployee, getAWeekwork } from '@/api';
+import {
+    getAllStore,
+    getAllEmployee,
+    getAWeekwork,
+    getADaywork,
+    deleteScheduling,
+    updateWeekData,
+    deleteDaySchedule,
+    replaceDaySchedule
+} from '@/api';
 
 /**
- * 初始化获取数据库数据：stores、startTime、endTime、data、employees
+ * 初始化获取数据库数据：stores、data、employees
  */
 // 门店切换
 const stores = ref([]);
 const storeValue = ref();
-var currentStoreId;
 //所有员工数据
 const employees = ref([]);
 const employeesAvail = ref([]);
+//表格单元格数据
+var data = [];
+const tableData = ref([]);
+const dayData = ref([]);
+const weekIndex = [0, 1, 1, 1, 1, 1, 0];
+//初始化获取数据库
 getAllStore().then((datas) => {
     stores.value = datas.data;
-    storeValue.value = stores.value[0].storeName;
-    currentStoreId = stores.value[0].storeId;
+    storeValue.value = stores.value[0].storeId;
 
     getAllEmployee(stores.value[0].storeId).then((datas) => {
         employees.value = datas.data;
         employeesAvail.value = [...employees.value];
     });
-});
 
-//表格单元格数据
-var id = 0;
-var data = [
-    [
-        [], [], [], [
-            { key: id++, employeeId: 'employee1', employeeName: 'www', position: '门店经理' },
-            { key: id++, employeeId: 'employee2', employeeName: 'aaa', position: '副经理' },
-            { key: id++, employeeId: 'employee3', employeeName: 'zzz', position: '小组长' }
-        ], [], []
-    ],
-    [
-        [
-            { key: id++, employeeId: 'employee4', employeeName: 'yyy', position: '门店经理' },
-            { key: id++, employeeId: 'employee5', employeeName: 'bbb', position: '店员' }
-        ],
-        [], [], [], [], []
-    ],
-    [[], [], [], [], [], []],
-    [[], [], [], [], [], []],
-    [[], [], [], [], [], []],
-    [
-        [
-            { key: id++, employeeId: 'employee6', employeeName: 'zzz', position: '门店经理' }
-        ],
-        [], [], [], [], []
-    ],
-    [[], [], [], [], [], []]
-];
-const tableData = ref([]);
-getAWeekwork(moment().startOf('isoWeek').format('YYYY-MM-DD'), moment().endOf('isoWeek').format('YYYY-MM-DD'))
-    .then((datas) => {
-        data = datas.data;
-        tableData.value = data[0].map(function (col, i) {
-            return data.map(function (row) {
-                return row[i];
-            })
+    loading.value = true;
+    getAWeekwork(moment().startOf('isoWeek').format('YYYY-MM-DD'), moment().endOf('isoWeek').format('YYYY-MM-DD'), storeValue.value)
+        .then((datas) => {
+            data = datas.data;
+            tableData.value = data[0].map(function (col, i) {
+                return data.map(function (row) {
+                    return row[i];
+                })
+            });
+            loading.value = false;
         });
-    });
-const dayData = ref([
-    [{}, {}, {}, {}, {}, {}, {}, {}], [{}, {}, {}, {}, {}, {}, {}, {}], [{}, {}, {}, {}, {}, {}, {}, {}],
-    [
-        { key: id++, employeeId: 'employee1', employeeName: 'www', position: '门店经理' },
-        { key: id++, employeeId: 'employee2', employeeName: 'aaa', position: '副经理' },
-        { key: id++, employeeId: 'employee3', employeeName: 'zzz', position: '小组长' },
-        {}, {}, {}, {}, {}
-    ], [{}, {}, {}, {}, {}, {}, {}, {}], [{}, {}, {}, {}, {}, {}, {}, {}]
-]);
 
+    loading.value = true;
+    getADaywork(moment().format('YYYY-MM-DD'), weekIndex[moment().day()], storeValue.value)
+        .then((datas) => {
+            dayData.value = datas.data;
+            loading.value = false;
+        });
+});
 
 
 
@@ -374,6 +362,19 @@ const tabel = ref({
     week7: labels.value[6],
 });
 
+//加载数据
+const loading = ref(true)
+const svg = `
+        <path class="path" d="
+          M 30 15
+          L 28 17
+          M 25.61 25.61
+          A 15 15, 0, 0, 1, 15 30
+          A 15 15, 0, 1, 1, 27.99 7.5
+          L 15 15
+        " style="stroke-width: 4px; fill: rgba(0, 0, 0, 0)"/>
+      `
+
 //是否可拖拽drag，拖拽起点dragging，拖拽终点ending
 const drag = ref(false);
 const ending = ref(null);
@@ -393,14 +394,11 @@ var addIndex = null;
  */
 //修改门店
 const changeStore = () => {
-    //从数据库中获取数据，更新data、时间段
-
-
-    //按周查看|按日查看 的切换
-    week_day.value = 'week';
-
     //周切换
     initWeeks();
+
+    //日切换
+    initDays();
 
     initVariable();
 }
@@ -462,7 +460,7 @@ const chooseOption = (button, index) => {
                 week7: labels.value[6],
             }
 
-            //从数据库中获取数据，更新data
+            updateTableData();
         }
         else {
             curDay.value = button;
@@ -477,7 +475,7 @@ const chooseOption = (button, index) => {
             optionIndex = 0;
             lastIndex = index;
 
-            //从数据库中获取数据，更新dayData
+            updateDayDate();
         }
 
         initVariable();
@@ -528,14 +526,10 @@ const backToCurrent = () => {
     if (week_day.value === 'week') {
         //周切换
         initWeeks();
-
-        //从数据库中获取数据，更新data
     }
     else {
         //日切换
         initDays();
-
-        //从数据库中获取数据，更新dayData
     }
 
     initVariable();
@@ -560,8 +554,8 @@ const endDrag = (e) => {
     }
 
     var flag = false;
-    tableData.value[ending.value[0]][ending.value[1]].map((value) => {
-        if (value.employeeId === tableData.value[dragging.value[0]][dragging.value[1]][e.oldIndex].employeeId) {
+    tableData.value[ending.value[0]][ending.value[1]][0].map((value) => {
+        if (value.employeeId === tableData.value[dragging.value[0]][dragging.value[1]][0][e.oldIndex].employeeId) {
             flag = true;
             return;
         }
@@ -574,20 +568,20 @@ const endDrag = (e) => {
     var newData = [...tableData.value];
 
     if (dragging.value[0] === ending.value[0]) {
-        let item = { ...newData[dragging.value[0]] };
-        item[ending.value[1]].push(item[dragging.value[1]][e.oldIndex]);
-        item[dragging.value[1]].splice(e.oldIndex, 1);
+        let item = [...newData[dragging.value[0]]];
+        item[ending.value[1]][0].push(item[dragging.value[1]][0][e.oldIndex]);
+        item[dragging.value[1]][0].splice(e.oldIndex, 1);
 
-        newData[dragging.value[0]] = { ...item };
+        newData[dragging.value[0]] = [...item];
     }
     else {
-        let item1 = { ...newData[dragging.value[0]] };
-        let item2 = { ...newData[ending.value[0]] };
-        item2[ending.value[1]].push(item1[dragging.value[1]][e.oldIndex]);
-        item1[dragging.value[1]].splice(e.oldIndex, 1);
+        let item1 = [...newData[dragging.value[0]]];
+        let item2 = [...newData[ending.value[0]]];
+        item2[ending.value[1]][0].push(item1[dragging.value[1]][0][e.oldIndex]);
+        item1[dragging.value[1]][0].splice(e.oldIndex, 1);
 
-        newData[dragging.value[0]] = { ...item1 };
-        newData[ending.value[0]] = { ...item2 };
+        newData[dragging.value[0]] = [...item1];
+        newData[ending.value[0]] = [...item2];
     }
 
     tableData.value = [...newData];
@@ -633,26 +627,55 @@ const handleDelete = () => {
         )
             .then(() => {
                 if (week_day.value === 'week') {
-                    let newData = [...tableData.value];
+                    var newData = [...tableData.value];
+                    var deleteIds = [];
                     arrTd.map(value => {
-                        if (value[1] < 5)
+                        if (value[1] < 5) {
+                            if (tableData.value[value[0]][value[1]][1] !== null)
+                                deleteIds.push(tableData.value[value[0]][value[1]][1]);
                             newData[value[0]][value[1]] = [];
-                        else
+                        }
+                        else {
+                            if (tableData.value[value[0] - 1][value[1]][1] !== null)
+                                deleteIds.push(tableData.value[value[0] - 1][value[1]][1]);
                             newData[value[0] - 1][value[1]] = [];
+                        }
                         let td = document.getElementById('td' + week_day.value + value[0] + '-' + value[1]);
                         // console.log(td)
                         td.style.backgroundColor = '';
                     })
                     tableData.value = [...newData];
+                    deleteScheduling(deleteIds);
                 }
                 else {
-                    let newDayData = [...dayData.value];
-                    arrTd.map(value => {
+                    var newDayData = [...dayData.value];
+                    var updateIndexs = [];
+                    var updateEmployeeIds = "";
+                    arrTd.map((value, index) => {
+                        if (JSON.stringify(newDayData[value[0]][value[1]]) !== '{}'
+                            && newDayData[value[0]][value[1]].employeeId !== null)
+                            updateIndexs.push(value[0]);
                         newDayData[value[0]][value[1]] = {};
                         let td = document.getElementById('td' + week_day.value + value[0] + '-' + value[1]);
                         td.style.backgroundColor = '';
                     })
                     dayData.value = [...newDayData];
+
+                    updateIndexs = [...new Set(updateIndexs)];
+                    updateIndexs.map((value, index) => {
+                        let employeeIds = "";
+                        newDayData[value].map(v => {
+                            if (v.employeeId !== null && JSON.stringify(v) !== '{}' && employeeIds === "")
+                                employeeIds += v.employeeId;
+                            else if (v.employeeId !== null && JSON.stringify(v) !== '{}')
+                                employeeIds += "," + v.employeeId;
+                        });
+                        if (index === 0)
+                            updateEmployeeIds += employeeIds;
+                        else
+                            updateEmployeeIds += "=" + employeeIds;
+                    });
+                    deleteDaySchedule(updateEmployeeIds, current.value.format('YYYY-MM-DD'), weekIndex[current.value.day()], updateIndexs.join(','));
                 }
 
                 arrTd.splice(0, arrTd.length);
@@ -679,6 +702,50 @@ const handleEdit = () => {
                 tds[i].style.backgroundColor = '';
         }
     }
+    else {
+        if (week_day.value === 'week') {
+            var tb = tableData.value.map(row => {
+                row = row.map(item => {
+                    item = item.map((two, index) => {
+                        if (index === 0) {
+                            var tb1 = [];
+                            two.map(em => {
+                                tb1.push(JSON.stringify(em));
+                            });
+                            return tb1.join('>');
+                        }
+                        else return two;
+                    });
+                    return item.join('+');
+                });
+                return row.join('-');
+            });
+            var week = current.value.startOf('W').format("YYYY-MM-DD");
+            for (var i = 1; i < 7; i++)
+                week += "," + current.value.startOf('W').add(i, 'days').format("YYYY-MM-DD");
+            updateWeekData(tb.join('<'), week);
+        }
+        else {
+            var updateEmployeeIds = "";
+            dayData.value.map((value, index) => {
+                var employeeIds = "";
+                var flag = 0;
+                value.map((v, i) => {
+                    if (JSON.stringify(v) !== '{}' && v.employeeId !== null && flag === 0) {
+                        employeeIds += v.employeeId;
+                        flag = 1;
+                    }
+                    else if (JSON.stringify(v) !== '{}' && v.employeeId !== null)
+                        employeeIds += "," + v.employeeId;
+                });
+                if (index === 0)
+                    updateEmployeeIds += employeeIds;
+                else
+                    updateEmployeeIds += "=" + employeeIds;
+            });
+            replaceDaySchedule(updateEmployeeIds, storeValue.value, current.value.format('YYYY-MM-DD'), current.value.day());
+        }
+    }
 
     drag.value = (drag.value === true ? false : true);
     edit.value = (edit.value === '编辑' ? '完成' : '编辑');
@@ -690,18 +757,38 @@ const showAddView = (added, index1, index2) => {
     addIndex = [index1, index2];
 
     var newEAvil = [...employees.value];
-    newEAvil = newEAvil.filter(item => {
-        var isInclude = false;
+    if (week_day.value === 'week') {
+        newEAvil = newEAvil.filter(item => {
+            var isInclude = false;
 
-        added.map((value) => {
-            if (value.employeeId === item.employeeId) {
-                isInclude = true;
-                return;
-            }
-        })
-        // console.log(isInclude);
-        return !isInclude;
-    });
+            added.map((value) => {
+                if (value.employeeId === item.employeeId) {
+                    isInclude = true;
+                    return;
+                }
+            })
+            // console.log(isInclude);
+            return !isInclude;
+        });
+    }
+    else {
+        newEAvil = newEAvil.filter(item => {
+            var isInclude = false;
+
+            console.log(dayData.value[index1])
+            dayData.value[index1].map(value => {
+                console.log(value)
+                if (JSON.stringify(value) !== '{}' && value.employeeId !== null) {
+                    if (value.employeeId === item.employeeId) {
+                        isInclude = true;
+                        return;
+                    }
+                }
+            });
+            // console.log(isInclude);
+            return !isInclude;
+        });
+    }
     employeesAvail.value = [...newEAvil];
     console.log(employeesAvail)
 
@@ -710,7 +797,7 @@ const showAddView = (added, index1, index2) => {
 const addEmplyee = () => {
     if (week_day.value === 'week') {
         let newData = [...tableData.value];
-        newData[addIndex[0]][addIndex[1]].push(employeeValue.value);
+        newData[addIndex[0]][addIndex[1]][0].push(employeeValue.value);
         console.log(newData)
         tableData.value = [...newData];
     }
@@ -727,10 +814,10 @@ const deleteItem = (index1, index2, index) => {
     // console.log(index1, index2, index);
 
     let newData = [...tableData.value];
-    let item = { ...newData[index1] };
+    let item = [...newData[index1]];
 
-    item[index2].splice(index, 1);
-    newData[index1] = { ...item };
+    item[index2][0].splice(index, 1);
+    newData[index1] = [...item];
 
     tableData.value = [...newData];
 }
@@ -749,24 +836,49 @@ const handleDragEnd = (e) => {
         return;
 
     var newData = [...dayData.value];
+    var flag = false;
+    var start = newData[dragging.value[0]][dragging.value[1]];
+    var end = newData[ending.value[0]][ending.value[1]];
+    dayData.value[dragging.value[0]].map(value => {
+        if (flag === true) return;
+        if (JSON.stringify(value) !== '{}' && value.employeeId !== null) {
+            if (JSON.stringify(end) !== '{}' && end.employeeId !== null && value.employeeId === end.employeeId) {
+                flag = true;
+                return;
+            }
+        }
+    });
+    dayData.value[ending.value[0]].map(value => {
+        if (flag === true) return;
+        if (JSON.stringify(value) !== '{}' && value.employeeId !== null) {
+            if (JSON.stringify(start) !== '{}' && start.employeeId !== null && value.employeeId === start.employeeId) {
+                flag = true;
+                return;
+            }
+        }
+    });
+    if (flag === true) {
+        message('不能给同一个员工分配同一时间段的工作');
+        return;
+    }
 
     if (dragging.value[0] === ending.value[0]) {
-        let item = { ...newData[dragging.value[0]] };
+        let item = [...newData[dragging.value[0]]];
         let temp = item[dragging.value[1]];
         item[dragging.value[1]] = item[ending.value[1]];
         item[ending.value[1]] = temp;
 
-        newData[dragging.value[0]] = { ...item };
+        newData[dragging.value[0]] = [...item];
     }
     else {
-        let item1 = { ...newData[dragging.value[0]] };
-        let item2 = { ...newData[ending.value[0]] };
+        let item1 = [...newData[dragging.value[0]]];
+        let item2 = [...newData[ending.value[0]]];
         let temp = item1[dragging.value[1]];
         item1[dragging.value[1]] = item2[ending.value[1]];
         item2[ending.value[1]] = temp;
 
-        newData[dragging.value[0]] = { ...item1 };
-        newData[ending.value[0]] = { ...item2 };
+        newData[dragging.value[0]] = [...item1];
+        newData[ending.value[0]] = [...item2];
     }
 
     dayData.value = [...newData];
@@ -825,6 +937,8 @@ const initWeeks = () => {
         week6: labels.value[5],
         week7: labels.value[6],
     };
+
+    updateTableData();
 }
 const initDays = () => {
     day1.value = moment().format('M月D日');
@@ -834,6 +948,7 @@ const initDays = () => {
     curDay.value = day1.value;
     leftOption = moment();
     rightOption = moment().add(2, 'days');
+    updateDayDate();
 }
 const initVariable = () => {
     //全部查看|按岗位分组|按员工分组 的切换
@@ -862,6 +977,28 @@ const initVariable = () => {
         if (tds[i].id !== 'td-time')
             tds[i].style.backgroundColor = '';
     }
+}
+const updateTableData = () => {
+    loading.value = true;
+    getAWeekwork(current.value.startOf('isoWeek').format('YYYY-MM-DD'), current.value.endOf('isoWeek').format('YYYY-MM-DD'), storeValue.value)
+        .then((datas) => {
+            data = datas.data;
+            tableData.value = data[0].map(function (col, i) {
+                return data.map(function (row) {
+                    return row[i];
+                })
+            });
+            loading.value = false;
+        });
+}
+const updateDayDate = () => {
+    console.log(current.value)
+    loading.value = true;
+    getADaywork(current.value.format('YYYY-MM-DD'), weekIndex[current.value.day()], storeValue.value)
+        .then((datas) => {
+            dayData.value = datas.data;
+            loading.value = false;
+        });
 }
 </script>
 

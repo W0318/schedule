@@ -10,6 +10,11 @@ import java.util.List;
 @Mapper
 @Repository
 public interface StoreMapper {
+    /**
+     * @author 吴佳丽
+     * <p>
+     * ///////////////////////////////////////////////////////////////////////////////////////////////
+     */
     @Select("SELECT * FROM store")
     List<Store> getAllStore();
 
