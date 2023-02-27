@@ -4,20 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="da0541f5-4c6e-40d5-b328-c67ceb1c0852" name="变更" comment="">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/intelligent-schedule/src/api/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/intelligent-schedule/src/api/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/intelligent-schedule/src/views/ShiftSchedule.vue" beforeDir="false" afterPath="$PROJECT_DIR$/intelligent-schedule/src/views/ShiftSchedule.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/EmployeeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/EmployeeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/StoreController.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/StoreController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/entity/Scheduling.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/entity/Scheduling.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/mapper/EmployeeMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/mapper/EmployeeMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/mapper/SchedulingMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/mapper/SchedulingMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/mapper/StoreMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/mapper/StoreMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/service/EmployeeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/service/EmployeeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/service/SchedulingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/service/SchedulingService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/service/StoreService.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/service/StoreService.java" afterDir="false" />
-    </list>
+    <list default="true" id="da0541f5-4c6e-40d5-b328-c67ceb1c0852" name="变更" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -67,6 +54,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "deletionFromPopupRequiresConfirmation": "false",
+    "last_opened_file_path": "C:/software/nodejs/node.exe",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -82,7 +70,7 @@
     ]
   }
 }]]></component>
-  <component name="RunManager" selected="Spring Boot.SpringbootApplication">
+  <component name="RunManager">
     <configuration name="SpringbootApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="spring-vue" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.schedule.SpringbootApplication" />
@@ -90,20 +78,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="serve" type="js.build_tools.npm" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/intelligent-schedule/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="serve" />
-      </scripts>
-      <node-interpreter value="D:/nodejs/node" />
-      <envs />
-      <method v="2" />
-    </configuration>
-    <list>
-      <item itemvalue="npm.serve" />
-      <item itemvalue="Spring Boot.SpringbootApplication" />
-    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="SpringBeansView">
