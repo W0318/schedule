@@ -42,6 +42,7 @@ public class EmployeeController {
         Employee user = employeeService.login(map.get("username").toString(), map.get("password").toString());
         if (user != null) {
             int root = user.getRoot();
+
             return root;
         } else {
             return 0;

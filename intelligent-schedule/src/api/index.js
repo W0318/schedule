@@ -27,6 +27,10 @@ export const getLogin = (data) => {
   // return request.post('/permission/getMenu',data)
 }
 
+export const getStore=()=>{
+  return request.get('http://localhost:8082/store/queryStoreList')
+}
+
 export const getMenu = (data) => {
   console.log(data)
   console.log('拦截到请求')
@@ -37,15 +41,7 @@ export const getEchartsData = () => {
   console.log('拦截到请求')
   return request.get('/home/getStatisticalData')
 }
-export default {
-  getCountData(params) {
-    return request({
-      url: '/home/getCountData',
-      method: 'get',
-      mock: true,
-    })
-  }
-}
+
 
 export const getWorkday = (employeeId) => {
   return request.get('http://localhost:8082/scheduling/getWorkDay/' + employeeId);

@@ -2,8 +2,10 @@ package com.schedule.entity;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class Employee {
+public class Employee implements Serializable {
     private String employeeId;
     private String storeId;
     private String employeeName;

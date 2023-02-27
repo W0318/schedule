@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RuleService {
+public class  RuleService {
     @Autowired
     RuleMapper ruleMapper;
 }
