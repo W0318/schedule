@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-<<<<<<< HEAD
-    <list default="true" id="64ef7ef7-6b43-4dac-bf11-032f2018a720" name="Changes" comment="" />
-=======
+
     <list default="true" id="da0541f5-4c6e-40d5-b328-c67ceb1c0852" name="变更" comment="">
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/intelligent-schedule/src/api/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/intelligent-schedule/src/api/index.js" afterDir="false" />
