@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-
     <list default="true" id="da0541f5-4c6e-40d5-b328-c67ceb1c0852" name="变更" comment="">
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/intelligent-schedule/src/api/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/intelligent-schedule/src/api/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/intelligent-schedule/src/views/ShiftSchedule.vue" beforeDir="false" afterPath="$PROJECT_DIR$/intelligent-schedule/src/views/ShiftSchedule.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/EmployeeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/EmployeeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/SchedulingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/SchedulingController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/StoreController.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/StoreController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/entity/Scheduling.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/entity/Scheduling.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/mapper/EmployeeMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/mapper/EmployeeMapper.java" afterDir="false" />
@@ -20,25 +17,12 @@
       <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/service/EmployeeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/service/EmployeeService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/service/SchedulingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/service/SchedulingService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/service/StoreService.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/service/StoreService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/target/classes/com/schedule/controller/EmployeeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/target/classes/com/schedule/controller/EmployeeController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/target/classes/com/schedule/mapper/EmployeeMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/target/classes/com/schedule/mapper/EmployeeMapper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/target/classes/com/schedule/service/EmployeeService.class" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/target/classes/com/schedule/service/EmployeeService.class" afterDir="false" />
     </list>
->>>>>>> 21717da685dee44e4034ab5875a0b03fc83ae0fc
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-<<<<<<< HEAD
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="JsBowerSettings">
-    <bower-package value="" />
-    <bower.json value="" />
-  </component>
-=======
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -50,7 +34,6 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
->>>>>>> 21717da685dee44e4034ab5875a0b03fc83ae0fc
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -61,72 +44,42 @@
       </MavenGeneralSettings>
     </option>
   </component>
-<<<<<<< HEAD
-  <component name="ProjectId" id="2MD5HTbvjEna7cpumyPqDQldjEy" />
-=======
   <component name="ProjectId" id="2LaqAZwCYNwJCh1iGirqwhZVE1D" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
->>>>>>> 21717da685dee44e4034ab5875a0b03fc83ae0fc
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-<<<<<<< HEAD
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
     "RequestMappingsPanelOrder0": "0",
     "RequestMappingsPanelOrder1": "1",
     "RequestMappingsPanelWidth0": "75",
     "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Environment",
+    "deletionFromPopupRequiresConfirmation": "false",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "yarn",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
+    "settings.editor.selected.configurable": "project.propCompiler",
     "spring.configuration.checksum": "7ffdcca97a6161b581790219543f7dd3",
     "vue.rearranger.settings.migration": "true"
-  }
-}]]></component>
-=======
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;deletionFromPopupRequiresConfirmation&quot;: &quot;false&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
-    &quot;spring.configuration.checksum&quot;: &quot;7ffdcca97a6161b581790219543f7dd3&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mysql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
     ]
   }
-}</component>
->>>>>>> 21717da685dee44e4034ab5875a0b03fc83ae0fc
-  <component name="RunManager" selected="npm.serve">
+}]]></component>
+  <component name="RunManager" selected="Spring Boot.SpringbootApplication">
     <configuration name="SpringbootApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="spring-vue" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.schedule.SpringbootApplication" />
@@ -140,12 +93,7 @@
       <scripts>
         <script value="serve" />
       </scripts>
-<<<<<<< HEAD
-      <node-interpreter value="project" />
-      <package-manager value="npm" />
-=======
       <node-interpreter value="D:/nodejs/node" />
->>>>>>> 21717da685dee44e4034ab5875a0b03fc83ae0fc
       <envs />
       <method v="2" />
     </configuration>
@@ -154,19 +102,6 @@
       <item itemvalue="Spring Boot.SpringbootApplication" />
     </list>
   </component>
-<<<<<<< HEAD
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
-  <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="64ef7ef7-6b43-4dac-bf11-032f2018a720" name="Changes" comment="" />
-      <created>1677289224963</created>
-      <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
-      <updated>1677289224963</updated>
-      <workItem from="1677289228214" duration="1013000" />
-      <workItem from="1677460240594" duration="508000" />
-      <workItem from="1677460759154" duration="353000" />
-=======
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="SpringBeansView">
     <option name="beanDetailsProportion" value="0.3" />
@@ -190,31 +125,17 @@
       <workItem from="1676879675544" duration="3000" />
       <workItem from="1676964584969" duration="623000" />
       <workItem from="1677296129836" duration="2063000" />
->>>>>>> 21717da685dee44e4034ab5875a0b03fc83ae0fc
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
-<<<<<<< HEAD
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
     <select />
-=======
-  <component name="VcsManagerConfiguration">
-    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
->>>>>>> 21717da685dee44e4034ab5875a0b03fc83ae0fc
   </component>
 </project>
