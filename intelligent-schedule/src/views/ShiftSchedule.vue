@@ -75,8 +75,8 @@ import moment from "moment";
 import { Delete, Edit, Postcard } from '@element-plus/icons-vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import SlideSelection from '../components/SlideSelection.vue'
-import weekDrag from '../components/weekDrag.vue'
-import dayDrag from '../components/dayDrag.vue'
+import weekDrag from '../components/WeekDrag.vue'
+import dayDrag from '../components/DayDrag.vue'
 import {
     getAllStore,
     getAllEmployee,
