@@ -9,7 +9,7 @@
       <el-input type="password" v-model="form.password" placeholder="请输入密码" />
     </el-form-item>
     <el-form-item>
-      <el-button @click="submit" style="margin-left :30px ;margin-top:10px" type="primary">登录</el-button>
+      <el-button @click="submit" style="margin-left :170px ;margin-top:10px" type="primary">登录</el-button>
     </el-form-item>
   </el-form>
 </template>
