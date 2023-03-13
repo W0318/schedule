@@ -6,9 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="da0541f5-4c6e-40d5-b328-c67ceb1c0852" name="变更" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/intelligent-schedule/src/views/Login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/intelligent-schedule/src/views/Login.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/target/classes/com/schedule/controller/EmployeeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/target/classes/com/schedule/controller/EmployeeController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/target/classes/com/schedule/mapper/EmployeeMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/target/classes/com/schedule/mapper/EmployeeMapper.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,7 +68,7 @@
     ]
   }
 }</component>
-  <component name="RunManager" selected="Spring Boot.SpringbootApplication">
+  <component name="RunManager" selected="npm.serve">
     <configuration name="SpringbootApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="spring-vue" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.schedule.SpringbootApplication" />
@@ -121,6 +118,7 @@
       <workItem from="1677378337683" duration="584000" />
       <workItem from="1677669252807" duration="669000" />
       <workItem from="1678066366087" duration="1914000" />
+      <workItem from="1678431815528" duration="6008000" />
     </task>
     <servers />
   </component>
