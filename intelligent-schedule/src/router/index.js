@@ -63,11 +63,6 @@ const routes = [
                 component: User,
             },
             {
-                path: "/shiftschedule",
-                name: "ShiftSchedule",
-                component: ShiftSchedule,
-            },
-            {
                 path: "/shiftmanagement",
                 name: "ShiftManagement",
                 component: ShiftManagement,
