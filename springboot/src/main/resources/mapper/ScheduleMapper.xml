@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.schedule.mapper.ScheduleMapper">
+    <cache/>
+    <select id="queryEmployeeByStoreId" resultType="com.schedule.entity.Employee" parameterType="java.lang.String">
+        select * from store s,employee e where s.storeId = e.storeId and s.storeId = #{storeId}
+    </select>
+</mapper>

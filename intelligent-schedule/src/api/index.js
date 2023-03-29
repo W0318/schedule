@@ -37,6 +37,12 @@ export const getMenu = (data) => {
   return request.post('/permission/getMenu', data)
 }
 
+export const postStoreId = (storeId) => {
+  return request.post('http://localhost:8082/store/getStoreEmployee', {
+    storeId: storeId,
+  });
+}
+
 export const getEchartsData = () => {
   console.log('拦截到请求')
   return request.get('/home/getStatisticalData')

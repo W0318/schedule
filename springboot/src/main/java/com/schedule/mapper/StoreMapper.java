@@ -1,5 +1,6 @@
 package com.schedule.mapper;
 
+import com.schedule.entity.Employee;
 import com.schedule.entity.Store;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -20,4 +21,5 @@ public interface StoreMapper {
 
     List<Store> queryStoreList();
     Store queryStoreById(int id);
+    List<Employee> getStoreEmployee(Store store);
 }

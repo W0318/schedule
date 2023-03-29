@@ -10,4 +10,7 @@
         <select id="queryStoreById" resultType="com.schedule.entity.Store">
                 select * from store where id = #{storeId}
         </select>
+        <select id="getStoreEmployee" resultType="com.schedule.entity.Employee" parameterType="com.schedule.entity.Store">
+                select * from store s,employee e where s.storeId = e.storeId and s.storeId = #{storeId}
+        </select>
 </mapper>

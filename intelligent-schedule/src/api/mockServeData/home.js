@@ -4,12 +4,12 @@ import Mock from "mockjs";
 let List = [];
 export default {
   getStatisticalData: () => {
-    for (let i = 0; i < 14; i++) {
+    for (let i = 0; i < 30; i++) {
       List.push(
         Mock.mock({
-          昨天客流数据: Mock.Random.float(5, 60, 0, 0),
-          今日客流数据: Mock.Random.float(5, 60, 0, 0),
-          明日客流数据: Mock.Random.float(5, 60, 0, 0),
+          历史客流量数据: Mock.Random.float(5, 60, 0, 0),
+          // 今日客流数据: Mock.Random.float(5, 60, 0, 0),
+          // 明日客流数据: Mock.Random.float(5, 60, 0, 0),
         })
       );
     }

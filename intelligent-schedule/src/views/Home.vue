@@ -5,7 +5,7 @@
         <el-clo>
           <text class="text-title">排班统计</text>
           <div class="select-border">
-            <text class="text-name">门 店 名 称 :</text>
+            <text class="text-name">门店名称:</text>
 
             <el-select v-model="options.value" class="select" placeholder="浙江分公司"  size="large">
               <el-option
@@ -44,7 +44,7 @@
     </el-row>
     <el-row class="button">
       <el-card class="component2" :body-style="{padding:0 }">
-        <text class="text-title">员工安排统计</text>
+        <text class="text-title">历史客流量</text>
         <!-- 折线图 -->
         <div ref="echarts1" style="height:480px"></div>
       </el-card>
@@ -62,9 +62,41 @@
 import {
   getData,
   getStore,
+  postStoreId,
 } from "@/api";
 import * as echarts from "echarts";
 // import {ref} from "vue";
+
+
+var arr = [];//用来存放最近七天的时间
+
+function getBeforeDate(n) {
+  var n = n;
+  console.log(n);//
+  var d = new Date();
+  var year = d.getFullYear();
+  var mon = d.getMonth() + 1;
+  var day = d.getDate();
+  if(day <= n) {
+    if(mon > 1) {
+      mon = mon - 1;
+    } else {
+      year = year - 1;
+      mon = 12;
+    }
+  }
+  d.setDate(d.getDate() + n); //很重要，+n取得是前一天的时间
+  year = d.getFullYear();
+  mon = d.getMonth() + 1;
+  day = d.getDate();
+  var s = (mon < 10 ? ('0' + mon) : mon) + "-" + (day < 10 ? ('0' + day) : day);
+  return s;
+}
+
+for(var i = 0; i > -30; i--) {
+  arr.push(getBeforeDate(i));
+
+}
 
 
 // let value;
@@ -120,8 +152,9 @@ export default {
      changeInfo(e){
       this.newStoreId=e
       // this.data.newStoreId=e
-      //  console.log(this.newStoreId)
-      console.log(e)
+      console.log(e.storeId)
+       postStoreId(e.storeId);
+
        this.countData[0].value=e.manger
        this.countData[2].value=e.address
        this.countData[1].value=e.workers
@@ -152,12 +185,13 @@ export default {
         containLabel: true
       };
       // const xAxis = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"];
-      const legendData = ["昨天客流数据", "今日客流数据", "明日客流数据"];
+      const legendData = ["历史客流量数据"];
       const xAxisData = {
         type: "category",
         boundaryGap: false,
-        data: ["8:00", "8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30",
-          "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00"]
+        data: arr.reverse(),
+          //   ["8:00", "8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30",
+          // "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00"]
       };
       echarts1Option.legend = {
         data: legendData
@@ -226,41 +260,42 @@ export default {
           {
             type: "category",
             boundaryGap: true,
-            data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
-            // ['8:00-10:00','10:00-12:00','12:00-14:00','14:00-16:00','16:00-18:00','18:00-20:00']
+            data: ["9:00", "9:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30",
+              "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00"]
+                // ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
           }
         ],
         yAxis: [
           {
             type: "value",
             scale: true,
-            name: "Price",
-            max: 250,
+            name: "预计时段所需人数",
+            max: 10,
             min: 0,
             boundaryGap: [0.2, 0.2]
           },
           {
             type: "value",
             scale: true,
-            name: "Order",
-            max: 200,
+            name: "昨日客流数据",
+            max: 40,
             min: 0,
             boundaryGap: [0.2, 0.2]
           }
         ],
         series: [
           {
-            name: "本周每日值班人数",
+            name: "预计时段所需人数",
             type: "bar",
             // xAxisIndex: 1,
-            yAxisIndex: 1,
-            data: [100, 140, 230, 130, 100, 90, 130]
+            yAxisIndex: 0,
+            data: [0.0, 0.3, 1.5, 2.9, 3.5, 3.5, 4.6, 6.0, 7.1, 5.7, 6.2, 7.6, 7.7, 6.9, 5.8, 4.5, 4.0, 3.5, 3.1, 1.9, 1.5, 0.6, 0.3, 0.3]
           },
           {
-            name: "上周每日值班人数",
+            name: "昨日客流数据",
             type: "line",
             yAxisIndex: 1,
-            data: [150, 100, 200, 140, 130, 110, 130]
+            data: [0.0, 1.3, 5.7, 11.1, 13.4, 13.3, 17.3, 22.8, 26.9, 21.6, 23.4, 28.7, 29.3, 26.4, 22.1, 17.2, 15.2, 13.3, 11.6, 7.2, 5.6, 2.1, 1.3, 1.0]
           }
         ]
       };
@@ -281,45 +316,34 @@ export default {
         },
         series: [
           {
-            name: "Access From",
+            name: "偏好",
             type: "pie",
             radius: ["45%", "60%"],
-            labelLine: {
-              length: 30
-            },
-            label: {
-              // {a|{a}}{abg|}\n{hr|}\n
-              formatter: "{b|{b}：}{c}  {per|{d}%}  ",
-              backgroundColor: "#F6F8FC",
-              borderColor: "#8C8D8E",
-              borderWidth: 1,
-              borderRadius: 4,
-              rich: {
-                // a: {
-                //   color: "#6E7079",
-                //   lineHeight: 22,
-                //   align: "center"
-                // },
-                // hr: {
-                //   borderColor: "#8C8D8E",
-                //   width: "100%",
-                //   borderWidth: 1,
-                //   height: 0
-                // },
-                b: {
-                  color: "#4C5058",
-                  fontSize: 14,
-                  fontWeight: "bold",
-                  lineHeight: 33
-                },
-                per: {
-                  color: "#fff",
-                  backgroundColor: "#4C5058",
-                  padding: [3, 4],
-                  borderRadius: 4
-                }
-              }
-            },
+            // labelLine: {
+            //   length: 30
+            // },
+            // label: {
+            //   // {a|{a}}{abg|}\n{hr|}\n
+            //   // formatter: "{b|{b}：}{c}  {per|{d}%}  ",
+            //   backgroundColor: "#F6F8FC",
+            //   borderColor: "#8C8D8E",
+            //   borderWidth: 1,
+            //   borderRadius: 4,
+            //   rich: {
+            //     b: {
+            //       color: "#4C5058",
+            //       fontSize: 14,
+            //       fontWeight: "bold",
+            //       lineHeight: 33
+            //     },
+            //     per: {
+            //       color: "#fff",
+            //       backgroundColor: "#4C5058",
+            //       padding: [3, 4],
+            //       borderRadius: 4
+            //     }
+            //   }
+            // },
             data: [
               {value: 1048, name: "偏好1"},
               {value: 335, name: "偏好2"},
@@ -338,6 +362,9 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+body{
+  min-width:1920px;
+}
 .container {
   display: flex;
   flex-direction: column;
@@ -350,13 +377,15 @@ export default {
     margin-bottom: 5px;
 
     .component1 {
+      //position: absolute;
+      //left: 0;
       background-color: #fff;
       border-radius: 15px;
       display: flex;
       flex: 3;
       flex-direction: column;
       margin-right: 10px;
-      align-items: center;
+      //align-items: center;
       .text-title {
         color: #000;
         font-weight: bold;
@@ -365,12 +394,13 @@ export default {
         margin-bottom: 20px;
       }
       .select-border {
+
         display: flex;
         height: 60px;
-        width: 400px;
+        //width: 300px;
         border: 1px solid var(--el-border-color);
         border-radius: 15px;
-        padding: 10px;
+        padding: 5px;
         margin-top: 20px;
         background-color: #6292f4;
 
@@ -378,6 +408,7 @@ export default {
 
         .select {
           border-radius: 15px;
+          width: 180px;
         }
 
         .text-name {
@@ -400,6 +431,7 @@ export default {
           border-block-end-color: var(--el-card-border-color);
           border-block-start-color: var(--el-card-border-color);
 
+
           .my-icon {
             width: 10px;
             height: 40px;
@@ -409,7 +441,6 @@ export default {
 
           .detail {
             display: flex;
-
             .desc {
               line-height: 20px;
               height: 20px;
