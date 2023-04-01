@@ -1,12 +1,11 @@
 package com.schedule.entity;
 
-import com.schedule.algorithm.Chromosome;
 import lombok.Data;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 
 @Data
-public class Employee {
+public class Employee implements Serializable {
     private String employeeId;
     private String storeId;
     private String employeeName;
@@ -14,8 +13,4 @@ public class Employee {
     private String position;
     private int phone;
     private int root;
-
-    private ArrayList<Integer> preference;   //偏好数值化0-39
-    private Chromosome chromo;
-    private int countDay = 0;
 }

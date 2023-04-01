@@ -1,0 +1,36 @@
+Arguments: 
+  D:\nodejs\node.exe C:\Users\z'k\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add vue-cli-service
+
+PATH: 
+  C:\Program Files\PlasticSCM5\server;C:\Program Files\PlasticSCM5\client;C:\Python310\Scripts\;C:\Python310\;C:\Program Files\Common Files\Oracle\Java\javapath;D:\Environment\JAVA\JAVA8\jdk-8u221-windows-x64.exe\bin;D:\Environment\JAVA\JAVA8\jdk-8u221-windows-x64.exe\jre\bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;D:\VMware_1\bin\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;D:\soft\mingw64\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\dotnet\;C:\ProgramData\chocolatey\bin;D:\nodejs\;D:\nodejs\node_global;D:\nodejs\node_global\node_modules;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Users\z'k\AppData\Local\Android\Sdk\platform-tools;C:\Users\z'k\AppData\Local\Android\Sdk\emulator;C:\Users\z'k\AppData\Local\Android\Sdk\tools;C:\Users\z'k\AppData\Local\Android\Sdk\tools\bin;D:\soft\Git\cmd;D:\nodejs\node_global\bin;C:\Users\z'k\Desktop\Scripts\;C:\Users\z'k\Desktop\;C:\Users\z'k\AppData\Local\Microsoft\WindowsApps;D:\软件\Microsoft VS Code\bin;D:\soft\mingw64\bin;D:\soft\PyCharm 2022.2.3\bin;;D:\soft\IntelliJ IDEA 2022.3.1\bin;;D:\soft\CLion 2021.3\bin;;C:\Users\z'k\AppData\Roaming\npm;D:\nodejs\node_global;C:\Users\z'k\AppData\Local\GitHubDesktop\bin
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  16.17.0
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: https://registry.npmmirror.com/vue-cli-service: Not found
+      at Request.params.callback [as _callback] (C:\Users\z'k\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66145:18)
+      at Request.self.callback (C:\Users\z'k\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140890:22)
+      at Request.emit (node:events:513:28)
+      at Request.<anonymous> (C:\Users\z'k\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141862:10)
+      at Request.emit (node:events:513:28)
+      at IncomingMessage.<anonymous> (C:\Users\z'k\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141784:12)
+      at Object.onceWrapper (node:events:627:28)
+      at IncomingMessage.emit (node:events:525:35)
+      at endReadableNT (node:internal/streams/readable:1358:12)
+      at processTicksAndRejections (node:internal/process/task_queues:83:21)
+
+npm manifest: 
+  No manifest
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

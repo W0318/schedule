@@ -10,3 +10,13 @@ spring:
     initialization-mode: always
 server:
   port: 8082
+
+#Mybatis
+mybatis:
+  type-aliases-package: com.schedule.entity
+  mapper-locations: classpath:mapper/*.xml
+
+
+
+
+
