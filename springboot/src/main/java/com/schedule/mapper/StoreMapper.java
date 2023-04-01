@@ -15,4 +15,7 @@ public interface StoreMapper {
      */
     @Select("SELECT * FROM store")
     List<Store> getAllStore();
+
+    @Select("SELECT * FROM store WHERE storeId = #{storeId}")
+    Store getStoreById(String storeId);
 }

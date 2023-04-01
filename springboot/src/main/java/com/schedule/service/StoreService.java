@@ -20,4 +20,8 @@ public class StoreService {
     public List<Store> getAllStore() {
         return storeMapper.getAllStore();
     }
+
+    public Store getStoreById(String storeId) {
+        return storeMapper.getStoreById(storeId);
+    }
 }

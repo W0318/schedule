@@ -24,7 +24,7 @@ public class SchedulingController {
     EmployeeService employeeService;
 
     /**
-     * @author 吴佳丽
+     * 数据库你可以改，比如增加一张员工和排班关系表，就不用对employee是处理了
      * <p>
      * ///////////////////////////////////////////////////////////////////////////////////////////////
      */
@@ -44,6 +44,14 @@ public class SchedulingController {
         return schedulingService.getEmployeeDayWork(employeeId, day);
     }
 
+    /**
+     * 获取排班数据，并转化成前端一周数据格式
+     * 数据库里的数据可以改
+     * @param Monday
+     * @param Sunday
+     * @param storeId
+     * @return
+     */
     @GetMapping("/getAWeekWork/{Monday}/{Sunday}/{storeId}")
     public List<Object> getAWeekWork(@PathVariable("Monday") Date Monday, @PathVariable("Sunday") Date Sunday, @PathVariable("storeId") String storeId) {
         int index = 0;
@@ -107,6 +115,14 @@ public class SchedulingController {
         return newWorks;
     }
 
+    /**
+     * 获取排班数据，并转化成前端一日数据格式
+     * 数据库里的数据可以改
+     * @param day
+     * @param week
+     * @param storeId
+     * @return
+     */
     @GetMapping("/getADayWork/{day}/{week}/{storeId}")
     public List<Object> getADayWork(@PathVariable("day") Date day, @PathVariable("week") int week, @PathVariable("storeId") String storeId) {
         int index = 0;
