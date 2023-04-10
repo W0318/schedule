@@ -28,7 +28,6 @@ public interface EmployeeMapper {
      * <p>
      * ///////////////////////////////////////////////////////////////////////////////////////////////
      */
-    @Select("select * from employee where employeeId=#{username} and password = #{password}")
-    Employee login(String username, String password);
-
+    @Select("select employeeId,username,root from employee where employeeId=#{employeeId} and password = #{password}")
+    Employee login(String employeeId, String password);
 }

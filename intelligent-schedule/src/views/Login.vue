@@ -49,10 +49,10 @@ export default {
         // console.log(getMenu(from))
         if (vaild) {
           console.log(vaild)
-          // console.log(this.form)
+          // console.log("from"+this.form.password)
           getLogin(this.form)
             .then(({ data }) => {
-              console.log(data)
+              console.log("数据"+data)
               getMenu(data).then(({ data }) => {
                 if (data.code === 200) {
                   //将token信息存入cookie中用于不同页面间的通讯

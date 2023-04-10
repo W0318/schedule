@@ -18,8 +18,8 @@ export const getData = () => {
 //     }
 // }
 export const getLogin = (data) => {
-  console.log(data)
-  console.log('拦截到请求')
+  console.log("getlogin   "+data.username)
+  // console.log('拦截到请求')
   return request.post('http://localhost:8082/employee/login', {//请求登录接口
     username: data.username,
     password: data.password
@@ -95,4 +95,17 @@ export const updateWeekData = (tableData, week) => {
 
 export const replaceDaySchedule = (employeeIds, storeId, day, week) => {
   return request.get('http://localhost:8082/scheduling/replaceDaySchedule/' + employeeIds + '/' + storeId + '/' + day + '/' + week);
+}
+
+
+export const getStorePersons =(storeId)=>{
+  return request.get('http://localhost:8082/store/'+storeId);
+}
+export const limitedperson = (data) => {
+  console.log("人数限制数据   "+data)
+  // console.log('拦截到请求')
+  return request.post('http://localhost:8082/autoSchedule/limitedpresons', {//请求登录接口
+    str: data,
+  })
+  // return request.post('/permission/getMenu',data)
 }

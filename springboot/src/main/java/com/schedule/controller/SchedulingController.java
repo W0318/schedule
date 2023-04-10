@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.schedule.entity.Employee;
 import com.schedule.entity.Scheduling;
+import com.schedule.method.Methods;
 import com.schedule.service.EmployeeService;
+import com.schedule.service.RuleService;
 import com.schedule.service.SchedulingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -22,17 +25,43 @@ public class SchedulingController {
     SchedulingService schedulingService;
     @Autowired
     EmployeeService employeeService;
+    @Autowired
+    RuleService ruleService;
 
     /**
      * @author 吴佳丽
      * <p>
      * ///////////////////////////////////////////////////////////////////////////////////////////////
      */
-    String[] weekdayStart = {"08:30:00", "11:00:00", "14:00:00", "17:00:00", "19:00:00", "21:00:00"};
-    String[] weekendStart = {"09:30:00", "12:00:00", "14:00:00", "17:00:00", "20:00:00", "22:00:00"};
-    String[] weekdayEnd = {"11:00:00", "14:00:00", "17:00:00", "19:00:00", "21:00:00", "23:00:00"};
-    String[] weekendEnd = {"12:00:00", "14:00:00", "17:00:00", "20:00:00", "22:00:00", "24:00:00"};
-    String[] week = {"一", "二", "三", "四", "五", "六", "日"};
+    String[] weekdayStart = new String[32];
+    String[] weekendStart = new String[32];
+    String[] weekdayEnd = new String[32];
+    String[] weekendEnd = new String[32];
+    int[] week = {1, 2, 3, 4, 5, 6, 0};
+//    String[] week = {"一", "二", "三", "四", "五", "六", "日"};
+
+    public void setPeriods(String storeId) {
+        List<Double> generalTime = (new Methods()).getTime(ruleService.getGeneralRule());
+        List<Double> storeTime = (new Methods()).getTime(ruleService.getStoreRule(storeId));
+
+        for (int i = 0; i < storeTime.size(); i++) {
+            if (storeTime.get(i) < 0) storeTime.set(i, generalTime.get(i));
+        }
+        int index = 0;
+        for (double i = (8 - storeTime.get(0)); i < (21 + storeTime.get(1)); i += 0.5, index++) {
+            if (i - (int) i != 0) {
+                weekdayStart[index] = (int) i + ":30:00";
+                weekdayEnd[index] = ((int) i + 1) + ":00:00";
+                weekendStart[index] = ((int) i + 1) + ":30:00";
+                weekendEnd[index] = ((int) i + 2) + ":00:00";
+            } else {
+                weekdayStart[index] = (int) i + ":00:00";
+                weekdayEnd[index] = ((int) i + 1) + ":30:00";
+                weekendStart[index] = ((int) i + 1) + ":00:00";
+                weekendEnd[index] = ((int) i + 2) + ":30:00";
+            }
+        }
+    }
 
     @GetMapping("/getWorkday/{employeeId}")
     public List<Date> getEmployeeWorkday(@PathVariable("employeeId") String employeeId) {
@@ -47,64 +76,70 @@ public class SchedulingController {
     @GetMapping("/getAWeekWork/{Monday}/{Sunday}/{storeId}")
     public List<Object> getAWeekWork(@PathVariable("Monday") Date Monday, @PathVariable("Sunday") Date Sunday, @PathVariable("storeId") String storeId) {
         int index = 0;
+        setPeriods(storeId);
 
-        List<Scheduling> work = schedulingService.getAWeekWork(Monday, Sunday, storeId);
-        List<Scheduling> newWork = new ArrayList<>();
-        List<Object> newWorks = new ArrayList<>();
+        List<Scheduling> work = schedulingService.getAWeekWork(Monday, Sunday, storeId);   //从数据库获取一周数据
+        List<Scheduling> dayWork = new ArrayList<>();   //一天的排班数据
+        List<Object> weekWork = new ArrayList<>();   //七天的排班数据【dayWork * 7】
         for (Scheduling scheduling : work) {
-            while (!((scheduling.getPeriodName()).contains("周" + week[index]))) {
-                newWorks.add(newWork);
-                newWork = new ArrayList<>();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(scheduling.getDay());
+            //判断日期是星期几：1-6对应星期一到星期六，0对应星期日
+            int week_index = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+            while (week_index != week[index]) {
+                weekWork.add(dayWork);   //dayWork为空或1/多个数据
+                dayWork = new ArrayList<>();
                 index++;
             }
 
-            if ((scheduling.getPeriodName()).contains("周" + week[index])) {
-                newWork.add(scheduling);
+            if (week_index == week[index]) {   //将同一天的数据放入同一个列表
+                dayWork.add(scheduling);
             }
         }
+        //index到周日之间存在连续天没有排班数据，全置为空
         for (int i = index; i < 7; i++) {
-            newWorks.add(newWork);
-            newWork = new ArrayList<>();
+            weekWork.add(dayWork);
         }
 
+        //给每个排班时间段数据，无论是否为空【为了前端显示】
         for (int i = 0; i < 7; i++) {
-            newWork = (List<Scheduling>) newWorks.get(i);
-            List<Object> newWork1 = new ArrayList<>();
+            dayWork = (List<Scheduling>) weekWork.get(i);   //一天数据
+            List<Object> dayWork1 = new ArrayList<>();   //新的一天数据
             index = 0;
             for (int j = 0; j < 6; j++) {
-                List<Object> newWork2;
+                List<Object> dayWork2;
                 if (i < 5) {
-                    if (index < newWork.size() && ((newWork.get(index).getStartTime().toString()).equals(weekdayStart[j]))) {
-                        newWork2 = new ArrayList<>();
-                        newWork2.add(employeeService.getEmployees(newWork.get(index).getEmployeeIds()));
-                        newWork2.add(newWork.get(index).getId());
-                        newWork1.add(newWork2);
+                    if (index < dayWork.size() && ((dayWork.get(index).getStartTime().toString()).equals(weekdayStart[j]))) {
+                        dayWork2 = new ArrayList<>();
+                        dayWork2.add(employeeService.getEmployees(dayWork.get(index).getEmployeeIds()));
+                        dayWork2.add(dayWork.get(index).getId());
+                        dayWork1.add(dayWork2);
                         index++;
                     } else {
-                        newWork2 = new ArrayList<>();
-                        newWork2.add(new ArrayList<Employee>());
-                        newWork2.add(null);
-                        newWork1.add(newWork2);
+                        dayWork2 = new ArrayList<>();
+                        dayWork2.add(new ArrayList<Employee>());
+                        dayWork2.add(null);
+                        dayWork1.add(dayWork2);
                     }
                 } else {
-                    if (index < newWork.size() && ((newWork.get(index).getStartTime().toString()).equals(weekendStart[j]))) {
-                        newWork2 = new ArrayList<>();
-                        newWork2.add(employeeService.getEmployees(newWork.get(index).getEmployeeIds()));
-                        newWork2.add(newWork.get(index).getId());
-                        newWork1.add(newWork2);
+                    if (index < dayWork.size() && ((dayWork.get(index).getStartTime().toString()).equals(weekendStart[j]))) {
+                        dayWork2 = new ArrayList<>();
+                        dayWork2.add(employeeService.getEmployees(dayWork.get(index).getEmployeeIds()));
+                        dayWork2.add(dayWork.get(index).getId());
+                        dayWork1.add(dayWork2);
                         index++;
                     } else {
-                        newWork2 = new ArrayList<>();
-                        newWork2.add(new ArrayList<Employee>());
-                        newWork2.add(null);
-                        newWork1.add(newWork2);
+                        dayWork2 = new ArrayList<>();
+                        dayWork2.add(new ArrayList<Employee>());
+                        dayWork2.add(null);
+                        dayWork1.add(dayWork2);
                     }
                 }
             }
-            newWorks.set(i, newWork1);
+            weekWork.set(i, dayWork1);
         }
 
-        return newWorks;
+        return weekWork;
     }
 
     @GetMapping("/getADayWork/{day}/{week}/{storeId}")

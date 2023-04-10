@@ -1,7 +1,6 @@
 package com.schedule.controller;
 
 import com.schedule.entity.Employee;
-import com.schedule.mapper.EmployeeMapper;
 import com.schedule.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +13,6 @@ import java.util.Map;
 public class EmployeeController {
     @Autowired
     EmployeeService employeeService;
-
 
     /**
      * @author 吴佳丽
@@ -44,11 +42,9 @@ public class EmployeeController {
         Employee user = employeeService.login(map.get("username").toString(), map.get("password").toString());
         if (user != null) {
             int root = user.getRoot();
-
             return root;
         } else {
             return 0;
         }
     }
-
 }
