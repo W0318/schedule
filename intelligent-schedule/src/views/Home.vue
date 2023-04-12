@@ -65,6 +65,7 @@ import {
   postStoreId,
 } from "@/api";
 import * as echarts from "echarts";
+import employee from "@/views/StoreManagement/Employee.vue";
 // import {ref} from "vue";
 
 
@@ -165,8 +166,10 @@ export default {
 
     getStore().then((datas) => {
       this.options = datas.data;
-      // this.options.value = this.options.
-      console.log(datas.data)
+      console.log("登录数据：  "+sessionStorage.getItem("employee"));
+      const a = sessionStorage.getItem("employee");
+      console.log((JSON.parse(a).employeeId).toString())
+      // console.log("这是什么？getStore"+datas.data)
     });
     getData().then(({data}) => {
       // console.log(data);

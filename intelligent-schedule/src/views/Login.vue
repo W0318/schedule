@@ -52,30 +52,36 @@ export default {
           // console.log("from"+this.form.password)
           getLogin(this.form)
             .then(({ data }) => {
-              console.log("数据"+data)
-              getMenu(data).then(({ data }) => {
-                if (data.code === 200) {
-                  //将token信息存入cookie中用于不同页面间的通讯
-                  Cookie.set('token', data.data.token)
-
-                  //获取菜单的数据，存入store
-                  // data.data.menu
-                  this.$store.commit('setMenu', data.data.menu)
-
-
-                  //跳转到首页
-                  this.$router.push('/home')
-                } else {
-                  this.$message.error(data.data.message)
-                }
-              }).catch((err) => {
-                console.log(err)
-              })
-            }
-
-
-            )
-
+              // console.log("数据"+data)
+              // console.log("falg   "+data.flag)
+              // console.log("root   "+data.employee.root)
+              sessionStorage.setItem("employee",JSON.stringify(data.employee));//存储user对象
+              let a = sessionStorage.getItem("employee");
+              console.log("这是什么"+a.trim())
+              console.log(a.employeeId)
+              console.log("猜猜我是谁"+JSON.stringify(a).employeeId);
+              // console.log(data.employee)
+              if(data.flag==="ok"){
+                getMenu(parseInt(data.employee.root)).then(({ data }) => {
+                  if (data.code === 200) {
+                    //将token信息存入cookie中用于不同页面间的通讯
+                    Cookie.set('token', data.data.token)
+                    //获取菜单的数据，存入store
+                    // data.data.menu
+                    this.$store.commit('setMenu', data.data.menu)
+                    //跳转到首页
+                    this.$router.push('/home')
+                  } else {
+                    this.$message.error(data.data.message)
+                  }
+                }).catch((err) => {
+                  console.log(err)
+                })
+              }
+              else {
+                console.log(data.flag);
+              }
+            })
         } else {
           console.log(vaild)
         }

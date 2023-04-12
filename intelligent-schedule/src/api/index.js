@@ -28,11 +28,11 @@ export const getLogin = (data) => {
 }
 
 export const getStore=()=>{
-  return request.get('http://localhost:8082/store/queryStoreList')
+  return request.get('http://localhost:8082/store/all')
 }
 
 export const getMenu = (data) => {
-  console.log(data)
+  console.log("getMenu获得的数据"+ data)
   console.log('拦截到请求')
   return request.post('/permission/getMenu', data)
 }
@@ -50,7 +50,8 @@ export const getEchartsData = () => {
 
 
 export const getWorkday = (employeeId) => {
-  return request.get('http://localhost:8082/scheduling/getWorkDay/' + employeeId);
+  console.log("getWorkday"+employeeId)
+  return request.get('http://localhost:8082/scheduling/getWorkday/' + employeeId);
 }
 
 export const getDaywork = (employeeId, day) => {

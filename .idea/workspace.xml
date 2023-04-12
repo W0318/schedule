@@ -5,116 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="da0541f5-4c6e-40d5-b328-c67ceb1c0852" name="变更" comment="">
-      <change afterPath="$PROJECT_DIR$/schedule.rar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/schedule.zip" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springboot/springboot.rar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/algorithm/Calculate.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/algorithm/Chromo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/algorithm/Chromosome.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/algorithm/GA.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/algorithm/GA_group.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/algorithm/GeneticAlgorithm.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/beans/EmployeeBan.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/beans/ScheduleBean.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/config/MyCalendar.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/config/RankTransfer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/config/Test.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/AutoScheduling.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/entity/Flow.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/method/Methods.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-03-27_1.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-03-28_1.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-03-29_1.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-03-30_1.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-03-31_1.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-01_1.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-02_1.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-05-10_1.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/intelligent-schedule/src/api/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/intelligent-schedule/src/api/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/intelligent-schedule/src/views/Home.vue" beforeDir="false" afterPath="$PROJECT_DIR$/intelligent-schedule/src/views/Home.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/intelligent-schedule/src/views/Login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/intelligent-schedule/src/views/Login.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/intelligent-schedule/src/views/ShiftSchedule.vue" beforeDir="false" afterPath="$PROJECT_DIR$/intelligent-schedule/src/views/ShiftSchedule.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/babel.config.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/echarts/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/jsconfig.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/public/favicon.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/public/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/src/App.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/src/api/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/src/api/mock.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/src/api/mockServeData/home.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/src/api/mockServeData/permission.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/src/assets/logo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/src/components/CommonAside.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/src/components/CommonHeader.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/src/main.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/src/router/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/src/store/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/src/util/request.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/src/views/Home.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/src/views/Login.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/src/views/Main.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/src/views/MySchedule.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/src/views/ScheduleSetting/AddShiftManagement.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/src/views/ScheduleSetting/ShiftManagement.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/src/views/Setting/MenuManagement.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/src/views/Setting/User.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/src/views/ShiftSchedule.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/src/views/ShiftSchedule/AddRules.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/src/views/ShiftSchedule/PersonalizationRules.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/src/views/ShiftSchedule/SchedulingCalendar.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/src/views/StoreManagement/AddEmployee.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/src/views/StoreManagement/AddStore.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/src/views/StoreManagement/Employee.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/src/views/StoreManagement/MyStore.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/vue.config.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/intelligent-schedule/yarn.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/SpringbootApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/SpringbootApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/config/Chromo.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/config/GA_group.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/intelligent-schedule/src/views/MySchedule.vue" beforeDir="false" afterPath="$PROJECT_DIR$/intelligent-schedule/src/views/MySchedule.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/EmployeeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/EmployeeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/RuleController.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/RuleController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/ScheduleController.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/SchedulingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/SchedulingController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/StoreController.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/StoreController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/entity/Book.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/entity/Employee.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/entity/Employee.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/entity/Preference.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/entity/Preference.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/entity/Rule.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/entity/Rule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/entity/Scheduling.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/entity/Scheduling.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/entity/Store.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/entity/Store.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/mapper/EmployeeMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/mapper/EmployeeMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/mapper/PreferenceMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/mapper/PreferenceMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/mapper/RuleMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/mapper/RuleMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/mapper/ScheduleMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/mapper/StoreMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/mapper/StoreMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/service/PreferenceService.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/service/PreferenceService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/service/RuleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/service/RuleService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/service/StoreService.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/service/StoreService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/resources/mapper/ScheduleMapper.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/resources/mapper/StoreMapper.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/test/java/com/schedule/SpringbootApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/test/java/com/schedule/SpringbootApplicationTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/target/classes/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/target/classes/application.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springboot/target/classes/com/schedule/controller/EmployeeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/target/classes/com/schedule/controller/EmployeeController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/target/classes/com/schedule/entity/Book.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/target/classes/com/schedule/entity/Employee.class" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/target/classes/com/schedule/entity/Employee.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/target/classes/com/schedule/entity/Preference.class" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/target/classes/com/schedule/entity/Preference.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/target/classes/com/schedule/entity/Rule.class" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/target/classes/com/schedule/entity/Rule.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/target/classes/com/schedule/entity/Store.class" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/target/classes/com/schedule/entity/Store.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springboot/target/classes/com/schedule/mapper/EmployeeMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/target/classes/com/schedule/mapper/EmployeeMapper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/target/spring-vue-0.0.1-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/target/spring-vue-0.0.1-SNAPSHOT.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/target/spring-vue-0.0.1-SNAPSHOT.jar.original" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/target/spring-vue-0.0.1-SNAPSHOT.jar.original" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -196,7 +96,7 @@
       <recent name="com.schedule.config" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.SpringbootApplication">
+  <component name="RunManager" selected="npm.serve">
     <configuration name="SpringbootApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="spring-vue" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.schedule.SpringbootApplication" />
@@ -268,12 +168,27 @@
       <workItem from="1680967616701" duration="31525000" />
       <workItem from="1681086349497" duration="11565000" />
       <workItem from="1681126666805" duration="69000" />
-      <workItem from="1681130714588" duration="9145000" />
+      <workItem from="1681130714588" duration="12877000" />
+      <workItem from="1681186674775" duration="1939000" />
+      <workItem from="1681202004518" duration="600000" />
+      <workItem from="1681262998391" duration="1612000" />
+      <workItem from="1681264986477" duration="4242000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
