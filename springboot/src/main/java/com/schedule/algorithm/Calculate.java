@@ -14,6 +14,7 @@ public class Calculate {
      * @return 值
      */
     public double dealExp(String expression, double var) {
+        System.out.println("表达式什么神马Aa                                                                                              "+expression);
         Stack<Double> operandStack = new Stack<>();   //操作数
         Stack<Character> operatorStack = new Stack<>();   //操作符
 

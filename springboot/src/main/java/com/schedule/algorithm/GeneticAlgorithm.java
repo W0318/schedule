@@ -1,8 +1,10 @@
 package com.schedule.algorithm;
 
+import com.schedule.entity.Employee;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 @Data
@@ -13,7 +15,10 @@ public class GeneticAlgorithm {
     public ArrayList<ArrayList<Integer>> workingTime;   //0下标表示连续工作时间，1下标表示日工作时间 2下标表示周工作时间
 
     private double P_mutation = 0.5;   //变异概率
-    private int len = 32;   //染色体长度：开店前工作时间+日常工作时间【12h】+关店后工作时间
+//    private double P_mutation = ;   //变异概率
+
+
+    private int len = 34;   //染色体长度：开店前工作时间+日常工作时间【12h】+关店后工作时间
     private int scale = 20;   //可上班员工数目，即种群规模
 
     public GeneticAlgorithm(ArrayList<Chromosome> group) {
@@ -36,28 +41,13 @@ public class GeneticAlgorithm {
     }
 
     /**
-     * 某个班次还差多少人
-     *
-     * @param index
-     * @return
-     */
-    private int checkLackE(int index) {
-        int lack = 0;
-        for (int i = 0; i < scale; i++) {
-            if (check.get(i).get(index) == 1) lack++;
-        }
-        return lack;
-    }
-
-    /**
      * 获取持续上班时间
      *
      * @param index
      * @return
      */
     private int getContTime(int index) {
-        int t = workingTime.get(index).get(0);
-        return t;
+        return workingTime.get(index).get(0);
     }
 
     /**
@@ -121,14 +111,14 @@ public class GeneticAlgorithm {
      *
      * @param pos
      */
-    private void mutate(int pos) {
+    private void mutate(int pos,ArrayList<Employee> loves_arr,int PreNum) {
         //取反即可
         Random r = new Random();
+        double pm= (double) PreNum/loves_arr.size();
         for (int i = 0; i < scale; i++) {//
-//            System.out.println(check.get(i).get(pos));
-//            System.out.println(status.get(i).get(pos));
-            if (Math.abs(r.nextInt() % 10000 / 10000.0) < getP_mutation() && check.get(i).get(pos) == 0 && status.get(i).get(pos) == 1) {//未确认，在waiting才能变异上班,并且满足概率
-//                System.out.println(i + ":yes");
+//            if (Math.abs(r.nextInt() % 10000 / 10000.0) < getP_mutation() && check.get(i).get(pos) == 0 && status.get(i).get(pos) == 1) {//未确认，在waiting才能变异上班,并且满足概率
+            if (Math.abs(r.nextInt() % 10000 / 10000.0) < pm  && check.get(i).get(pos) == 0 && status.get(i).get(pos) == 1) {//未确认，在waiting才能变异上班,并且满足概率
+
                 if (group.get(i).chromosome.get(pos) == 0) {
                     Chromosome chro = group.get(i);
                     chro.chromosome.set(pos, 1);
@@ -140,13 +130,13 @@ public class GeneticAlgorithm {
                 }
             }
         }
-
 //        System.out.println(group);
     }
 
-    private boolean fitness(int PreNum, int AftNum, ArrayList<Integer> PassFlowNum, int pre, int later, ArrayList<ArrayList<Integer>> loves_arr) {
+    private boolean fitness(int PreNum, int AftNum, List<Integer> PassFlowNum, int pre, int later, ArrayList<Employee> loves_arr) {
         //如果现在len是28，代表 pre 24 later的一个时间构造，解析上班时间的时候，就需要传上下班这个参数来确定
-        System.out.println(PassFlowNum);
+        boolean flag = true;
+//        System.out.println(PassFlowNum);
 
         Random r = new Random();
 
@@ -160,7 +150,7 @@ public class GeneticAlgorithm {
         //每次排班重置group，不然都是一样的
 
         while (countShiftE(0) != PreNum) {//PreNum个人工作前打扫
-            mutate(0);//变异第一列
+            mutate(0,loves_arr,PreNum);//变异第一列
         }
 
         //需参数设置初始化
@@ -177,33 +167,31 @@ public class GeneticAlgorithm {
         for (int i = 0; i < pre; i++) {
             for (int j = 0; j < scale; j++) {//j需要参数
                 if (group.get(j).chromosome.get(i) == 1) {//如果第一班次被选中
-//                    ArrayList<Integer> tmp = check.get(j);
-//                    tmp.set(i, 1);//check 1代表确认
-//                    check.set(i, tmp);
-                    ArrayList<Integer> e_status = status.get(j);
-                    e_status.set(i, 2);//status 2代表上班中
-                    status.set(j, e_status);
-
-                    ArrayList<Integer> e_workingTime = workingTime.get(j);
-                    e_workingTime.set(0, getContTime(j) + 1);
-                    e_workingTime.set(1, getDayTime(j) + 1);
-                    workingTime.set(j, e_workingTime);
+                    ArrayList<Integer> tmp = check.get(j);
+                    tmp.set(i, 1);//check 1代表确认
+                    check.set(i, tmp);
+                    tmp = status.get(j);
+                    tmp.set(i, 2);//status 2代表上班中
+                    status.set(j, tmp);
+                    tmp = workingTime.get(j);
+                    tmp.set(0, getContTime(j) + 1);
+                    tmp.set(1, getDayTime(j) + 1);
+                    workingTime.set(j, tmp);
+//                    loves_arr.get(j).setWeekTime(loves_arr.get(j).getWeekTime()+getDayTime(j));
                 }
                 //虽然其他的未被确定，但是也用不上了，只需要确认需要上班的即可
             }
         }
 
-        System.out.println("check3:" + check);
-        System.out.println("status3:" + status);
 
         //第一班次设完之后，后面就是人数多，那么如果时间没<8,就上  人数少，那么随机挑选持续时间<8的n个人上
         //大循环
         //int ran=0;
         for (int i = pre; i < len; i++) {
             //ran++;
-            int PopulationsNeed = 1;
-            if (i < len - later) PopulationsNeed = PassFlowNum.get(i - pre);
-            else PopulationsNeed = AftNum;
+            double PopulationsNeed = 0;
+            if (i >= pre && i < len - later) PopulationsNeed = PassFlowNum.get(i - pre);
+            else if (i >= len - later) PopulationsNeed = AftNum;
 
             /*if(i==2) {
                 System.out.println(pre);
@@ -213,36 +201,30 @@ public class GeneticAlgorithm {
 
             //正常休息
             for (int j = 0; j < scale; j++) {//j是人，i是位点
-                //连续工作时间 >= 4小时,休息
                 if (getContTime(j) >= 8) {
-//                    ArrayList<Integer> tmp = check.get(j);
-//                    tmp.set(i, 1);//确认
-//                    if (i + 1 < scale)
-//                        tmp.set(i + 1, 1);
-//                    check.set(j, tmp);
-
-                    ArrayList<Integer> e_status = status.get(j);
-                    e_status.set(i, 3);   //休息
-//                    if (i + 1 < scale)//???????????????????
-//                        tmp.set(i + 1, 3);//休息
-                    status.set(j, e_status);
+                    ArrayList<Integer> tmp = check.get(j);
+                    tmp.set(i, 1);//确认
+                    if (i + 1 < scale)
+                        tmp.set(i + 1, 1);
+                    check.set(j, tmp);
+                    tmp = status.get(j);
+                    tmp.set(i, 3);//休息中
+                    if (i + 1 < scale)
+                        tmp.set(i + 1, 3);//休息
+                    status.set(j, tmp);
                     resetContTime(j);//重置这个人的连续工作时间
-                }
-                //(日工作时间 >= 8) 或 (日工作时间 >= 班次日时长偏好),今日下班
-                if ((getDayTime(j) >= 16) ||
-                        ((loves_arr.get(j).get(0) == 4 || loves_arr.get(j).get(0) == 5 || loves_arr.get(j).get(0) == 6 || loves_arr.get(j).get(0) == 7)
-                                && getDayTime(j) >= loves_arr.get(j).get(36))
-                ) {
-                    for (int k = i; k < len; k++) {   //从当前时间点开始今天都不工作
+                }//安排休息没问题
+                if ((getDayTime(j) >= 16) || (loves_arr.get(j).getPreferCode().get(0) == 3 && getDayTime(j) == loves_arr.get(j).getPreferCode().get(32))) {
+                    for (int k = i; k < len; k++) {
                         resetContTime(j);
-//                        ArrayList<Integer> tmp = check.get(j);
-//                        tmp.set(k, 1);//确认
-//                        check.set(j, tmp);
-                        ArrayList<Integer> e_status = status.get(j);
-                        e_status.set(k, 3);   //休息
-                        status.set(j, e_status);
+                        ArrayList<Integer> tmp = check.get(j);
+                        tmp.set(k, 1);//确认
+                        check.set(j, tmp);
+                        tmp = status.get(j);
+                        tmp.set(k, 3);//休息中
+                        status.set(j, tmp);
                     }
-                }
+                }//今天就工作完了
             }
 
 
@@ -250,7 +232,7 @@ public class GeneticAlgorithm {
 //            /*while (ran == 7 ) {
 //                int index = Math.abs(r.nextInt() % Size);
 //                for(int j=index;j<Size;j++) {
-//                    if (status.get(index).get(i) == 1 && persistentTime(index) >= 4 && persistentTime(index) < 8) {
+//                    if (status.get(index).get(i) == 1 && getContTime(index) >= 4 && getContTime(index) < 8) {
 //                        ArrayList<Integer> tmp = check.get(index);
 //                        tmp.set(i, 1);//确认
 //                        check.set(index, tmp);
@@ -263,129 +245,131 @@ public class GeneticAlgorithm {
 //                }
 //            }*/
 //
-//
-//            //首先是确定需要的人数
-            if (countShiftE(i) < PopulationsNeed) {//还需要人上班，可以上的都上去
+            if (countShiftE(i - 1) <= (int) Math.ceil(PopulationsNeed)) {//还需要人上班，可以上的都上去
                 for (int j = 0; j < scale; j++) {//循环每一个
-                    if (countShiftE(i) == PopulationsNeed) break;
-                    System.out.print(getContTime(j) + ", ");
-                    System.out.print(group.get(j).chromosome.get(i) + ", ");
-                    System.out.println(status.get(j).get(i));
-                    Boolean t = group.get(j).chromosome.get(i) == 0 && status.get(j).get(i) == 1;
-                    if (t) {//等待上班，并且可以上
+                    if (getContTime(j) > 0 && getContTime(j) < 8 && group.get(j).chromosome.get(i - 1) == 1 && status.get(j).get(i) == 1&&loves_arr.get(j).getWeekTime()<64) {//等待上班，并且可以上
                         Chromosome work = group.get(j);
                         work.chromosome.set(i, 1);
                         group.set(j, work);
 
-//                        ArrayList<Integer> tmp = check.get(j);
-//                        tmp.set(i, 1);//确认上班
-//                        check.set(j, tmp);
+                        ArrayList<Integer> tmp = check.get(j);
+                        tmp.set(i, 1);//确认上班
+                        check.set(j, tmp);
 
-                        ArrayList<Integer> e_status = status.get(j);
-                        e_status.set(i, 2);//上班中
-                        status.set(j, e_status);
+                        tmp = status.get(j);
+                        tmp.set(i, 2);//上班中
+                        status.set(j, tmp);
 
-                        ArrayList<Integer> e_workingTime = workingTime.get(j);
-                        e_workingTime.set(1, getDayTime(j) + 1);
-                        if (group.get(j).chromosome.get(i - 1) == 1) {   //上一个时间段在工作,即连续工作
-                            e_workingTime.set(0, getContTime(j) + 1);
-                        } else {   //上一个时间段不在工作,即不连续工作,则连续工作时间清零
-                            e_workingTime.set(0, 0);
+                        tmp = workingTime.get(j);
+                        tmp.set(0, getContTime(j) + 1);
+                        tmp.set(1, getDayTime(j) + 1);
+                        workingTime.set(j, tmp);
+//                        loves_arr.get(j).setWeekTime(loves_arr.get(j).getWeekTime()+getDayTime(j));
+                    }
+                    int count=0;
+                    //还缺多少人，随机上
+                    while (countShiftE(i) < (int) Math.ceil(PopulationsNeed)) {//人不够,随机选在wait的人上班,每次选一个
+                        count++;
+                        if(count>10000) break;
+                        System.out.println("这是什么1？" + countShiftE(i) + " " + (int) Math.ceil(PopulationsNeed) + " " + 1);
+                        int index = Math.abs((int) (Math.random() * (scale - 1) + 1));
+                        if (check.get(index).get(i) == 0 && status.get(index).get(i) == 1 && getDayTime(index) < 16 && getContTime(index) < 8&&loves_arr.get(index).getWeekTime()<64) {//满足要求，上班
+                            Chromosome work = group.get(index);
+                            work.chromosome.set(i, 1);
+                            group.set(index, work);
+
+                            ArrayList<Integer> tmp = check.get(index);
+                            tmp.set(i, 1);//确认上班
+                            check.set(index, tmp);
+                            tmp = status.get(index);
+                            tmp.set(i, 2);//上班中
+                            status.set(index, tmp);
+                            tmp = workingTime.get(index);
+                            tmp.set(0, getContTime(index) + 1);
+                            tmp.set(1, getDayTime(index) + 1);
+                            workingTime.set(index, tmp);
+//                            loves_arr.get(index).setWeekTime(loves_arr.get(index).getWeekTime()+getDayTime(index));
                         }
-                        workingTime.set(j, e_workingTime);
+                    }
+                    //已凑上
+                }
+            } else if (countShiftE(i - 1) > (int) Math.ceil(PopulationsNeed)) {
+                for (int j = 0; j < scale; j++) {
+                    if (group.get(j).chromosome.get(i - 1) == 1 && getContTime(j) < 4 && getContTime(j) > 0&&loves_arr.get(j).getWeekTime()<64) {
+                        Chromosome work = group.get(j);
+                        work.chromosome.set(i, 1);
+                        group.set(j, work);
+
+                        ArrayList<Integer> tmp = check.get(j);
+                        tmp.set(i, 1);//确认上班
+                        check.set(j, tmp);
+
+                        tmp = status.get(j);
+                        tmp.set(i, 2);//上班中
+                        status.set(j, tmp);
+
+                        tmp = workingTime.get(j);
+                        tmp.set(0, getContTime(j) + 1);
+                        tmp.set(1, getDayTime(j) + 1);
+                        workingTime.set(j, tmp);
+//                        loves_arr.get(j).setWeekTime(loves_arr.get(j).getWeekTime()+getDayTime(j));
                     }
                 }
+                int count =0;
+                while (countShiftE(i) < (int) Math.ceil(PopulationsNeed)) {
+                    count++;
+                    if(count>10000) break;
+                    System.out.println("这是什么2？" + countShiftE(i) + " " + (int) Math.ceil(PopulationsNeed) + " " + 2);
+                    int index = Math.abs((int) (Math.random() * (scale - 1) + 1));
+//                        int index = Math.abs(r.nextInt()%Size);
+                    if (check.get(index).get(i) == 0 && status.get(index).get(i) == 1 && getDayTime(index) < 16 && getContTime(index) < 8 &&loves_arr.get(index).getWeekTime()<64) {
+                        //index上班，其他的下班(重置持续时间)
+                        Chromosome work = group.get(index);
+                        work.chromosome.set(i, 1);
+                        group.set(index, work);
 
-                //还缺多少人，随机上
-                while (PopulationsNeed != countShiftE(i)) {//人不够,随机选在wait的人上班,每次选一个
-                    int index = Math.abs(r.nextInt() % scale);
-//                    System.out.print(index + ", ");
-//                    System.out.print(check.get(index).get(i) + ", ");
-//                    System.out.print(status.get(index).get(i) + ", ");
-//                    System.out.println(getDayTime(index) + ", ");
-                    if (status.get(index).get(i) == 1 && getDayTime(index) < 16) {//满足要求，上班
-                        Chromosome chromo = group.get(index);
-                        chromo.chromosome.set(i, 1);
-                        group.set(index, chromo);
+                        ArrayList<Integer> tmp = check.get(index);
+                        tmp.set(i, 1);//确认上班
+                        check.set(index, tmp);
 
-//                        ArrayList<Integer> tmp = check.get(index);
-//                        tmp.set(i, 1);//确认上班
-//                        check.set(index, tmp);
+                        tmp = status.get(index);
+                        tmp.set(i, 2);//上班中
+                        status.set(index, tmp);
 
-                        ArrayList<Integer> e_status = status.get(index);
-                        e_status.set(i, 2);//上班中
-                        status.set(index, e_status);
+                        tmp = workingTime.get(index);
+                        tmp.set(0, getContTime(index) + 1);
+                        tmp.set(1, getDayTime(index) + 1);
+                        workingTime.set(index, tmp);
+//                        loves_arr.get(index).setWeekTime(loves_arr.get(index).getWeekTime()+getDayTime(index));
+                    }
 
-                        ArrayList<Integer> e_workingTime = workingTime.get(index);
-                        e_workingTime.set(1, getDayTime(index) + 1);
-                        if (group.get(index).chromosome.get(index - 1) == 1) {   //上一个时间段在工作,即连续工作
-                            e_workingTime.set(0, getContTime(index) + 1);
-                        } else {   //上一个时间段不在工作,即不连续工作,则连续工作时间清零
-                            e_workingTime.set(0, 0);
-                        }
-                        workingTime.set(index, e_workingTime);
+
+                }
+                for (int j = 0; j < scale; j++) {
+                    if (check.get(j).get(i) == 0) {
+                        resetContTime(j);//重置它的持续时间
                     }
                 }
-                //已凑上
             }
-//            else { //决定执行工作时长<2时就算人太多也不下班
-//                for (int j = 0; j < scale; j++) {
-//                    if (group.get(j).chromosome.get(i - 1) == 1 && getContTime(j) < 4 && getContTime(j) > 0) {
-//                        Chromosome work = group.get(j);
-//                        work.chromosome.set(i, 1);
-//                        group.set(j, work);
-//
-//                        ArrayList<Integer> tmp = check.get(j);
-//                        tmp.set(i, 1);//确认上班
-//                        check.set(j, tmp);
-//
-//                        tmp = status.get(j);
-//                        tmp.set(i, 2);//上班中
-//                        status.set(j, tmp);
-//
-//                        tmp = workingTime.get(j);
-//                        tmp.set(0, getContTime(j) + 1);
-//                        tmp.set(1, getDayTime(j) + 1);
-//                        workingTime.set(j, tmp);
-//                    }
-//                }
-//                while (countShiftE(i) < PopulationsNeed) {
-//                    System.out.println(countShiftE(i) + " " + PopulationsNeed + " " + 2);
-//                    int index = Math.abs(r.nextInt() % scale);
-//                    if (check.get(index).get(i) == 0 && status.get(index).get(i) == 1 && getDayTime(index) < 16 && getContTime(index) < 8) {
-//                        //index上班，其他的下班(重置持续时间)
-//                        Chromosome work = group.get(index);
-//                        work.chromosome.set(i, 1);
-//                        group.set(index, work);
-//
-//                        ArrayList<Integer> tmp = check.get(index);
-//                        tmp.set(i, 1);//确认上班
-//                        check.set(index, tmp);
-//
-//                        tmp = status.get(index);
-//                        tmp.set(i, 2);//上班中
-//                        status.set(index, tmp);
-//
-//                        tmp = workingTime.get(index);
-//                        tmp.set(0, getContTime(index) + 1);
-//                        tmp.set(1, getDayTime(index) + 1);
-//                        workingTime.set(index, tmp);
-//                    }
-//                }
-//                for (int j = 0; j < scale; j++) {
-//                    if (check.get(j).get(i) == 0) {
-//                        resetContTime(j);//重置它的持续时间
-//                    }
-//                }
-//
-//            }
             System.out.println("基因位" + i + "已确认");
         }
-        return true;
+        for (int j = 0; j < scale; j++) {
+            if (getContTime(j) < 4 && getContTime(j) != 0) {
+//                flag = false;
+                return false;
+            }
+        }
+
+        for (int j = 0; j < scale; j++) {
+            loves_arr.get(j).setWeekTime(loves_arr.get(j).getWeekTime()+getDayTime(j));
+        }
+        return flag;
     }
 
     //偏好数组和星期几，用于check
-    public ArrayList<Chromosome> GA(int PreNum, int AftNum, ArrayList<Integer> PassFlowNum, int pre, int later, int day, ArrayList<ArrayList<Integer>> loves_arr) {
+//    public ArrayList<Chromosome> GA(int PreNum, int AftNum, List<Integer> PassFlowNum, int pre, int later, int day, ArrayList<ArrayList<Integer>> loves_arr) {
+
+    public ArrayList<Employee> GA(int PreNum, int AftNum, List<Integer> PassFlowNum, int pre, int later, int day, ArrayList<Employee> loves_arr) {
         ArrayList<Chromosome> group1 = group;
         ArrayList<Chromosome> group2 = group;
 
@@ -400,78 +384,96 @@ public class GeneticAlgorithm {
         }
 
         init();
-//        System.out.println(check);
+
+//        loves_arr.forEach(element -> System.out.println(element));
 //        System.out.println(status);
 
         //初始化完了之后使用loves_arr进行check
-        for (int a = 0; a < loves_arr.size(); a++) {//a是哪个人
-            System.out.print(a + "【");
-            System.out.print(loves_arr.get(a).get(0) + "】:");
-            System.out.println(loves_arr.get(a));
-            System.out.println("status1:" + status.get(a));
-
-            //工作日偏好
-            if (loves_arr.get(a).get(0) == 1 || loves_arr.get(a).get(0) == 3
-                    || loves_arr.get(a).get(0) == 5 || loves_arr.get(a).get(0) == 7) {
+        for (int a = 0; a < loves_arr.size(); a++)//a是哪个人
+        {
+            //每一个爱好数组
+            //0设置种类(1 2 3) 1-7 工作日   8-31 工作时间（工作日代表9-21 周末代表10-22）   32 日工作时间偏好
+            if (loves_arr.get(a).getPreferCode().get(0) == 1) {//工作日
                 for (int i = 1; i < 7; i++) {
-                    if (loves_arr.get(a).get(i) == 0 && (day == i)) {
-//                        ArrayList<Integer> tmp1 = check.get(a);
-                        ArrayList<Integer> e_status = status.get(a);
-                        for (int j = 0; j < e_status.size(); j++) {
-//                            tmp1.set(j, 1);
-                            e_status.set(j, 3);
+                    if (loves_arr.get(a).getPreferCode().get(i) == 0 && ((day % 7) + 1) == i) {
+                        ArrayList<Integer> tmp1 = check.get(a);
+                        ArrayList<Integer> tmp2 = status.get(a);
+                        for (int j = 0; j < tmp1.size(); j++) {
+                            tmp1.set(j, 1);
+                            tmp2.set(j, 3);
                         }
-//                        check.set(a, tmp1);
-                        status.set(a, e_status);
-                    } else if (loves_arr.get(a).get(i) == 1 && (day == i)) {
-                        //工作时间偏好
-                        if (loves_arr.get(a).get(0) == 2 || loves_arr.get(a).get(0) == 3
-                                || loves_arr.get(a).get(0) == 6 || loves_arr.get(a).get(0) == 7) {
-                            for (int j = 8; j <= 35; j++) {
-                                if (loves_arr.get(a).get(j) == 0 && (pre - 4 + (j - 8) >= 0)) {//说明偏好为不想上班//工作日
-//                                    ArrayList<Integer> tmp1 = check.get(a);
-                                    ArrayList<Integer> e_status = status.get(a);
-//                                    tmp1.set(pre + j - 12, 1);
-                                    e_status.set(pre + j - 12, 3);
-//                                    check.set(a, tmp1);
-                                    status.set(a, e_status);
-                                }
-                            }
-                        }
+                        check.set(a, tmp1);
+                        status.set(a, tmp2);
                     }
                 }
-            }
-
-            //工作时间偏好
-            if (loves_arr.get(a).get(0) == 2 || loves_arr.get(a).get(0) == 3
-                    || loves_arr.get(a).get(0) == 6 || loves_arr.get(a).get(0) == 7) {
-                for (int i = 8; i <= 35; i++) {
-                    if (loves_arr.get(a).get(i) == 0 && (pre - 4 + (i - 8) >= 0)) {//说明偏好为不想上班//工作日
-//                                    ArrayList<Integer> tmp1 = check.get(a);
-                        ArrayList<Integer> e_status = status.get(a);
-//                                    tmp1.set(pre + j - 12, 1);
-                        e_status.set(pre + i - 12, 3);
-//                                    check.set(a, tmp1);
-                        status.set(a, e_status);
+            } else if (loves_arr.get(a).getPreferCode().get(0) == 2) {
+                for (int i = 8; i <= 31; i++) {//9:00-21:00 或者 10:00-22:00
+                    //因为解析decode的时候解析的时间不同，所以说都是8-31，代表周末和工作如
+                    if (loves_arr.get(a).getPreferCode().get(i) == 0) {//说明偏好为不想上班//工作日
+                        ArrayList<Integer> tmp1 = check.get(a);
+                        ArrayList<Integer> tmp2 = status.get(a);
+                        tmp1.set(i - 8 + pre, 1);
+                        tmp2.set(i - 8 + pre, 3);
+                        check.set(a, tmp1);
+                        status.set(a, tmp2);
                     }
                 }
+            } else if (loves_arr.get(a).getPreferCode().get(0) == 3) {
+                //这里什么都不做，第三种偏好需要传给fitness去适应
             }
 
-            System.out.println("status2:" + status.get(a));
         }
-
-//        System.out.println(check);
-//        System.out.println(status);
 
         System.out.println("请稍后，正在GA中......");
         //1.初始化种群
         //2.while次迭代以全局适应
         Random r = new Random();
-
-        while (fitness(PreNum, AftNum, PassFlowNum, pre, later, loves_arr) != true)//while循环中一直在进行种群更新
+        int count =0;
+        while (true)//while循环中一直在进行种群更新
         {
+            count++;
+            if(count>10) return null;
+            if (fitness(PreNum, AftNum, PassFlowNum, pre, later, loves_arr) == true) {
+                System.out.println("Day" + day + "已完成排班，结果如下：");
+//                ArrayList<Employee> new_loves = new  ArrayList<>(loves_arr);
+                for (int i = 0; i < scale; i++) {
+                    System.out.println("员工" + i);
+//                    new_loves.get(i).getChromo();
+//                    loves_arr.get(j).setWeekTime(loves_arr.get(j).getWeekTime()+getDayTime(j));
+                    ArrayList<Chromosome> newChomes = new ArrayList<>();
+                    newChomes.add(group.get(day));
+//                    loves_arr.get(i).mySetChromo(day,group.get(i));
+//                    System.out.println(loves_arr.get(i).getChromo());
+//                    loves_arr.get(i).getChromo().set(day,newChomes.get(0));
+//                    ArrayList<Chromosome> temp = loves_arr.get(i).getChromo().add(group.get(i));
+//                    System.out.println(temp);
+//                    loves_arr.get(i).setChromo(temp);
+//                    System.out.println(loves_arr.get(i).getChromo());
+//                    System.out.println(loves_arr.get(i).getWeekTime());
+                    loves_arr.get(i).getChromo().add(group.get(i).chromosome);
+                    loves_arr.get(i).setChromo(loves_arr.get(i).getChromo());
+                    System.out.print(loves_arr.get(i).getChromo());
+                    for (int j = 0; j < len; j++) {
+                        System.out.print(group.get(i).chromosome.get(j).intValue());
+//                        System.out.print(loves_arr.get(i).getChromo().get(day).chromosome.get(j).intValue());
+//                        System.out.print(loves_arr.get(i).getChromo().get(day).intValue());
+                        System.out.print(" ");
+                    }
+                    System.out.println();
+                }
+                System.out.println("结果显示完成!!!");
+                group1 = group;
+                group = group2;
+
+//                return group1;
+                return loves_arr;
+            } else {
+                return GA(PreNum, AftNum, PassFlowNum, pre, later, day, loves_arr);
+            }
+
             //在fitness中进行变异
         }
+
 //
 //        //完成GA，显示结果
 //        System.out.println("Day" + day + "已完成排班，结果如下：");
@@ -483,10 +485,10 @@ public class GeneticAlgorithm {
 //            }
 //            System.out.println();
 //        }
-        System.out.println("结果显示完成!!!");
-        group1 = group;
-        group = group2;
-        return group1;
+//        System.out.println("结果显示完成!!!");
+//        group1 = group;
+//        group = group2;
+//        return group1;
         //为什么每天GA的结果都是一样
     }
 }

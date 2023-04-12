@@ -110,3 +110,15 @@ export const getPeriodDay = (storeId, flag) => {
 export const getSize = (storeId) => {
   return request.get('http://localhost:8082/period/size/' + storeId);
 }
+export const getStorePersons =(storeId)=>{
+  return request.get('http://localhost:8082/store/'+storeId);
+}
+export const autoSchedul = (storeId,limited,Monday) => {
+  console.log("信息数据   "+storeId+" "+limited+" "+Monday)
+  return request.get('http://localhost:8082/autoSchedule/'+ storeId+'/'+limited+'/'+Monday);
+  // console.log('拦截到请求')
+  // return request.post('http://localhost:8082/autoSchedule/limitedpresons', {//请求登录接口
+  //   str: data,
+  // })
+  // return request.post('/permission/getMenu',data)
+}

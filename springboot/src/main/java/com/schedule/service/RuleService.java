@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class  RuleService {
+public class RuleService {
     @Autowired
     RuleMapper ruleMapper;
 
