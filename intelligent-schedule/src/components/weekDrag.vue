@@ -9,22 +9,23 @@
         </thead>
         <tbody v-loading="loading" element-loading-text="Loading..." :element-loading-spinner="svg"
             element-loading-svg-view-box="-10, -10, 50, 50" element-loading-background="rgba(130, 130, 130, 0.7)">
-            <tr v-for='(time, i) in times' class="tr-out">
-                <td class="td-out" :class="'out-' + i">
-                    {{ time[0] }}
+            <tr v-for='(time, i) in timesWeek' class="tr-out">
+                <td class="td-out">
+                    {{ time.periodName }}
                 </td>
                 <template v-for="(value, j) in tableData[0]">
-                    <td v-if="time[1] !== -1 && j < 5" class="td-out td" :id="'td' + week_day + time[1] + '-' + j"
-                        :rowspan="weekdaySpans[time[1]]"
-                        @click="(drag === false && time[1] !== 6) ? emit('handleClickTd', time[1], j) : null">
-                        <draggable v-if="time[1] !== 6" :model-value="tableData[time[1]][j][0]" group="people"
-                            animation="300" item-key="key" @start="startDrag($event, time[1], j)" @end="endDrag($event)"
-                            @dragenter="enterDrag($event, time[1], j)">
+                    <td v-if="j < 5" class="td-out td" :class="i >= size[1] ? 'slash' : null"
+                        :id="'td' + week_day + i + '-' + j"
+                        @click="(drag === false && size[1]) ? emit('handleClickTd', i, j) : null">
+                        <draggable v-if="i < size[1]" 
+                        :model-value="tableData[i][j][0]" group="people" animation="300"
+                            item-key="key" @start="startDrag($event, i, j)" @end="endDrag($event)"
+                            @dragenter="enterDrag($event, i, j)">
                             <template #item="{ element, index }">
                                 <div class="item" :class="(drag === true) ? 'move' : null"
                                     :title="element.employeeName + ' ' + element.position">
                                     <el-icon v-if="drag === true" :size="19" class="icon-delete"
-                                        @click="deleteItem(time[1], j, index)">
+                                        @click="deleteItem(i, j, index)">
                                         <CircleClose />
                                     </el-icon>
                                     <span v-if="viewValue === '全部查看'">
@@ -35,22 +36,22 @@
                                 </div>
                             </template>
                         </draggable>
-                        <el-icon v-if="drag === true && time[1] !== 6" :size="22" class="icon-add"
-                            @click="emit('showAddView', tableData[time[1]][j][0], time[1], j)">
+                        <el-icon v-if="drag === true && i < size[1]" :size="22" class="icon-add"
+                            @click="emit('showAddView', tableData[i][j][0], i, j)">
                             <CirclePlus />
                         </el-icon>
                     </td>
-                    <td v-else-if="time[2] !== -1 && j >= 5" class="td-out td" :id="'td' + week_day + time[2] + '-' + j"
-                        :rowspan="weekendSpans[time[2]]"
-                        @click="(drag === false && time[2] !== 0) ? emit('handleClickTd', time[2], j) : null">
-                        <draggable v-if="time[2] !== 0" :model-value="tableData[time[2] - 1][j][0]" group="people"
-                            animation="300" item-key="key" @start="startDrag($event, time[2] - 1, j)" @end="endDrag($event)"
-                            @dragenter="enterDrag($event, time[2] - 1, j)">
+                    <td v-else-if="j >= 5" class="td-out td" :class="i < size[0] - size[2] ? 'slash' : null"
+                        :id="'td' + week_day + i + '-' + j"
+                        @click="(drag === false && i >= size[0] - size[2]) ? emit('handleClickTd', i, j) : null">
+                        <draggable v-if="i >= size[0] - size[2]" :model-value="tableData[i - (size[0] - size[2])][j][0]" group="people"
+                            animation="300" item-key="key" @start="startDrag($event, i - (size[0] - size[2]), j)" @end="endDrag($event)"
+                            @dragenter="enterDrag($event, i - (size[0] - size[2]), j)">
                             <template #item="{ element, index }">
                                 <div class="item" :class="(drag === true) ? 'move' : null"
                                     :title="element.employeeName + ' ' + element.position">
                                     <el-icon v-if="drag === true" :size="19" class="icon-delete"
-                                        @click="deleteItem(time[2] - 1, j, index)">
+                                        @click="deleteItem(i - (size[0] - size[2]), j, index)">
                                         <CircleClose />
                                     </el-icon>
                                     <span v-if="viewValue === '全部查看'">
@@ -61,8 +62,8 @@
                                 </div>
                             </template>
                         </draggable>
-                        <el-icon v-if="drag === true && time[2] !== 0" :size="22" class="icon-add"
-                            @click="emit('showAddView', tableData[time[2] - 1][j][0], time[2] - 1, j)">
+                        <el-icon v-if="drag === true && i >= size[0] - size[2]" :size="22" class="icon-add"
+                            @click="emit('showAddView', tableData[i - (size[0] - size[2])][j][0], i - (size[0] - size[2]), j)">
                             <CirclePlus />
                         </el-icon>
                     </td>
@@ -81,10 +82,14 @@ const props = defineProps({
     tableData: Array,
     week_day: String,
     viewValue: String,
-    loading: Boolean
+    loading: Boolean,
+    timesWeek: Array,
+    size: Array
 });
 const emit = defineEmits(['emitTableData', 'handleClickTd', 'showAddView', 'message']);
 
+console.log(props.timesWeek)
+console.log(props.size)
 //加载数据
 const svg = `
         <path class="path" d="
@@ -101,23 +106,6 @@ const svg = `
 const drag = ref(false);
 const ending = ref(null);
 const dragging = ref(null);
-
-//表格最左侧时间段
-const times = [
-    ["8:30-9:30", 0, 0],
-    ["9:30-11:00", -1, 1],
-    ["11:00-12:00", 1, -1],
-    ["12:00-14:00", -1, 2],
-    ["14:00-17:00", 2, 3],
-    ["17:00-19:00", 3, 4],
-    ["19:00-20:00", 4, -1],
-    ["20:00-21:00", -1, 5],
-    ["21:00-22:00", 5, -1],
-    ["22:00-23:00", -1, 6],
-    ["23:00-24:00", 6, -1]
-];
-const weekdaySpans = [2, 2, 1, 1, 2, 2, 1];
-const weekendSpans = [1, 2, 1, 1, 2, 2, 2];
 
 //开始拖拽、拖拽终点、结束拖拽
 const startDrag = (e, index1, index2) => {
@@ -173,7 +161,7 @@ const endDrag = (e) => {
 
 //删除员工
 const deleteItem = (index1, index2, index) => {
-    // console.log(index1, index2, index);
+    console.log(index1, index2, index);
 
     let newData = [...props.tableData];
     let item = [...newData[index1]];
@@ -187,8 +175,14 @@ const deleteItem = (index1, index2, index) => {
 const weekEdit = () => {
     drag.value = (drag.value === true ? false : true);
 }
+
+const initDrag = () => {
+    drag.value = false;
+}
+
 defineExpose({
-    weekEdit
+    weekEdit,
+    initDrag
 })
 </script>
 
@@ -263,47 +257,12 @@ defineExpose({
             }
         }
 
-        #tdweek6-0,
-        #tdweek6-1,
-        #tdweek6-2,
-        #tdweek6-3,
-        #tdweek6-4,
-        #tdweek0-5,
-        #tdweek0-6 {
+        .slash {
             background: #fff url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxsaW5lIHgxPSIwIiB5MT0iMCIgeDI9IjEwMCUiIHkyPSIxMDAlIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjEiLz48L3N2Zz4=) no-repeat 100% center;
         }
 
-        #tdweek6-0:hover,
-        #tdweek6-1:hover,
-        #tdweek6-2:hover,
-        #tdweek6-3:hover,
-        #tdweek6-4:hover,
-        #tdweek0-5:hover,
-        #tdweek0-6:hover {
-            cursor: default;
-        }
-
-        .out-0,
-        .out-2,
-        .out-6,
-        .out-7,
-        .out-8,
-        .out-9,
-        .out-10 {
-            height: 20px;
-        }
-
-        .out-1 {
-            height: 30px;
-        }
-
-        .out-3,
-        .out-5 {
-            height: 40px;
-        }
-
-        .out-4 {
-            height: 60px;
+        .slash:hover {
+            cursor: none;
         }
 
         .td:hover {

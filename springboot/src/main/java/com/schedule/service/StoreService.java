@@ -21,7 +21,7 @@ public class StoreService {
         return storeMapper.getAllStore();
     }
 
-    public Store getStoreById(String storeId) {
-        return storeMapper.getStoreById(storeId);
-    }
+//    public Store getStoreById(String storeId) {
+//        return storeMapper.getStoreById(storeId);
+//    }
 }

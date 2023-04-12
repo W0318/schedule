@@ -18,7 +18,7 @@
 
             <SlideSelection ref="slideRef" :week_day="week_day" @emitCurrent="(current1) => current = current1"
                 @emitTable="(table1) => table = table1" @updateTableData="updateTableData" @updateDayDate="updateDayDate"
-                @initVariable="initVariable" />
+                @initVariable="initVariable" @dragInit="dragInit" />
         </div>
 
         <div class="view-button">
@@ -28,21 +28,22 @@
             </el-select>
 
             <div class="buttonView">
-                <el-button type="primary" :icon="Delete" @click="handleDelete" title="删除单元格内容">
-                    删除</el-button>
+                <el-button type="danger" :icon="Delete" @click="handleDelete" title="删除单元格内容">删除</el-button>
                 <el-button :class="edit === '完成' ? 'button-choose' : null" type="primary" :icon="Edit"
                     @click="handleEdit">{{ edit }}</el-button>
-                <el-button v-if="week_day === 'week'" type="primary" :icon="Postcard">一键生成排班</el-button>
+                <el-button v-if="week_day === 'week'" type="success" :icon="Postcard">一键生成排班</el-button>
+                <el-button v-if="week_day === 'week'" type="success" :icon="Finished"
+                    @click="updateSchedule">保存排班</el-button>
             </div>
         </div>
 
         <div class="schedule">
-            <weekDrag v-if="week_day === 'week'" ref="weekDragRef" :week_day="week_day" :table="table"
-                :tableData="tableData" :viewValue="viewValue" :loading="loading"
+            <weekDrag v-if="week_day === 'week'" ref="weekDragRef" :week_day="week_day" :table="table" :size="size"
+                :timesWeek="timesWeek" :tableData="tableData" :viewValue="viewValue" :loading="loading"
                 @emitTableData="(tableData1) => tableData = tableData1" @handleClickTd="(a, b) => handleClickTd(a, b)"
                 @showAddView="(a, b, c) => showAddView(a, b, c)" @message="(msg) => message(msg)" />
 
-            <dayDrag v-if="week_day === 'day'" ref="dayDragRef" :week_day="week_day" :dayData="dayData"
+            <dayDrag v-if="week_day === 'day'" ref="dayDragRef" :week_day="week_day" :dayData="dayData" :timesDay="timesDay"
                 :viewValue="viewValue" :loading="loading" :current="current" @emitDayData="(dayData1) => dayData = dayData1"
                 @handleClickTd="(a, b) => handleClickTd(a, b)" @showAddView="(a, b, c) => showAddView(a, b, c)"
                 @message="(msg) => message(msg)" />
@@ -72,7 +73,7 @@
 <script setup>
 import { ref } from 'vue';
 import moment from "moment";
-import { Delete, Edit, Postcard } from '@element-plus/icons-vue';
+import { Delete, Edit, Postcard, Finished } from '@element-plus/icons-vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import SlideSelection from '../components/SlideSelection.vue'
 import weekDrag from '../components/WeekDrag.vue'
@@ -85,7 +86,10 @@ import {
     deleteScheduling,
     updateWeekData,
     deleteDaySchedule,
-    replaceDaySchedule
+    replaceDaySchedule,
+    getPeriodAll,
+    getPeriodDay,
+    getSize
 } from '@/api';
 
 /**
@@ -94,18 +98,42 @@ import {
 // 门店切换
 const stores = ref([]);
 const storeValue = ref();
+
 //所有员工数据
 const employees = ref([]);
 const employeesAvail = ref([]);
+
 //表格单元格数据
 var data = [];
 const tableData = ref([]);
 const dayData = ref([]);
 const weekIndex = [0, 1, 1, 1, 1, 1, 0];
+
+//表格左侧时间段
+const timesWeek = ref([]);
+const timesDay = ref([]);
+const size = ref([]);
+
 //初始化获取数据库
 getAllStore().then((datas) => {
     stores.value = datas.data;
     storeValue.value = stores.value[0].storeId;
+
+    getPeriodAll(storeValue.value).then((datas) => {
+        timesWeek.value = datas.data;
+    })
+
+    getPeriodDay(storeValue.value, 1).then((datas) => {
+        timesDay.value.push(datas.data);
+    })
+
+    getPeriodDay(storeValue.value, 0).then((datas) => {
+        timesDay.value.push(datas.data);
+    })
+
+    getSize(storeValue.value).then((datas) => {
+        size.value = datas.data;
+    })
 
     getAllEmployee(stores.value[0].storeId).then((datas) => {
         employees.value = datas.data;
@@ -121,6 +149,7 @@ getAllStore().then((datas) => {
                     return row[i];
                 })
             });
+            console.log(tableData.value)
             loading.value = false;
         });
 
@@ -218,6 +247,8 @@ var addIndex = null;
  */
 //修改门店
 const changeStore = () => {
+    getStoreData();
+
     //周切换
     slideRef.value.initWeeks();
 
@@ -295,9 +326,9 @@ const handleDelete = () => {
                             newData[value[0]][value[1]] = [];
                         }
                         else {
-                            if (tableData.value[value[0] - 1][value[1]][1] !== null)
-                                deleteIds.push(tableData.value[value[0] - 1][value[1]][1]);
-                            newData[value[0] - 1][value[1]] = [];
+                            if (tableData.value[value[0] - (size.value[0] - size.value[1])][value[1]][1] !== null)
+                                deleteIds.push(tableData.value[value[0] - (size.value[0] - size.value[1])][value[1]][1]);
+                            newData[value[0] - (size.value[0] - size.value[1])][value[1]] = [];
                         }
                         let td = document.getElementById('td' + week_day.value + value[0] + '-' + value[1]);
                         // console.log(td)
@@ -334,7 +365,13 @@ const handleDelete = () => {
                         else
                             updateEmployeeIds += "=" + employeeIds;
                     });
-                    deleteDaySchedule(updateEmployeeIds, current.value.format('YYYY-MM-DD'), weekIndex[current.value.day()], updateIndexs.join(','));
+                    console.log(updateEmployeeIds)
+                    console.log(current.value.format('YYYY-MM-DD'))
+                    console.log(weekIndex[current.value.day()])
+                    console.log(updateIndexs.join(','))
+                    console.log(storeValue.value)
+                    deleteDaySchedule(updateEmployeeIds, current.value.format('YYYY-MM-DD'),
+                        weekIndex[current.value.day()], updateIndexs.join(','), storeValue.value);
                 }
 
                 arrTd.splice(0, arrTd.length);
@@ -363,26 +400,7 @@ const handleEdit = () => {
     }
     else {
         if (week_day.value === 'week') {
-            var tb = tableData.value.map(row => {
-                row = row.map(item => {
-                    item = item.map((two, index) => {
-                        if (index === 0) {
-                            var tb1 = [];
-                            two.map(em => {
-                                tb1.push(JSON.stringify(em));
-                            });
-                            return tb1.join('>');
-                        }
-                        else return two;
-                    });
-                    return item.join('+');
-                });
-                return row.join('-');
-            });
-            var week = current.value.startOf('W').format("YYYY-MM-DD");
-            for (var i = 1; i < 7; i++)
-                week += "," + current.value.startOf('W').add(i, 'days').format("YYYY-MM-DD");
-            updateWeekData(tb.join('<'), week);
+            updateSchedule();
         }
         else {
             var updateEmployeeIds = "";
@@ -414,8 +432,40 @@ const handleEdit = () => {
     edit.value = (edit.value === '编辑' ? '完成' : '编辑');
 }
 
+//更新数据库排班数据
+const updateSchedule = () => {
+    var tb = tableData.value.map(row => {
+        row = row.map(item => {
+            item = item.map((two, index) => {
+                if (index === 0) {
+                    var tb1 = [];
+                    two.map(em => {
+                        tb1.push(JSON.stringify(em));
+                    });
+                    return tb1.join('>');
+                }
+                else return two;
+            });
+            return item.join('+');
+        });
+        return row.join('-');
+    });
+    var week = current.value.startOf('W').format("YYYY-MM-DD");
+    for (var i = 1; i < 7; i++)
+        week += "," + current.value.startOf('W').add(i, 'days').format("YYYY-MM-DD");
+    updateWeekData(tb.join('<'), week, storeValue.value);
+}
+
+const dragInit = () => {
+    if (week_day.value === 'week')
+        weekDragRef.value.initDrag();
+    else
+        dayDragRef.value.initDrag();
+}
+
 //显示添加员工对话框、添加员工
 const showAddView = (added, index1, index2) => {
+    console.log(added, index1, index2)
     employeeValue.value = '请选择要添加的员工';
     addIndex = [index1, index2];
 
@@ -458,16 +508,19 @@ const showAddView = (added, index1, index2) => {
     showDialog.value = true;
 }
 const addEmplyee = () => {
-    if (week_day.value === 'week') {
-        let newData = [...tableData.value];
-        newData[addIndex[0]][addIndex[1]][0].push(employeeValue.value);
-        console.log(newData)
-        tableData.value = [...newData];
-    }
-    else {
-        let newData = [...dayData.value];
-        newData[addIndex[0]][addIndex[1]] = employeeValue.value;
-        dayData.value = [...newData];
+    if (employeeValue.value === '请选择要添加的员工') {
+        message("请选择要添加的员工");
+    } else {
+        if (week_day.value === 'week') {
+            let newData = [...tableData.value];
+            newData[addIndex[0]][addIndex[1]][0].push(employeeValue.value);
+            console.log(newData)
+            tableData.value = [...newData];
+        } else {
+            let newData = [...dayData.value];
+            newData[addIndex[0]][addIndex[1]] = employeeValue.value;
+            dayData.value = [...newData];
+        }
     }
 
     showDialog.value = false;
@@ -513,18 +566,23 @@ const initVariable = () => {
     }
 }
 const updateTableData = () => {
+    console.log(storeValue.value)
     console.log(current.value)
     loading.value = true;
     getAWeekwork(current.value.startOf('isoWeek').format('YYYY-MM-DD'), current.value.endOf('isoWeek').format('YYYY-MM-DD'), storeValue.value)
         .then((datas) => {
-            data = datas.data;
+            console.log(datas.data)
+            let data = datas.data;
             tableData.value = data[0].map(function (col, i) {
                 return data.map(function (row) {
                     return row[i];
                 })
             });
+            console.log(tableData.value)
             loading.value = false;
         });
+
+    console.log(tableData.value)
 }
 const updateDayDate = () => {
     loading.value = true;
@@ -533,6 +591,29 @@ const updateDayDate = () => {
             dayData.value = datas.data;
             loading.value = false;
         });
+}
+const getStoreData = () => {
+    console.log(storeValue.value)
+    getPeriodAll(storeValue.value).then((datas) => {
+        timesWeek.value = datas.data;
+    })
+
+    getPeriodDay(storeValue.value, 1).then((datas) => {
+        timesDay.value.push(datas.data);
+    })
+
+    getPeriodDay(storeValue.value, 0).then((datas) => {
+        timesDay.value.push(datas.data);
+    })
+
+    getSize(storeValue.value).then((datas) => {
+        size.value = datas.data;
+    })
+
+    getAllEmployee(stores.value[0].storeId).then((datas) => {
+        employees.value = datas.data;
+        employeesAvail.value = [...employees.value];
+    });
 }
 </script>
 
@@ -597,15 +678,15 @@ const updateDayDate = () => {
         align-items: center;
         margin-bottom: 10px;
 
-        .el-button {
-            background-color: #fff;
-            color: #0a85ff;
-        }
+        // .el-button {
+        //     background-color: #fff;
+        //     color: #0a85ff;
+        // }
 
-        .el-button:hover {
-            background-color: #409EFF;
-            color: #fff;
-        }
+        // .el-button:hover {
+        //     background-color: #409EFF;
+        //     color: #fff;
+        // }
 
         .button-choose {
             background-color: #409EFF;

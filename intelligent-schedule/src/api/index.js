@@ -27,7 +27,7 @@ export const getLogin = (data) => {
   // return request.post('/permission/getMenu',data)
 }
 
-export const getStore=()=>{
+export const getStore = () => {
   return request.get('http://localhost:8082/store/queryStoreList')
 }
 
@@ -60,6 +60,7 @@ export const getAllEmployee = (storeId) => {
 }
 
 export const getAWeekwork = (Monday, Sunday, storeId) => {
+  console.log('http://localhost:8082/scheduling/getAWeekWork/' + Monday + '/' + Sunday + '/' + storeId)
   return request.get('http://localhost:8082/scheduling/getAWeekWork/' + Monday + '/' + Sunday + '/' + storeId);
 }
 
@@ -71,22 +72,41 @@ export const deleteScheduling = (ids) => {
   return request.get('http://localhost:8082/scheduling/deleteScheduling/' + ids);
 }
 
-export const deleteDaySchedule = (employeeIds, day, week, startIndex) => {
+export const deleteDaySchedule = (employeeIds, day, week, startIndex, storeId) => {
   return request.post('http://localhost:8082/scheduling/deleteDaySchedule', {
     employeeIds: employeeIds,
     day: day,
     week: week,
-    startIndex: startIndex
+    startIndex: startIndex,
+    storeId: storeId
   });
 }
 
-export const updateWeekData = (tableData, week) => {
+export const updateWeekData = (tableData, week, storeId) => {
   return request.post('http://localhost:8082/scheduling/replaceScheduling', {
     tableData: tableData,
-    week: week
+    week: week,
+    storeId: storeId
   });
 }
 
 export const replaceDaySchedule = (employeeIds, storeId, day, week) => {
-  return request.get('http://localhost:8082/scheduling/replaceDaySchedule/' + employeeIds + '/' + storeId + '/' + day + '/' + week);
+  return request.post('http://localhost:8082/scheduling/replaceDaySchedule', {
+    employeeIds: employeeIds,
+    storeId: storeId,
+    day: day,
+    week: week
+  });
+}
+
+export const getPeriodAll = (storeId) => {
+  return request.get('http://localhost:8082/period/all/' + storeId);
+}
+
+export const getPeriodDay = (storeId, flag) => {
+  return request.get('http://localhost:8082/period/day/' + storeId + "/" + flag);
+}
+
+export const getSize = (storeId) => {
+  return request.get('http://localhost:8082/period/size/' + storeId);
 }
