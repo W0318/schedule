@@ -4,9 +4,7 @@
             element-loading-svg-view-box="-10, -10, 50, 50" element-loading-background="rgba(130, 130, 130, 0.7)">
             <tr v-for='(row, index1) in dayData' class="tr-out">
                 <td id="td-time" class="td-out" style="background-color: #e3e3e3;">
-                    {{
-                        (current.day() !== 0 && current.day() !== 6) ? weekdayTimes[index1] : weekendTimes[index1]
-                    }}
+                    {{ (current.day() !== 0 && current.day() !== 6) ? timesDay[0][index1].periodName : timesDay[1][index1].periodName }}
                 </td>
                 <template v-for='(item, index2) in row'>
                     <td class="td-out td" :class="drag === true ? 'move-day' : null"
@@ -43,7 +41,8 @@ const props = defineProps({
     week_day: String,
     viewValue: String,
     loading: Boolean,
-    current: typeof (moment())
+    current: typeof (moment()),
+    timesDay: Array
 });
 const emit = defineEmits(['emitDayData', 'handleClickTd', 'showAddView', 'message']);
 
@@ -57,10 +56,6 @@ const svg = `
           L 15 15
         " style="stroke-width: 4px; fill: rgba(0, 0, 0, 0)"/>
       `
-
-//表格最左侧时间段
-const weekdayTimes = ["8:30-11:00", "11:00-14:00", "14:00-17:00", "17:00-19:00", "19:00-21:00", "21:00-23:00"];
-const weekendTimes = ["9:30-12:00", "12:00-14:00", "14:00-17:00", "17:00-20:00", "20:00-22:00", "22:00-24:00"];
 
 //是否可拖拽drag，拖拽起点dragging，拖拽终点ending
 const drag = ref(false);
@@ -140,11 +135,16 @@ const handleDragEnter = (e, row, col) => {
     ending.value = [row, col];
 }
 
+const initDrag = () => {
+    drag.value = false;
+}
+
 const dayEdit = () => {
     drag.value = (drag.value === true ? false : true);
 }
 defineExpose({
-    dayEdit
+    dayEdit,
+    initDrag
 })
 </script>
 

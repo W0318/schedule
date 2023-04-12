@@ -18,6 +18,7 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.Style;
 import java.util.*;
 
 import static com.schedule.config.RankTransfer.transpose;
@@ -155,6 +156,7 @@ public class AutoScheduling {
 //            System.out.println();
 //        }
         }
+        System.out.println(flag);
         System.out.println(returnArray[0][0][0]==null);
         return returnArray;
     }
@@ -354,7 +356,8 @@ public class AutoScheduling {
 //            System.out.println(e);
 //        }
 //        return abc;
-        return abc != null;
+        System.out.println("abc"+abc);
+        return abc == null;
 //        return ga.GA(preENeed, aftENeed, storeRule.getFlowNeeds(), (int)(storeRule.getPreTimeNeed() / 0.5), (int)(storeRule.getAftTimeNeed() / 0.5), day, preferCodes);
 //        return null;
     }

@@ -270,7 +270,7 @@ public class GeneticAlgorithm {
                     //还缺多少人，随机上
                     while (countShiftE(i) < (int) Math.ceil(PopulationsNeed)) {//人不够,随机选在wait的人上班,每次选一个
                         count++;
-                        if(count>2000) break;
+                        if(count>10000) break;
                         System.out.println("这是什么1？" + countShiftE(i) + " " + (int) Math.ceil(PopulationsNeed) + " " + 1);
                         int index = Math.abs((int) (Math.random() * (scale - 1) + 1));
                         if (check.get(index).get(i) == 0 && status.get(index).get(i) == 1 && getDayTime(index) < 16 && getContTime(index) < 8&&loves_arr.get(index).getWeekTime()<64) {//满足要求，上班
@@ -318,7 +318,7 @@ public class GeneticAlgorithm {
                 int count =0;
                 while (countShiftE(i) < (int) Math.ceil(PopulationsNeed)) {
                     count++;
-                    if(count>2000) break;
+                    if(count>10000) break;
                     System.out.println("这是什么2？" + countShiftE(i) + " " + (int) Math.ceil(PopulationsNeed) + " " + 2);
                     int index = Math.abs((int) (Math.random() * (scale - 1) + 1));
 //                        int index = Math.abs(r.nextInt()%Size);

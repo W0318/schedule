@@ -304,7 +304,8 @@ public class SchedulingController {
         for (int i = 0; i < storeTime.size(); i++) {
             if (storeTime.get(i) < 0) storeTime.set(i, generalTime.get(i));
         }
-        shiftLen = (int) (24 + storeTime.get(0) / 0.5 + storeTime.get(1) / 0.5);
+
+        shiftLen = 24 + (int) (storeTime.get(0) / 0.5) + (int) (storeTime.get(1) / 0.5);
         weekdayStart = new String[shiftLen];
         weekendStart = new String[shiftLen];
         weekdayEnd = new String[shiftLen];

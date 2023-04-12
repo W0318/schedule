@@ -50,7 +50,7 @@ import moment from "moment";
 const props = defineProps({
     week_day: String
 });
-const emit = defineEmits(['emitCurrent', 'emitTable', 'updateTableData', 'updateDayDate', 'initVariable']);
+const emit = defineEmits(['emitCurrent', 'emitTable', 'updateTableData', 'updateDayDate', 'initVariable', 'dragInit']);
 
 //周切换
 const week1 = ref(moment().startOf('isoWeek').format('M月D日') + '-' + moment().endOf('isoWeek').format('M月D日'));
@@ -149,6 +149,7 @@ const chooseOption = (button, index) => {
         }
 
         emit('initVariable');
+        emit('dragInit');
     }
 }
 //左右箭头
