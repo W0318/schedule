@@ -31,16 +31,16 @@
         <el-button type="danger" :icon="Delete" @click="handleDelete" title="删除单元格内容">删除</el-button>
         <el-button :class="edit === '完成' ? 'button-choose' : null" type="primary" :icon="Edit"
                    @click="handleEdit">{{ edit }}</el-button>
-        <el-button  @click="confermessage" v-if="week_day === 'week'" type="success" :icon="Postcard">一键生成排班</el-button>
+        <el-button  @click="dialogVisible = true" v-if="week_day === 'week'" type="success" :icon="Postcard">一键生成排班</el-button>
 
-
+<!--        @click="confermessage"-->
 
         <el-button v-if="week_day === 'week'" type="success" :icon="Finished"
                    @click="updateSchedule">保存排班</el-button>
       </div>
     </div>
 
-    <el-dialog v-model="getmessage">
+    <el-dialog v-model="dialogVisible">
       <el-form ref="returnForm" label-width="100px" class="demo-ruleForm">
         <el-form-item style="float:right">
           <p><label>可排班人数：</label>
@@ -112,6 +112,7 @@ import {
   getPeriodDay,
   getSize, autoSchedul, getStorePersons
 } from '@/api';
+import {events as ctx} from "vuedraggable/src/core/sortableEvents";
 
 /**
  * 初始化获取数据库数据：stores、data、employees
@@ -138,35 +139,18 @@ const size = ref([]);
 let persons = ref();
 const needpersons = ref(18);
 
-const getmessage = ref(false);
+let dialogVisible = ref(false);
 
 const submitForm=(needperson)=>{
 
   // console.log("第一天"+current.value.startOf('isoWeek').format('YYYY-MM-DD'))
   let monday = current.value.startOf('isoWeek').format('YYYY-MM-DD');
   console.log(storeValue.value+"   "+needperson+"   "+monday)
-  // autoSchedul
   autoSchedul(storeValue.value,needperson,monday).then((datas)=>{
-    console.log("1332eeisdyhsjdhsadhio")
-    console.log("ggjh"+datas.data)
+    console.log(datas.data)
   });
+  dialogVisible.value = false;
 }
-// let storeId = 1;
-// const getStoreId = (id) => {
-//   storeId = id;
-//   console.log("id是" + id);
-// }
-const confermessage = () => {
-  console.log("店铺id" + storeValue.value)
-  // console.log("我的测试点"+getStorePersons(storeId.value))
-  getStorePersons(storeValue.value).then(({data}) => {
-    console.log("测试数据    " + data)
-    persons.value = data;
-  })
-  getmessage.value = true;
-  console.log("猜猜我是谁"+getmessage.value)
-}
-
 //初始化获取数据库
 getAllStore().then((datas) => {
   stores.value = datas.data;

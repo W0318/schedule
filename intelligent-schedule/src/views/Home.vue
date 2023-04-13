@@ -165,7 +165,9 @@ export default {
   mounted() {
 
     getStore().then((datas) => {
-      this.options = datas.data;
+
+      this.options = datas.data;//检索信息的问题部分信息丢失
+      console.log(datas)
       console.log("登录数据：  "+sessionStorage.getItem("employee"));
       const a = sessionStorage.getItem("employee");
       console.log((JSON.parse(a).employeeId).toString())

@@ -28,7 +28,7 @@ export const getLogin = (data) => {
 }
 
 export const getStore = () => {
-  return request.get('http://localhost:8082/store/queryStoreList')
+  return request.get('http://localhost:8082/store/storemessage');
 }
 
 export const getMenu = (data) => {
@@ -121,4 +121,7 @@ export const autoSchedul = (storeId,limited,Monday) => {
   //   str: data,
   // })
   // return request.post('/permission/getMenu',data)
+}
+export const  postStoreId =(storeId)=>{
+  return request.get('http://localhost:8082/store/stores/'+ storeId);
 }

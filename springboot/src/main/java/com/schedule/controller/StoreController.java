@@ -1,5 +1,6 @@
 package com.schedule.controller;
 
+import com.schedule.beans.Storebean;
 import com.schedule.entity.Store;
 import com.schedule.service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +30,14 @@ public class StoreController {
     public int getStorePersons(@PathVariable("storeId") String storeId){
         return storeService.getStorePersons(storeId);
     };
+    @GetMapping("/stores/{storeId}")
+    public Store getStoreById(@PathVariable("storeId") String storeId){
+        return storeService.getStoreById(storeId);
+    };
+    @GetMapping("/storemessage")
+    public List<Storebean> getStoresMessage() {
+        return storeService.getStoresMessage();
+    }
+
 }
 

@@ -1,5 +1,6 @@
 package com.schedule.mapper;
 
+import com.schedule.beans.Storebean;
 import com.schedule.entity.Store;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -20,4 +21,6 @@ public interface StoreMapper {
     Store getStoreById(String storeId);
     @Select("select count(*) from employee WHERE storeId = #{storeId}")
     int getStorePersons(String storeid);
+    @Select("SELECT * FROM store")
+    List<Storebean> getStoresMessage();
 }

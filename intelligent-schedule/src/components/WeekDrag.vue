@@ -13,61 +13,61 @@
                 <td class="td-out">
                     {{ time.periodName }}
                 </td>
-                <template v-for="(value, j) in tableData[0]">
-                    <td v-if="j < 5" class="td-out td" :class="i >= size[1] ? 'slash' : null"
-                        :id="'td' + week_day + i + '-' + j"
-                        @click="(drag === false && size[1]) ? emit('handleClickTd', i, j) : null">
-                        <draggable v-if="i < size[1]" 
-                        :model-value="tableData[i][j][0]" group="people" animation="300"
-                            item-key="key" @start="startDrag($event, i, j)" @end="endDrag($event)"
-                            @dragenter="enterDrag($event, i, j)">
-                            <template #item="{ element, index }">
-                                <div class="item" :class="(drag === true) ? 'move' : null"
-                                    :title="element.employeeName + ' ' + element.position">
-                                    <el-icon v-if="drag === true" :size="19" class="icon-delete"
-                                        @click="deleteItem(i, j, index)">
-                                        <CircleClose />
-                                    </el-icon>
-                                    <span v-if="viewValue === '全部查看'">
-                                        {{ element.employeeName + ' ' + element.position }}
-                                    </span>
-                                    <span v-else-if="viewValue === '按岗位分组'">{{ element.position }}</span>
-                                    <span v-else>{{ element.employeeName }}</span>
-                                </div>
-                            </template>
-                        </draggable>
-                        <el-icon v-if="drag === true && i < size[1]" :size="22" class="icon-add"
-                            @click="emit('showAddView', tableData[i][j][0], i, j)">
-                            <CirclePlus />
-                        </el-icon>
-                    </td>
-                    <td v-else-if="j >= 5" class="td-out td" :class="i < size[0] - size[2] ? 'slash' : null"
-                        :id="'td' + week_day + i + '-' + j"
-                        @click="(drag === false && i >= size[0] - size[2]) ? emit('handleClickTd', i, j) : null">
-                        <draggable v-if="i >= size[0] - size[2]" :model-value="tableData[i - (size[0] - size[2])][j][0]" group="people"
-                            animation="300" item-key="key" @start="startDrag($event, i - (size[0] - size[2]), j)" @end="endDrag($event)"
-                            @dragenter="enterDrag($event, i - (size[0] - size[2]), j)">
-                            <template #item="{ element, index }">
-                                <div class="item" :class="(drag === true) ? 'move' : null"
-                                    :title="element.employeeName + ' ' + element.position">
-                                    <el-icon v-if="drag === true" :size="19" class="icon-delete"
-                                        @click="deleteItem(i - (size[0] - size[2]), j, index)">
-                                        <CircleClose />
-                                    </el-icon>
-                                    <span v-if="viewValue === '全部查看'">
-                                        {{ element.employeeName + ' ' + element.position }}
-                                    </span>
-                                    <span v-else-if="viewValue === '按岗位分组'">{{ element.position }}</span>
-                                    <span v-else>{{ element.employeeName }}</span>
-                                </div>
-                            </template>
-                        </draggable>
-                        <el-icon v-if="drag === true && i >= size[0] - size[2]" :size="22" class="icon-add"
-                            @click="emit('showAddView', tableData[i - (size[0] - size[2])][j][0], i - (size[0] - size[2]), j)">
-                            <CirclePlus />
-                        </el-icon>
-                    </td>
-                </template>
+<!--                <template v-for="(value, j) in tableData[0]">-->
+<!--                    <td v-if="j < 5" class="td-out td" :class="i >= size[1] ? 'slash' : null"-->
+<!--                        :id="'td' + week_day + i + '-' + j"-->
+<!--                        @click="(drag === false && size[1]) ? emit('handleClickTd', i, j) : null">-->
+<!--                        <draggable v-if="i < size[1]" -->
+<!--                        :model-value="tableData[i][j][0]" group="people" animation="300"-->
+<!--                            item-key="key" @start="startDrag($event, i, j)" @end="endDrag($event)"-->
+<!--                            @dragenter="enterDrag($event, i, j)">-->
+<!--                            <template #item="{ element, index }">-->
+<!--                                <div class="item" :class="(drag === true) ? 'move' : null"-->
+<!--                                    :title="element.employeeName + ' ' + element.position">-->
+<!--                                    <el-icon v-if="drag === true" :size="19" class="icon-delete"-->
+<!--                                        @click="deleteItem(i, j, index)">-->
+<!--                                        <CircleClose />-->
+<!--                                    </el-icon>-->
+<!--                                    <span v-if="viewValue === '全部查看'">-->
+<!--                                        {{ element.employeeName + ' ' + element.position }}-->
+<!--                                    </span>-->
+<!--                                    <span v-else-if="viewValue === '按岗位分组'">{{ element.position }}</span>-->
+<!--                                    <span v-else>{{ element.employeeName }}</span>-->
+<!--                                </div>-->
+<!--                            </template>-->
+<!--                        </draggable>-->
+<!--                        <el-icon v-if="drag === true && i < size[1]" :size="22" class="icon-add"-->
+<!--                            @click="emit('showAddView', tableData[i][j][0], i, j)">-->
+<!--                            <CirclePlus />-->
+<!--                        </el-icon>-->
+<!--                    </td>-->
+<!--                    <td v-else-if="j >= 5" class="td-out td" :class="i < size[0] - size[2] ? 'slash' : null"-->
+<!--                        :id="'td' + week_day + i + '-' + j"-->
+<!--                        @click="(drag === false && i >= size[0] - size[2]) ? emit('handleClickTd', i, j) : null">-->
+<!--                        <draggable v-if="i >= size[0] - size[2]" :model-value="tableData[i - (size[0] - size[2])][j][0]" group="people"-->
+<!--                            animation="300" item-key="key" @start="startDrag($event, i - (size[0] - size[2]), j)" @end="endDrag($event)"-->
+<!--                            @dragenter="enterDrag($event, i - (size[0] - size[2]), j)">-->
+<!--                            <template #item="{ element, index }">-->
+<!--                                <div class="item" :class="(drag === true) ? 'move' : null"-->
+<!--                                    :title="element.employeeName + ' ' + element.position">-->
+<!--                                    <el-icon v-if="drag === true" :size="19" class="icon-delete"-->
+<!--                                        @click="deleteItem(i - (size[0] - size[2]), j, index)">-->
+<!--                                        <CircleClose />-->
+<!--                                    </el-icon>-->
+<!--                                    <span v-if="viewValue === '全部查看'">-->
+<!--                                        {{ element.employeeName + ' ' + element.position }}-->
+<!--                                    </span>-->
+<!--                                    <span v-else-if="viewValue === '按岗位分组'">{{ element.position }}</span>-->
+<!--                                    <span v-else>{{ element.employeeName }}</span>-->
+<!--                                </div>-->
+<!--                            </template>-->
+<!--                        </draggable>-->
+<!--                        <el-icon v-if="drag === true && i >= size[0] - size[2]" :size="22" class="icon-add"-->
+<!--                            @click="emit('showAddView', tableData[i - (size[0] - size[2])][j][0], i - (size[0] - size[2]), j)">-->
+<!--                            <CirclePlus />-->
+<!--                        </el-icon>-->
+<!--                    </td>-->
+<!--                </template>-->
             </tr>
         </tbody>
     </table>
