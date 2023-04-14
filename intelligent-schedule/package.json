@@ -23,7 +23,8 @@
     "vue": "^3.2.13",
     "vue-router": "^4.1.6",
     "vuedraggable": "^4.1.0",
-    "vuex": "^4.0.2"
+    "vuex": "^4.0.2",
+    "yarn": "^1.22.19"
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",

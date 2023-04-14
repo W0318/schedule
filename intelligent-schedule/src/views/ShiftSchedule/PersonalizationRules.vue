@@ -6,6 +6,9 @@
           <el-tree
             :data="storeData"
             :props="defaultProps"
+            default-expand-all
+            highlight-current
+            node-key="nodeId"
             @node-click="handleNodeClick"
           ></el-tree>
         </el-card>
@@ -13,218 +16,127 @@
       <el-container>
         <el-header>
           <el-card class="right-header">
-            <el-form>
-              <el-row :gutter="30">
-                <el-col :span="6">
-                  <el-form-item label="规则名称：">
-                    <el-input placeholder="请输入规则名称"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="适用范围：">
-                    <el-cascader
-                      v-model="value"
-                      :options="options"
-                      :props="{ expandTrigger: 'hover' }"
-                      @change="handleChange"
-                    ></el-cascader>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="10">
-                  <el-form-item class="form-btn">
-                    <el-button type="primary">查询</el-button>
-                    <el-button>重置</el-button>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </el-form>
+            <!-- tab选择 -->
+            <el-tabs v-model="activeName" @tab-click="handleClick">
+              <el-tab-pane label="开店规则" name="first">
+                <open-rules />
+              </el-tab-pane>
+              <el-tab-pane label="关店规则" name="second">
+                <close-rules />
+              </el-tab-pane>
+              <el-tab-pane label="客流规则" name="third">
+                <customer-rules />
+              </el-tab-pane>
+              <el-tab-pane label="班次规则" name="fourth">
+                <classes-rules />
+              </el-tab-pane>
+            </el-tabs>
           </el-card>
         </el-header>
-        <el-main>
-          <el-card class="main-card">
-            <!-- 按钮区域 -->
-            <div class="btns">
-              <div class="left-btn">
-                <el-button plain type="primary" @click="addRules"
-                  >新建规则</el-button
-                >
-              </div>
-              <div class="right-btn">
-                <el-button plain type="primary">导入</el-button>
-                <el-button plain type="primary">导出</el-button>
-              </div>
-            </div>
-            <!-- 列表区域 -->
-            <el-table :data="tableData" style="width: 100%" border stripe>
-              <el-table-column label="序号" type="index" width="60px" />
-              <el-table-column prop="ruleName" label="规则名称" width="180" />
-              <el-table-column prop="useRange" label="适用范围" width="100" />
-              <el-table-column prop="type" label="类型" />
-              <el-table-column prop="state" label="状态">
-                <template v-slot="scope">
-                  <el-tag type="success" v-if="scope.row.state === '已启用'"
-                    >已启用</el-tag
-                  >
-                  <el-tag type="danger" v-else>已停用</el-tag>
-                </template>
-              </el-table-column>
-              <el-table-column prop="creator" label="创建人" />
-              <el-table-column label="操作">
-                <template v-slot="scope">
-                  <el-link type="primary">编辑</el-link>
-                  <el-link
-                    type="primary"
-                    :icon="Delete"
-                    @click="handleDelete"
-                    title="删除规则内容"
-                    >删除</el-link
-                  >
-                  <el-link
-                    type="primary"
-                    :icon="Enable"
-                    @click="handleEnable"
-                    title="启用规则内容"
-                    v-if="scope.row.state === '已停用'"
-                    >启用</el-link
-                  >
-                  <el-link
-                    type="primary"
-                    :icon="Deactivate"
-                    @click="handleDeactivate"
-                    title="停用规则内容"
-                    v-else
-                    >停用</el-link
-                  >
-                </template>
-              </el-table-column>
-            </el-table>
-          </el-card>
-        </el-main>
       </el-container>
     </el-container>
   </div>
 </template>
 
-
 <script>
+import { ref } from "vue";
 import { ElMessageBox } from "element-plus";
+import OpenRules from "./components/OpenShopRules.vue";
+import CloseRules from "./components/CloseShopRules.vue";
+import CustomerRules from "./components/CustomerRules.vue";
+import ClassesRules from "./components/ClassesRules.vue";
+import { getStoreName, getAllStore } from "@/api";
+import OpenShopRules from "./components/OpenShopRules.vue";
+
 export default {
+  inject: ["reload"],
   data() {
     return {
+      label111: -1,
+      lengthh: 0,
+      index: 0,
+      selectLabel: "",
+
       // 左侧导航数据
-      storeData: [
-        {
-          label: "零售门店",
-          children: [
-            {
-              label: "集团公司",
-              children: [
-                {
-                  label: "浙江分公司",
-                },
-                {
-                  label: "上海分公司",
-                },
-                {
-                  label: "江苏分公司",
-                },
-              ],
-            },
-          ],
-        },
-      ],
+      data: "",
+      storeData: [],
       defaultProps: {
         children: "children",
         label: "label",
       },
-      //列表数据
-      tableData: [
-        {
-          ruleName: "规则1",
-          useRange: "浙江分公司",
-          type: "分公司",
-          state: "已启用",
-          creator: "User1",
-        },
-        {
-          ruleName: "规则1",
-          useRange: "浙江分公司",
-          type: "分公司",
-          state: "已停用",
-          creator: "User1",
-        },
-        {
-          ruleName: "规则1",
-          useRange: "浙江分公司",
-          type: "分公司",
-          state: "已停用",
-          creator: "User1",
-        },
-        {
-          ruleName: "规则1",
-          useRange: "浙江分公司",
-          type: "分公司",
-          state: "已停用",
-          creator: "User1",
-        },
-        {
-          ruleName: "规则1",
-          useRange: "浙江分公司",
-          type: "分公司",
-          state: "已启用",
-          creator: "User1",
-        },
-        {
-          ruleName: "规则1",
-          useRange: "浙江分公司",
-          type: "分公司",
-          state: "已启用",
-          creator: "User1",
-        },
-        {
-          ruleName: "规则1",
-          useRange: "浙江分公司",
-          type: "分公司",
-          state: "已启用",
-          creator: "User1",
-        },
-        {
-          ruleName: "规则1",
-          useRange: "浙江分公司",
-          type: "分公司",
-          state: "已停用",
-          creator: "User1",
-        },
-        {
-          ruleName: "规则1",
-          useRange: "浙江分公司",
-          type: "分公司",
-          state: "已停用",
-          creator: "User1",
-        },
-        {
-          ruleName: "规则1",
-          useRange: "浙江分公司",
-          type: "分公司",
-          state: "已停用",
-          creator: "User1",
-        },
-        {
-          ruleName: "规则1",
-          useRange: "浙江分公司",
-          type: "分公司",
-          state: "已启用",
-          creator: "User1",
-        },
-      ],
+
+      activeName: "first",
     };
   },
+  components: {
+    OpenRules,
+    CloseRules,
+    CustomerRules,
+    ClassesRules,
+  },
   methods: {
-    addRules() {
-      this.$router.push({
-        name: "addRules",
+    // 切换tree上的节点点击事件
+    handleNodeClick(data) {
+      this.$nextTick(() => {
+        // 获取所有门店信息
+        getAllStore().then((datas) => {
+          this.lengthh = datas.data.length;
+          console.log("lengthh:" + this.lengthh);
+          for (let i = this.lengthh - 1; i >= 0; i--) {
+            console.log("id:" + datas.data[i].storeId);
+            // console.log(data.label);
+            this.selectLabel = datas.data[i].storeName;
+            let label = data.label;
+            console.log("label:" + label);
+            console.log("selectlabel:" + this.selectLabel);
+            if (label == this.selectLabel) {
+              console.log("当前公司：" + label);
+              this.label111 = datas.data[i].storeId;
+              this.reload();
+            }
+          }
+          if (this.label111 == -1) {
+            this.reload();
+          }
+          console.log(this.label111);
+          sessionStorage.setItem("label111", this.label111);
+          console.log("存的数据" + sessionStorage.getItem("label111"));
+        });
       });
     },
+
+    // handleNodeClick(data) {
+    //   this.$nextTick(() => {
+    //     // this.$refs.tree.setCurrentKey(data.nodeId);
+    //     // 获取所有门店信息
+    //     getAllStore().then((datas) => {
+    //       // this.tableData = datas.data.length;
+    //       console.log("length:" + datas.data.length);
+    //     });
+    //     console.log(data.label);
+    //     let label = data.label;
+    //     if (label == "浙江总公司") {
+    //       this.label111 = 1;
+    //       // this.$router.go(0);
+    //     } else if (label == "上海分公司") {
+    //       this.label111 = 2;
+    //       this.$router.go(0);
+    //     } else if (label == "江苏分公司") {
+    //       this.label111 = 3;
+    //       this.$router.go(0);
+    //     } else {
+    //       this.label111 = -1;
+    //       this.$router.go(0);
+    //     }
+    //     sessionStorage.setItem("label111", this.label111);
+    //     console.log("存的数据" + sessionStorage.getItem("label111"));
+    //     // getEmployeeByStoreId(data.label).then((datas) => {
+    //     //   this.tableData = datas.data;
+    //     //   // console.log(datas.data);
+    //     // });
+    //   });
+    // },
+
     //点击删除button删除规则
     handleDelete() {
       ElMessageBox.confirm("该规则将永久被删除，确定吗?", "Warning", {
@@ -263,6 +175,18 @@ export default {
         });
     },
   },
+
+  mounted() {
+    getStoreName().then((datas) => {
+      this.storeData = [
+        {
+          label: "全国零售门店",
+          children: [...datas.data],
+        },
+      ];
+      console.log(this.storeData);
+    });
+  },
 };
 </script>
 <style scoped>
@@ -290,10 +214,12 @@ export default {
 .right-header {
   margin-left: 20px;
   width: 100%;
-  height: 70px;
+  height: 600px;
   padding: 0;
 }
-
+.el-tree{
+  font-size: 17px;
+}
 .btns {
   display: flex;
   justify-content: space-between;
