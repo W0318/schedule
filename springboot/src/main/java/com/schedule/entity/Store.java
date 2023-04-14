@@ -22,8 +22,13 @@ import java.util.Map;
 public class Store {
     private String storeId;
     private String storeName;
+    private String storeType;
     private String address;
     private float size;
+    private String manger;
+    private int workers;
+    private int state;
+    private String label;
 
     private float preTimeNeed = 2;   // 开店前所需时间,最多2小时
     private String preEFormula;   //开店前所需员工公式

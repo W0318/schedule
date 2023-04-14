@@ -31,7 +31,6 @@ public class EmployeeController {
         return employeeService.getEmployeeById(employeeId);
     }
 
-
     /**
      * @author 朱凯
      * <p>
@@ -61,5 +60,80 @@ public class EmployeeController {
 //            return 0;
 //        }
 
+    }
+
+    /**
+     * @author 张卓童
+     * <p>
+     * ///////////////////////////////////////////////////////////////////////////////////////////////
+     */
+    @GetMapping("/allEmployee")
+    public List<Employee> getEmployee() {
+        return employeeService.getEmployee();
+    }
+
+    //查找某门店下的所有员工
+    @GetMapping("/getEmployeeByStoreId/{storeName}")
+    public List<Employee> getEmployeeByStoreId(@PathVariable("storeName") String storeName) {
+        return employeeService.getEmployeeByStoreId(storeName);
+    }
+
+    //寻找是否已有该员工id
+    @GetMapping("/getFindIfExistEmployee/{employeeId}")
+    public List<Employee> getFindIfExistEmployee(@PathVariable("employeeId") String employeeId) {
+        return employeeService.getFindIfExistEmployee(employeeId);
+    }
+
+    @PostMapping("/deleteEmployeeStateByStoreId")
+    @ResponseBody
+    public void banEmployeeStateByStoreId(@RequestBody Map map) {
+        employeeService.deleteEmployeeStateByStoreId(map.get("storeId").toString());
+    }
+
+    @GetMapping("/getEmployeeByEmployeeName/{employeeName}")
+    public List<Employee> getEmployeeByEmployeeName(@PathVariable("employeeName") String employeeName) {
+        return employeeService.getEmployeeByEmployeeName(employeeName);
+    }
+
+    @GetMapping("/getEmployeeByPosition/{position}")
+    public List<Employee> getEmployeeByPosition(@PathVariable("position") String position) {
+        return employeeService.getEmployeeByPosition(position);
+    }
+
+    @GetMapping("/getEmployeeByEmployeeNameAndPosition/{employeeName}/{position}")
+    public List<Employee> getEmployeeByEmployeeNameAndPosition(@PathVariable("employeeName") String employeeName, @PathVariable("position") String position) {
+        return employeeService.getEmployeeByEmployeeNameAndPosition(employeeName, position);
+    }
+
+    @PostMapping("/updateEmployee")
+    @ResponseBody
+    public void updateEmployee(@RequestBody Map map) {
+        employeeService.updateEmployee(map.get("employeeId").toString(), map.get("employeeName").toString(), map.get("storeId").toString(), map.get("email").toString(), map.get("position").toString(), map.get("phone").toString());
+    }
+
+    @PostMapping("/updateEmployeeStateOne")
+    @ResponseBody
+    public void updateEmployeeStateOne(@RequestBody Map map) {
+        employeeService.updateEmployeeStateOne(map.get("employeeId").toString());
+    }
+
+    @PostMapping("/updateEmployeeStateZero")
+    @ResponseBody
+    public void updateEmployeeStateZero(@RequestBody Map map) {
+        employeeService.updateEmployeeStateZero(map.get("employeeId").toString());
+    }
+
+    @PostMapping("/deleteEmployee")
+    @ResponseBody
+    public void deleteEmployee(@RequestBody Map map) {
+        employeeService.deleteEmployee(map.get("employeeId").toString());
+    }
+
+    @PostMapping("/insertEmployee")
+    @ResponseBody
+    public void insertEmployee(@RequestBody Map map) {
+        System.out.println(map.get("storeId").toString());
+        System.out.println(map.get("employeeId").toString());
+        employeeService.insertEmployee(map.get("employeeId").toString(), map.get("employeeName").toString(), map.get("storeId").toString(), map.get("email").toString(), map.get("position").toString(), map.get("phone").toString());
     }
 }

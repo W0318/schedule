@@ -3,6 +3,9 @@ package com.schedule.controller;
 import com.schedule.method.Methods;
 import com.schedule.service.RuleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +19,17 @@ import java.util.List;
 public class RuleController {
     @Autowired
     RuleService ruleService;
+
+    /**
+     * @author 张卓童
+     * <p>
+     * ///////////////////////////////////////////////////////////////////////////////////////////////
+     */
+    @PostMapping("/deleteRuleByStoreId")
+    @ResponseBody
+    public void deleteRuleByStoreId(@RequestBody Map map) {
+        ruleService.deleteRuleByStoreId(map.get("storeId").toString());
+    }
 
     @GetMapping("/getPeriods/{storeId}")
     public List<String> getPeriods(@PathVariable("storeId") String storeId) {

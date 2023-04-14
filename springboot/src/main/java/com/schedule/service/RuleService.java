@@ -12,6 +12,14 @@ public class RuleService {
     @Autowired
     RuleMapper ruleMapper;
 
+    /**
+     * @author 张卓童
+     * <p>
+     * ///////////////////////////////////////////////////////////////////////////////////////////////
+     */
+    public void deleteRuleByStoreId(String storeId) {
+        ruleMapper.deleteRuleByStoreId(storeId);
+    }
     public List<Rule> getGeneralRule() {
         return ruleMapper.getGeneralRule();
     }

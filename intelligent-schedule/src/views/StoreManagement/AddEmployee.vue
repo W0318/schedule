@@ -2,64 +2,6 @@
   <el-card>
     <el-form ref="addFormRef" :model="addForm" :rules="addFormRules">
       <h4>基础信息</h4>
-      <!-- <el-row>
-        <el-col :span="8">
-          <el-form-item label="门店名称：" prop="ruleName">
-            <el-input v-model="addForm.ruleName" />
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="8">
-          <el-form-item label="门店类型：" prop="useRange1">
-            <el-cascader
-              v-model="value"
-              :options="addForm.useRange1"
-              :props="{ expandTrigger: 'hover' }"
-              @change="handleChange"
-              collapse-tags
-              clearable
-              multiple
-            ></el-cascader>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="8">
-          <el-form-item label="门店人数：" prop="peopleNum">
-            <el-input v-model="addForm.peopleNum" />
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="8">
-          <el-form-item label="门店面积：" prop="storeArea">
-            <el-input v-model="addForm.storeArea" />
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="8">
-          <el-form-item label="门店地址：" prop="storeAddress">
-            <el-input v-model="addForm.storeAddress" />
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row class="state">
-        <el-col :span="8">
-          <el-form-item label="状态：" prop="state">
-            <el-cascader
-              v-model="value"
-              :options="addForm.state"
-              :props="{ expandTrigger: 'hover' }"
-              @change="handleChange"
-              collapse-tags
-              clearable
-              multiple
-            ></el-cascader>
-          </el-form-item>
-        </el-col>
-      </el-row> -->
       <el-row :gutter="15">
         <el-form
           ref="elForm"
@@ -70,10 +12,10 @@
         >
           <el-row class="one">
             <el-col :span="12">
-              <el-form-item label="员工姓名：" prop="field101">
+              <el-form-item label="员工编号：" prop="employeeId">
                 <el-input
-                  v-model="formData.field101"
-                  placeholder="请输入员工姓名"
+                  v-model="formData.employeeId"
+                  placeholder="请输入员工编号"
                   clearable
                   :style="{ width: '100%' }"
                 >
@@ -81,10 +23,10 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="员工编号：" prop="field102">
+              <el-form-item label="员工姓名：" prop="employeeName">
                 <el-input
-                  v-model="formData.field102"
-                  placeholder="请输入员工编号"
+                  v-model="formData.employeeName"
+                  placeholder="请输入员工姓名"
                   clearable
                   :style="{ width: '100%' }"
                 >
@@ -94,27 +36,29 @@
           </el-row>
           <el-row class="two">
             <el-col :span="12">
-              <el-form-item label="岗位：" prop="field103">
+              <el-form-item label="所属门店：" prop="store">
                 <el-select
-                  v-model="formData.field103"
-                  placeholder="请输入岗位"
+                  v-model="formData.store"
+                  value-key="storeId"
+                  placeholder="请选择所属门店"
                   clearable
                   :style="{ width: '100%' }"
                 >
                   <el-option
-                    v-for="(item, index) in field103Options"
-                    :key="index"
-                    :label="item.label"
-                    :value="item.value"
+                    v-for="item in field106Options"
+                    :key="item.storeId"
+                      :label="item.storeName"
+                      :value="item"
                     :disabled="item.disabled"
                   ></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
+
             <el-col :span="12">
-              <el-form-item label="员工电话：" prop="field105">
+              <el-form-item label="员工电话：" prop="phone">
                 <el-input
-                  v-model="formData.field105"
+                  v-model="formData.phone"
                   placeholder="请输入员工电话"
                   clearable
                   :style="{ width: '100%' }"
@@ -125,16 +69,16 @@
           </el-row>
           <el-row class="three">
             <el-col :span="12">
-              <el-form-item label="所属门店：" prop="field106">
+              <el-form-item label="岗位：" prop="position">
                 <el-select
-                  v-model="formData.field106"
-                  placeholder="请选择所属门店"
+                  v-model="formData.position"
+                  placeholder="请输入岗位"
                   clearable
                   :style="{ width: '100%' }"
                 >
                   <el-option
-                    v-for="(item, index) in field106Options"
-                    :key="index"
+                    v-for="(item, employeeId) in field103Options"
+                    :key="employeeId"
                     :label="item.label"
                     :value="item.value"
                     :disabled="item.disabled"
@@ -143,9 +87,9 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="员工电邮：" prop="field107">
+              <el-form-item label="员工电邮：" prop="email">
                 <el-input
-                  v-model="formData.field107"
+                  v-model="formData.email"
                   placeholder="请输入员工电邮"
                   clearable
                   :style="{ width: '100%' }"
@@ -154,35 +98,107 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-col :span="19">
-            <el-form-item label="描述：" prop="field108">
-              <el-input
-                v-model="formData.field108"
-                type="textarea"
-                placeholder="请输入描述"
-                :autosize="{ minRows: 4, maxRows: 4 }"
-                :style="{ width: '100%' }"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="状态：" prop="field109">
-              <el-select
-                v-model="formData.field109"
-                placeholder="请选择状态"
-                clearable
-                :style="{ width: '100%' }"
-              >
-                <el-option
-                  v-for="(item, index) in field109Options"
-                  :key="index"
-                  :label="item.label"
-                  :value="item.value"
-                  :disabled="item.disabled"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
+          <el-row class="four">
+            <el-col :span="20">
+              <el-form-item label="工作日偏好：" prop="value3">
+                <el-select
+                  v-model="value3"
+                  multiple
+                  collapse-tags
+                  collapse-tags-tooltip
+                  placeholder="请选择工作日偏好"
+                  :style="{ width: '100%' }"
+                >
+                  <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row class="five">
+            <el-col :span="12">
+              <el-form-item label="时间偏好一：" prop="startTime">
+                <el-time-select
+                  v-model="startTime"
+                  :max-time="endTime"
+                  class="mr-4"
+                  placeholder="开始时间"
+                  start="08:00"
+                  step="00:30"
+                  end="23:00"
+                />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item prop="endTime">
+                <el-time-select
+                  v-model="endTime"
+                  :min-time="startTime"
+                  :max-time="startTime1"
+                  placeholder="结束时间"
+                  start="08:00"
+                  step="00:30"
+                  end="23:00"
+                />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row class="five">
+            <el-col :span="12">
+              <el-form-item label="时间偏好二：" prop="startTime1">
+                <el-time-select
+                  v-model="startTime1"
+                  :min-time="endTime"
+                  :max-time="endTime1"
+                  class="mr-4"
+                  placeholder="开始时间"
+                  start="08:00"
+                  step="00:30"
+                  end="23:00"
+                />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item prop="endTime1">
+                <el-time-select
+                  v-model="endTime1"
+                  :min-time="startTime1"
+                  placeholder="结束时间"
+                  start="08:00"
+                  step="00:30"
+                  end="23:00"
+                />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row class="six">
+            <el-col :span="12">
+              <el-form-item label="周工作时长：" prop="field108">
+                <el-input
+                  v-model="formData.field108"
+                  placeholder="请输入周工作时长偏好"
+                  clearable
+                  :style="{ width: '100%' }"
+                >
+                </el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="日工作时长：" prop="field109">
+                <el-input
+                  v-model="formData.field109"
+                  placeholder="请输入日工作时长偏好"
+                  clearable
+                  :style="{ width: '100%' }"
+                >
+                </el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
         </el-form>
       </el-row>
       <div class="btns">
@@ -194,136 +210,236 @@
 </template>
 
 <script>
+import { ref } from "vue";
+import { ElMessage, ElMessageBox } from "element-plus";
+import {
+  insertEmployee,
+  insertPreferenceHaveOne,
+  insertPreferenceHaveTwo,
+  insertPreferenceHaveThree,
+  getFindIfExistEmployee,
+  getAllStore,
+} from "@/api";
 export default {
   components: {},
   props: [],
   data() {
     return {
+      a: "",
+      fullTime: "",
+      startTime: "",
+      endTime: "",
+      startTime1: "",
+      endTime1: "",
+      value3: ref([]),
       formData: {
-        field101: undefined,
-        field102: undefined,
-        field103: undefined,
-        field105: undefined,
-        field106: undefined,
-        field107: undefined,
-        field108: undefined,
-        field109: undefined,
+        employeeName: "",
+        employeeId: "",
+        store: "",
+        phone: "",
+        position: "",
+        email: "",
+        field108: "",
+        field109: "",
       },
       rules: {
-        field101: [
+        employeeName: [
           {
             required: true,
             message: "请输入员工姓名：",
             trigger: "blur",
           },
         ],
-        field102: [
+        employeeId: [
           {
             required: true,
             message: "请输入员工编号",
             trigger: "blur",
           },
         ],
-        field103: [
+        store: [
           {
             required: true,
-            message: "请输入岗位",
+            message: "请选择岗位",
             trigger: "change",
           },
         ],
-        field105: [
+        phone: [
           {
             required: true,
             message: "请输入员工电话",
             trigger: "blur",
           },
         ],
-        field106: [
+        position: [
           {
             required: true,
             message: "请选择所属门店",
             trigger: "change",
           },
         ],
-        field107: [
+        email: [
           {
             required: true,
             message: "请输入员工电邮",
             trigger: "blur",
           },
         ],
-        field108: [
-          {
-            required: true,
-            message: "请输入描述",
-            trigger: "blur",
-          },
-        ],
-        field109: [
-          {
-            required: true,
-            message: "请选择状态",
-            trigger: "change",
-          },
-        ],
       },
+      options: [
+        {
+          value: "1",
+          label: "星期一",
+        },
+        {
+          value: "2",
+          label: "星期二",
+        },
+        {
+          value: "3",
+          label: "星期三",
+        },
+        {
+          value: "4",
+          label: "星期四",
+        },
+        {
+          value: "5",
+          label: "星期五",
+        },
+        {
+          value: "6",
+          label: "星期六",
+        },
+        {
+          value: "7",
+          label: "星期日",
+        },
+      ],
       field103Options: [
         {
-          label: "总经理",
-          value: 1,
+          label: "门店经理",
+          value: "门店经理",
         },
         {
-          label: "销售经理",
-          value: 2,
+          label: "副经理",
+          value: "副经理",
         },
         {
-          label: "销售员",
-          value: 3,
+          label: "小组长",
+          value: "小组长",
         },
         {
-          label: "清洁工",
-          value: 4,
+          label: "店员",
+          value: "店员",
         },
       ],
-      field106Options: [
-        {
-          label: "浙江分公司",
-          value: 1,
-        },
-        {
-          label: "上海分公司",
-          value: 2,
-        },
-        {
-          label: "江苏分公司",
-          value: "",
-        },
-      ],
-      field109Options: [
-        {
-          label: "已启用",
-          value: 1,
-        },
-        {
-          label: "已停用",
-          value: 2,
-        },
-      ],
+      field106Options: [],
     };
   },
   computed: {},
   watch: {},
   created() {},
-  mounted() {},
+  mounted() {
+    getAllStore().then((datas) => {
+      this.field106Options = datas.data;
+      console.log(this.field106Options);
+    });
+  },
   methods: {
     submitForm() {
-      this.$refs["elForm"].validate((valid) => {
-        if (!valid) return;
-        // TODO 提交表单
+      getFindIfExistEmployee(this.formData.employeeId).then((datas) => {
+        if (datas.data.length != 0) {
+          ElMessage({
+            type: "warning",
+            message: "员工编号已存在",
+          });
+        } else {
+          if (
+            this.formData.employeeId === "" ||
+            this.formData.employeeName === "" ||
+            this.formData.store.storeId === "" ||
+            this.formData.email === "" ||
+            this.formData.position === "" ||
+            this.formData.phone === ""
+          ) {
+            ElMessage({
+              type: "warning",
+              message: "请完整填写员工信息",
+            });
+            return;
+          }
+          insertEmployee(
+            this.formData.employeeId,
+            this.formData.employeeName,
+            this.formData.store.storeId,
+            this.formData.email,
+            this.formData.position,
+            this.formData.phone
+          ).then(() => {
+            if (this.value3.length != 0) {
+              insertPreferenceHaveOne(
+                this.formData.employeeId,
+                this.value3.join(",")
+              );
+            }
+            if (
+              this.startTime != "" &&
+              this.endTime != "" &&
+              this.startTime1 != "" &&
+              this.endTime1 != ""
+            ) {
+              this.fullTime =
+                this.startTime +
+                "-" +
+                this.endTime +
+                "," +
+                this.startTime1 +
+                "-" +
+                this.endTime1;
+              insertPreferenceHaveTwo(this.formData.employeeId, this.fullTime);
+            } else if (this.startTime != "" && this.endTime != "") {
+              this.fullTime = this.startTime + "-" + this.endTime;
+              insertPreferenceHaveTwo(this.formData.employeeId, this.fullTime);
+            } else if (this.startTime1 != "" && this.endTime1 != "") {
+              this.fullTime = this.startTime1 + "-" + this.endTime1;
+              insertPreferenceHaveTwo(this.formData.employeeId, this.fullTime);
+            }
+            if (this.formData.field108 != "" && this.formData.field109 != "") {
+              this.a = JSON.stringify({
+                day: parseInt(this.formData.field109),
+                week: parseInt(this.formData.field108),
+              });
+              insertPreferenceHaveThree(this.formData.employeeId, this.a);
+            } else if (
+              this.formData.field108 != "" &&
+              this.formData.field109 == ""
+            ) {
+              this.a = JSON.stringify({
+                week: parseInt(this.formData.field108),
+              });
+              insertPreferenceHaveThree(this.formData.employeeId, this.a);
+            } else if (
+              this.formData.field108 == "" &&
+              this.formData.field109 != ""
+            ) {
+              this.a = JSON.stringify({
+                day: parseInt(this.formData.field109),
+              });
+              insertPreferenceHaveThree(this.formData.employeeId, this.a);
+            }
+          });
+          ElMessage({
+            type: "success",
+            message: "新建员工成功",
+          });
+          this.$router.push({
+            name: "employee",
+          });
+        }
       });
     },
     resetForm() {
-      // this.$refs["elForm"].resetFields();
       this.$router.push({
         name: "employee",
       });
@@ -355,5 +471,12 @@ h4::before {
 }
 .el-button {
   margin-right: 10px;
+}
+.demo-range .el-date-editor {
+  margin: 8px;
+}
+
+.demo-range .el-range-separator {
+  box-sizing: content-box;
 }
 </style>
