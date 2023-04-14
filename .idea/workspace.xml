@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="da0541f5-4c6e-40d5-b328-c67ceb1c0852" name="变更" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/intelligent-schedule/src/views/ShiftSchedule.vue" beforeDir="false" afterPath="$PROJECT_DIR$/intelligent-schedule/src/views/ShiftSchedule.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/algorithm/GA.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,7 +24,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="test" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -116,7 +114,7 @@
       <recent name="com.schedule.config" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.serve">
+  <component name="RunManager" selected="Spring Boot.SpringbootApplication">
     <configuration name="SpringbootApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="spring-vue" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.schedule.SpringbootApplication" />
@@ -200,7 +198,7 @@
       <workItem from="1681374655471" duration="643000" />
       <workItem from="1681452053425" duration="6790000" />
       <workItem from="1681458866136" duration="6168000" />
-      <workItem from="1681472308498" duration="5019000" />
+      <workItem from="1681486307079" duration="150000" />
     </task>
     <servers />
   </component>
@@ -212,7 +210,45 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/zzt" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="origin/zzt" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="zzt" />
+                </option>
+              </RecentGroup>
+            </list>
           </value>
         </entry>
       </map>

@@ -9,6 +9,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.relational.core.sql.In;
 
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -76,8 +77,6 @@ public class Store {
                         map.put(titleName, value);
                     } else if (titleName.equals("开始时间") || titleName.equals("结束时间")) {
                         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-
-                        System.out.println("我是cell"+cell);
                         String value = sdf.format(cell.getDateCellValue());
                         map.put(titleName, value);
                     } else {
@@ -105,7 +104,6 @@ public class Store {
                 "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30"};
 
         List<Map<String, Object>> flows = getFlow(date, storeId);
-        System.out.println("flows: " + flows);
         List<Integer> flowNeeds = new ArrayList<>();
         int index = 0, maxIndex = times.length, flowIndex = 0;
         if (day > 5) index = 2;   //周末从10点开始
@@ -139,7 +137,7 @@ public class Store {
             flowNeeds.add(need);
             index++;
         }
-        System.out.println("flowNeeds: " + flowNeeds);
+        System.out.println(flowNeeds);
         this.flowNeeds = flowNeeds;
     }
 }
