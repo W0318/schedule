@@ -88,40 +88,40 @@ export default {
               console.log(data.flag);
             }
           });
-          console.log(vaild)
+          console.log(vaild);
           // console.log("from"+this.form.password)
-          getLogin(this.form)
-            .then(({ data }) => {
-              // console.log("数据"+data)
-              // console.log("falg   "+data.flag)
-              // console.log("root   "+data.employee.root)
-              sessionStorage.setItem("employee",JSON.stringify(data.employee));//存储user对象
-              let a = sessionStorage.getItem("employee");
-              console.log("这是什么"+a.trim())
-              console.log(a.employeeId)
-              console.log("猜猜我是谁"+JSON.stringify(a).employeeId);
-              // console.log(data.employee)
-              if(data.flag==="ok"){
-                getMenu(parseInt(data.employee.root)).then(({ data }) => {
+          getLogin(this.form).then(({ data }) => {
+            // console.log("数据"+data)
+            // console.log("falg   "+data.flag)
+            // console.log("root   "+data.employee.root)
+            sessionStorage.setItem("employee", JSON.stringify(data.employee)); //存储user对象
+            let a = sessionStorage.getItem("employee");
+            console.log("这是什么" + a.trim());
+            console.log(a.employeeId);
+            console.log("猜猜我是谁" + JSON.stringify(a).employeeId);
+            // console.log(data.employee)
+            if (data.flag === "ok") {
+              getMenu(parseInt(data.employee.root))
+                .then(({ data }) => {
                   if (data.code === 200) {
                     //将token信息存入cookie中用于不同页面间的通讯
-                    Cookie.set('token', data.data.token)
+                    Cookie.set("token", data.data.token);
                     //获取菜单的数据，存入store
                     // data.data.menu
-                    this.$store.commit('setMenu', data.data.menu)
+                    this.$store.commit("setMenu", data.data.menu);
                     //跳转到首页
-                    this.$router.push('/home')
+                    this.$router.push("/home");
                   } else {
-                    this.$message.error(data.data.message)
+                    this.$message.error(data.data.message);
                   }
-                }).catch((err) => {
-                  console.log(err)
                 })
-              }
-              else {
-                console.log(data.flag);
-              }
-            })
+                .catch((err) => {
+                  console.log(err);
+                });
+            } else {
+              console.log(data.flag);
+            }
+          });
         } else {
           console.log(vaild);
         }
@@ -177,29 +177,33 @@ export default {
   }
 
   .login_title {
-    // text-align: center;
-    margin-bottom: 40px;
+    margin-top: 40px;
+    // padding: 20px 0;
+    margin-bottom: 30px;
     color: #505458;
   }
 
   .login_username {
     display: flex;
     flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    // border: 1px solid black;
-    width: 250px;
     // align-items: center;
+    // justify-content: center;
+    // border: 1px solid black;
+    // width: 250px;
+    // align-items: center;
+    margin: 0 auto;
   }
 
   .login {
     display: flex;
     flex-direction: row;
-    align-items: center;
-    justify-content: center;
+    // align-items: center;
+    // justify-content: center;
     // border: 1px solid black;
     width: 250px;
     // align-items: center;
+    margin: 0 auto;
+    margin-top: 20px;
   }
 
   // .el-input {
@@ -227,7 +231,9 @@ export default {
   width: 80px;
   transition: all 0.5s;
   cursor: pointer;
-  margin: 5px;
+  margin: 20px;
+  margin-left: 55px;
+  // border: 1px solid black;
 }
 
 .button span {
