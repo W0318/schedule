@@ -3,10 +3,10 @@
         <tbody v-loading="loading" element-loading-text="Loading..." :element-loading-spinner="svg"
             element-loading-svg-view-box="-10, -10, 50, 50" element-loading-background="rgba(130, 130, 130, 0.7)">
             <tr v-for='(row, index1) in dayData' class="tr-out">
-                <td id="td-time" class="td-out" style="background-color: #e3e3e3;">
-                    {{ (current.day() !== 0 && current.day() !== 6) ? timesDay[0][index1].periodName : timesDay[1][index1].periodName }}
+                <td id="td-time" class="td-out" style="background-color: #e3e3e3;" :title="row[1]">
+                    {{row[1]}}
                 </td>
-                <template v-for='(item, index2) in row'>
+                <template v-for='(item, index2) in row[0]'>
                     <td class="td-out td" :class="drag === true ? 'move-day' : null"
                         :id="'td' + week_day + index1 + '-' + index2" :title="(item.employeeId !== null && JSON.stringify(item) !== '{}') ?
                             (item.employeeName + ' ' + item.position) : null"
@@ -77,12 +77,12 @@ const handleDragEnd = (e) => {
 
     var newData = [...props.dayData];
     var flag = false;
-    var start = newData[dragging.value[0]][dragging.value[1]];
-    var end = newData[ending.value[0]][ending.value[1]];
+    var start = newData[dragging.value[0]][0][dragging.value[1]];
+    var end = newData[ending.value[0]][0][ending.value[1]];
     props.dayData[dragging.value[0]].map(value => {
         if (flag === true) return;
-        if (JSON.stringify(value) !== '{}' && value.employeeId !== null) {
-            if (JSON.stringify(end) !== '{}' && end.employeeId !== null && value.employeeId === end.employeeId) {
+        if (JSON.stringify(value[0]) !== '{}' && value[0].employeeId !== null) {
+            if (JSON.stringify(end) !== '{}' && end.employeeId !== null && value[0].employeeId === end.employeeId) {
                 flag = true;
                 return;
             }
@@ -90,8 +90,8 @@ const handleDragEnd = (e) => {
     });
     props.dayData[ending.value[0]].map(value => {
         if (flag === true) return;
-        if (JSON.stringify(value) !== '{}' && value.employeeId !== null) {
-            if (JSON.stringify(start) !== '{}' && start.employeeId !== null && value.employeeId === start.employeeId) {
+        if (JSON.stringify(value[0]) !== '{}' && value[0].employeeId !== null) {
+            if (JSON.stringify(start) !== '{}' && start.employeeId !== null && value[0].employeeId === start.employeeId) {
                 flag = true;
                 return;
             }
@@ -104,18 +104,18 @@ const handleDragEnd = (e) => {
 
     if (dragging.value[0] === ending.value[0]) {
         let item = [...newData[dragging.value[0]]];
-        let temp = item[dragging.value[1]];
-        item[dragging.value[1]] = item[ending.value[1]];
-        item[ending.value[1]] = temp;
+        let temp = item[0][dragging.value[1]];
+        item[0][dragging.value[1]] = item[0][ending.value[1]];
+        item[0][ending.value[1]] = temp;
 
         newData[dragging.value[0]] = [...item];
     }
     else {
         let item1 = [...newData[dragging.value[0]]];
         let item2 = [...newData[ending.value[0]]];
-        let temp = item1[dragging.value[1]];
-        item1[dragging.value[1]] = item2[ending.value[1]];
-        item2[ending.value[1]] = temp;
+        let temp = item1[0][dragging.value[1]];
+        item1[0][dragging.value[1]] = item2[0][ending.value[1]];
+        item2[0][ending.value[1]] = temp;
 
         newData[dragging.value[0]] = [...item1];
         newData[ending.value[0]] = [...item2];

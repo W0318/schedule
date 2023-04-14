@@ -1,11 +1,11 @@
 spring:
   datasource:
-    url: jdbc:mysql://49.234.210.20:3306/schedule?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&serverTimezone=GMT%2B8
-#    url: jdbc:mysql://localhost:3306/schedule?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&serverTimezone=GMT%2B8
+    #    url: jdbc:mysql://49.234.210.20:3306/schedule?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&serverTimezone=GMT%2B8
+    url: jdbc:mysql://localhost:3306/schedule?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&serverTimezone=GMT%2B8
+    #    username: root
+    #    password: zk.0521+
     username: root
-    password: zk.0521+
-#    username: root
-#    password: 123456
+    password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
     initialization-mode: always
 server:
