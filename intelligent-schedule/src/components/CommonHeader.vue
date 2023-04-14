@@ -56,7 +56,7 @@ const personal = () => {
 </script>
 <style lang="less" scoped>
 .header-container {
-  padding: 20px;
+  padding: 14px;
   background-color: #fff;
 
   display: flex;
