@@ -8,7 +8,8 @@
         <el-header>
           <common-header />
         </el-header>
-        <el-main>
+        <el-main id="ground">
+
           <!-- 路由出口 -->
           <!-- 路由匹配到的组件渲染到这里 -->
           <router-view></router-view>
@@ -40,5 +41,15 @@ export default {
 .el-main {
   background-color: #e3e3e3;
   padding: 5px 10px;
+}
+
+#ground {
+  background: url("../assets/222.jpg");
+  width: 100%;
+  height: 100%;
+  // position: static;
+  background-size: 100% 100%;
+  // display: flex;
+  // filter: brightness(90%);
 }
 </style>

@@ -1,35 +1,44 @@
 <template>
   <el-card class="father">
     <h4>个人中心</h4>
-    <div class="left-bar">
-      <div>
+    <div class="leftright">
+      <div class="left-bar">
         <span class="el-dropdown-link">
           <img class="user" src="../assets/my.png" alt />
         </span>
       </div>
-    </div>
-    <div class="right-bar">
-      <div>
-        <p>{{ employeeId }}</p>
-        <p>{{ employeeName }}</p>
-        <p>{{ storeName }}</p>
-        <p>{{ position }}</p>
+      <div class="right-bar">
+        <div class="one">
+          <p>{{ employeeId }}</p>
+          <p>{{ employeeName }}</p>
+          <p>{{ storeName }}</p>
+          <p>{{ position }}</p>
+        </div>
+        <div class="two">
+          <p>{{ email }}</p>
+          <p>{{ phone }}</p>
+          
+        </div>
+        <div class="three">
+          <p>{{ one }}</p>
+          <p>{{ two }}</p>
+          <p>{{ three }}</p>
+          <p>{{ four }}</p>
+        </div>
+      </div>
+      <div class="btns">
+        <el-button type="primary" @click="handleEdit">编辑</el-button>
       </div>
     </div>
-    <div class="btns">
-      <el-button type="primary" @click="handleEdit">编辑</el-button>
-    </div>
-    <div class="message-box" :inline="true">
+
+    <!-- <div class="message-box" :inline="true">
       <p>{{ email }}</p>
       <p>{{ phone }}</p>
-      <el-divider></el-divider>
       <p>{{ one }}</p>
-      <el-divider></el-divider>
       <p>{{ two }}</p>
-      <el-divider></el-divider>
       <p>{{ three }}</p>
       <p>{{ four }}</p>
-    </div>
+    </div> -->
 
     <!-- 编辑弹窗 -->
     <el-dialog title="编辑" v-model="dialogUpdateVisible">
@@ -678,9 +687,15 @@ export default {
 
 <style scoped>
 .father {
-  border: 1px solid black;
+  /* border: 1px solid black; */
   position: relative;
   height: 690px;
+}
+.leftright {
+  /* border: 1px solid red; */
+  position: absolute;
+  width: 97%;
+  box-shadow: 0 0 5px 5px #eae9e9;
 }
 h4 {
   position: relative;
@@ -702,38 +717,73 @@ h4::before {
   /* position: absolute; */
   /* overflow: auto; */
   /* border: 1px solid black; */
+  margin: 0 auto;
+  margin-top: 25px;
 }
-.right-bar {
-  margin-top: 50px;
-  margin-left: 20px;
+.one {
+  /* margin-top: 50px;
+  left: 50px; */
   float: left;
   /* left: 600px; */
-  width: 20%;
+  width: 15%;
   height: 100%;
   /* position: absolute; */
   /* overflow: auto; */
   /* border: 1px solid black; */
+  margin: 0 auto;
+  padding: 70px 0;
+  margin-left: 50px;
+}
+.two {
+  /* margin-top: 50px;
+  margin-left: 20px; */
+  float: left;
+  /* left: 600px; */
+  width: 24%;
+  height: 100%;
+  /* position: absolute; */
+  /* overflow: auto; */
+  /* border: 1px solid black; */
+  margin: 0 auto;
+  padding: 70px 0;
+}
+.three {
+  /* margin-top: 50px;
+  margin-left: 20px; */
+  float: left;
+  /* left: 600px; */
+  width: 30%;
+  height: 100%;
+  /* position: absolute; */
+  /* overflow: auto; */
+  /* border: 1px solid black; */
+  margin: 0 auto;
+  padding: 70px 0;
 }
 .message-box {
-  text-align: left;
-  top: 230px;
+  /* text-align: left; */
+  top: 180px;
   left: 18px;
   width: 700px;
   height: 350px;
-  /* border: 1px solid black; */
+  border: 1px solid black;
   /* margin: 0 auto; */
+  display: flex;
+  flex-direction: column;
   /* background-color: rgba(255, 255, 255, 0.8); */
   border-radius: 10px;
   /* box-sizing: border-box; */
   box-shadow: 0 0 5px 5px #eae9e9;
-  position: relative;
+  position: absolute;
 }
 .state {
   margin-left: 25px;
 }
 .btns {
-  margin-top: 20px;
-  margin-left: 800px;
+  /* position: absolute; */
+  position: absolute;
+  bottom:20px;
+  right: 20px;
 }
 .el-button {
   margin-right: 10px;
