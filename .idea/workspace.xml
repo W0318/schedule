@@ -5,20 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="da0541f5-4c6e-40d5-b328-c67ceb1c0852" name="变更" comment="">
-      <change afterPath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-10_2.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-11_2.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-12_2.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-13_2.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-14_2.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-15_2.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-16_2.xlsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/algorithm/GA.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/algorithm/GA.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/algorithm/GeneticAlgorithm.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/algorithm/GeneticAlgorithm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/entity/Store.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/entity/Store.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-15_1.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-15_1.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-16_1.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-16_1.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-05-10_1.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-05-10_2.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/intelligent-schedule/src/views/ShiftSchedule.vue" beforeDir="false" afterPath="$PROJECT_DIR$/intelligent-schedule/src/views/ShiftSchedule.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/algorithm/GA.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,6 +24,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="test" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -74,38 +68,38 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "deletionFromPopupRequiresConfirmation": "false",
-    "last_opened_file_path": "E:/work/vue/schedule/springboot/src/main/resources/flow",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "yarn",
-    "project.structure.last.edited": "模块",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "0d570cb2-96df-43cc-80da-7f777e6d0afe",
-    "spring.configuration.checksum": "7ffdcca97a6161b581790219543f7dd3",
-    "ts.external.directory.path": "D:\\soft\\IntelliJ IDEA 2022.3.1\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;deletionFromPopupRequiresConfirmation&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/work/vue/schedule/springboot/src/main/resources/flow&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;模块&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;0d570cb2-96df-43cc-80da-7f777e6d0afe&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;7ffdcca97a6161b581790219543f7dd3&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;D:\\soft\\IntelliJ IDEA 2022.3.1\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="E:\work\vue\schedule\springboot\src\main\resources\flow" />
