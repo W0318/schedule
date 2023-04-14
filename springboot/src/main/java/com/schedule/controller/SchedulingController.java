@@ -1,6 +1,5 @@
 package com.schedule.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.schedule.entity.Employee;
 import com.schedule.entity.Scheduling;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -29,14 +27,11 @@ public class SchedulingController {
     @Autowired
     RuleService ruleService;
 
-    String[] weekdayStart;
-    String[] weekendStart;
-    String[] weekdayEnd;
-    String[] weekendEnd;
     int[] week = {1, 2, 3, 4, 5, 6, 0};
+    int periodLen;
     int shiftLen;
 
-    @GetMapping("/getWorkday/{employeeId}")
+    @GetMapping("/getWorkDay/{employeeId}")
     public List<Date> getEmployeeWorkday(@PathVariable("employeeId") String employeeId) {
         return schedulingService.getEmployeeWorkday(employeeId);
     }
@@ -48,10 +43,222 @@ public class SchedulingController {
 
     @GetMapping("/getAWeekWork/{Monday}/{Sunday}/{storeId}")
     public List<Object> getAWeekWork(@PathVariable("Monday") Date Monday, @PathVariable("Sunday") Date Sunday, @PathVariable("storeId") String storeId) {
-        int index = 0;
-        setPeriods(storeId);
-
         List<Scheduling> work = schedulingService.getAWeekWork(Monday, Sunday, storeId);   //从数据库获取一周数据
+        List<Object> weekWork = getSchedule(work, storeId);
+
+        return weekWork;
+    }
+
+    @PostMapping("/getStuffWeekWork")
+    @ResponseBody
+    public List<Object> getStuffWeekWork(@RequestBody Map<String, String> map) {
+        if (map.get("Monday") != null && map.get("Sunday") != null && map.get("storeId") != null && map.get("employeeId") != null) {
+            Date Monday = Date.valueOf(map.get("Monday"));
+            Date Sunday = Date.valueOf(map.get("Sunday"));
+            String storeId = map.get("storeId");
+            String employeeId = map.get("employeeId");
+
+            List<Scheduling> work = schedulingService.getStuffWeekWork(Monday, Sunday, storeId, employeeId);
+            List<Object> weekWork = getSchedule(work, storeId);
+
+            return weekWork;
+        }
+        return null;
+    }
+
+    @GetMapping("/getADayWork/{day}/{week}/{storeId}")
+    public List<Object> getADayWork(@PathVariable("day") Date day, @PathVariable("week") int week, @PathVariable("storeId") String storeId) {
+        List<Scheduling> work = schedulingService.getADayWork(day, storeId);
+        return getDaySchedule(work, storeId, week);
+    }
+
+    @PostMapping("/getStuffDayWork")
+    @ResponseBody
+    public List<Object> getStuffDayWork(@RequestBody Map map) {
+        Date day = Date.valueOf(map.get("day").toString());
+        int week = (int) map.get("week");
+        String storeId = map.get("storeId").toString();
+        String employeeId = map.get("employeeId").toString();
+        List<Scheduling> work = schedulingService.getStuffDayWork(day, storeId, employeeId);
+        return getDaySchedule(work, storeId, week);
+    }
+
+    @GetMapping("/deleteScheduling/{ids}")
+    public int deleteScheduling(@PathVariable("ids") String ids) {
+        return schedulingService.deleteScheduling(ids);
+    }
+
+    @PostMapping("/deleteDaySchedule")
+    @ResponseBody
+    public void deleteDaySchedule(@RequestBody Map map) {
+        List<Object> items = (List<Object>) map.get("items");
+        Date day = Date.valueOf(map.get("day").toString());
+        String storeId = map.get("storeId").toString();
+        System.out.println(items);
+
+        for (Object item : items) {
+            JSONObject value = JSONObject.parseObject(JSONObject.toJSONString(item));
+            System.out.println(value);
+            String[] times = value.getString("period").split("-");
+            String start = times[0] + ":00";
+
+            if (value.getString("employeeIds").equals("")) {
+                schedulingService.deleteEmployeeIds(day, Time.valueOf(start), storeId);
+            } else {
+                schedulingService.updateEmployeeIds(value.getString("employeeIds"), day, Time.valueOf(start), storeId);
+            }
+        }
+    }
+
+    @PostMapping("/replaceScheduling")
+    @ResponseBody
+    public void replaceScheduling(@RequestBody Map map) {
+        List<Object> items = (List<Object>) map.get("items");
+        String storeId = map.get("storeId").toString();
+        System.out.println(items);
+
+        for (Object item : items) {
+            JSONObject value = JSONObject.parseObject(item.toString());
+            if (value.get("id") == null) {
+                String[] times = value.getString("period").split("-");
+                String start = times[0] + ":00";
+                String end = times[1] + ":00";
+                Scheduling scheduling = new Scheduling();
+                scheduling.setStoreId(storeId);
+                scheduling.setEmployeeIds(value.getString("employeeIds"));
+                scheduling.setDay(Date.valueOf(value.getString("day")));
+                scheduling.setStartTime(Time.valueOf(start));
+                scheduling.setEndTime(Time.valueOf(end));
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(scheduling.getDay());
+                //判断日期是星期几：1-6对应星期一到星期六，0对应星期日
+                int week_index = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+                String[] week = {"周日", "周一", "周二", "周三", "周四", "周五", "周六"};
+                scheduling.setPeriodName(week[week_index] + value.getString("period"));
+                schedulingService.insertScheduling(scheduling);
+            } else if (value.getString("employeeIds").equals("")) {
+                schedulingService.deleteScheduling(value.getString("id"));
+            } else {
+                schedulingService.updateScheduling(value.getString("employeeIds"), value.getIntValue("id"));
+            }
+        }
+    }
+
+    @PostMapping("/replaceDaySchedule")
+    @ResponseBody
+    public void replaceDaySchedule(@RequestBody Map map) {
+        List<Object> items = (List<Object>) map.get("items");
+        Date day = Date.valueOf(map.get("day").toString());
+        String storeId = map.get("storeId").toString();
+        List<List<String>> periods = setArray(storeId);
+        System.out.println(items);
+
+        for (Object item : items) {
+            JSONObject value = JSONObject.parseObject(JSONObject.toJSONString(item));
+            String[] times = value.getString("period").split("-");
+            String start = times[0] + ":00";
+
+            Scheduling scheduling = schedulingService.getByTime(day, Time.valueOf(start), storeId);
+            if (scheduling != null) {
+                if (value.getString("employeeIds").equals("")) {
+                    schedulingService.deleteEmployeeIds(day, Time.valueOf(start), storeId);
+                } else {
+                    schedulingService.updateEmployeeIds(value.getString("employeeIds"), day, Time.valueOf(start), storeId);
+                }
+            } else if (!value.getString("employeeIds").equals("")) {
+                String end = times[1] + ":00";
+                scheduling = new Scheduling();
+                scheduling.setStoreId(storeId);
+                scheduling.setEmployeeIds(value.getString("employeeIds"));
+                scheduling.setDay(day);
+                scheduling.setStartTime(Time.valueOf(start));
+                scheduling.setEndTime(Time.valueOf(end));
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(scheduling.getDay());
+                //判断日期是星期几：1-6对应星期一到星期六，0对应星期日
+                int week_index = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+                String[] week = {"周日", "周一", "周二", "周三", "周四", "周五", "周六"};
+                scheduling.setPeriodName(week[week_index] + value.getString("period"));
+                schedulingService.insertScheduling(scheduling);
+            }
+        }
+    }
+
+    private String period(int flag, int index, List<List<String>> periods) {
+        if (flag == 1) return periods.get(3).get(index);
+        else if (flag == 2) return periods.get(4).get(index - (periods.get(0).size() - periods.get(2).size()));
+        else if (flag == 3) return periods.get(1).get(index);
+        else if (flag == 4) return periods.get(2).get(index - (periods.get(0).size() - periods.get(2).size()));
+        else if (flag == 5) return periods.get(4).get(index);
+        else if (flag == 6) return periods.get(2).get(index);
+
+        return null;
+    }
+
+    private List<List<String>> setArray(String storeId) {
+        List<List<String>> result = new ArrayList<>();
+        List<Double> generalTime = (new Methods()).getTime(ruleService.getGeneralRule());
+        List<Double> storeTime = (new Methods()).getTime(ruleService.getStoreRule(storeId));
+        for (int i = 0; i < storeTime.size(); i++) {
+            if (storeTime.get(i) < 0) storeTime.set(i, generalTime.get(i));
+        }
+        Double before = storeTime.get(0), after = storeTime.get(1);
+
+        periodLen = 26 + (int) (before / 0.5) + (int) (after / 0.5);
+        shiftLen = 24 + (int) (before / 0.5) + (int) (after / 0.5);
+        List<String> weekdayStart = new ArrayList<>();
+        List<String> weekendStart = new ArrayList<>();
+        List<String> weekday = new ArrayList<>();
+        List<String> weekend = new ArrayList<>();
+        List<String> all = new ArrayList<>();
+
+        for (double i = (9 - before); i < (22 + after); i += 0.5) {
+            if (i - (int) i != 0) {
+                if (i < 21 + after) {
+                    weekdayStart.add(((int) i < 10 ? "0" : "") + (int) i + ":30:00");
+                    weekday.add(((int) i < 10 ? "0" : "") + (int) i + ":30-" + ((int) i + 1 < 10 ? "0" : "") + ((int) i + 1) + ":00");
+                }
+                if (i >= 10 - before) {
+                    weekendStart.add(((int) i < 10 ? "0" : "") + (int) i + ":30:00");
+                    weekend.add(((int) i < 10 ? "0" : "") + (int) i + ":30-" + ((int) i + 1 < 10 ? "0" : "") + ((int) i + 1) + ":00");
+                }
+                all.add(((int) i < 10 ? "0" : "") + (int) i + ":30-" + ((int) i + 1 < 10 ? "0" : "") + ((int) i + 1) + ":00");
+            } else {
+                if (i < 21 + after) {
+                    weekdayStart.add(((int) i < 10 ? "0" : "") + (int) i + ":00:00");
+                    weekday.add(((int) i < 10 ? "0" : "") + (int) i + ":00-" + ((int) i < 10 ? "0" : "") + (int) i + ":30");
+                }
+                if (i >= 10 - before) {
+                    weekendStart.add(((int) i < 10 ? "0" : "") + (int) i + ":00:00");
+                    weekend.add(((int) i < 10 ? "0" : "") + (int) i + ":00-" + ((int) i < 10 ? "0" : "") + (int) i + ":30");
+                }
+                all.add(((int) i < 10 ? "0" : "") + (int) i + ":00-" + ((int) i < 10 ? "0" : "") + ((int) i) + ":30");
+            }
+        }
+
+//        System.out.println("all:" + all);
+//        System.out.println("weekday:" + weekday);
+//        System.out.println("weekend:" + weekend);
+//        System.out.println("weekdayStart:" + weekdayStart);
+//        System.out.println("weekendStart:" + weekendStart);
+        result.add(all);
+        result.add(weekday);
+        result.add(weekend);
+        result.add(weekdayStart);
+        result.add(weekendStart);
+
+        return result;
+    }
+
+    private List<Object> getSchedule(List<Scheduling> work, String storeId) {
+        int index = 0;
+        List<List<String>> periods = setArray(storeId);
+        List<String> all = periods.get(0);
+        List<String> weekday = periods.get(1);
+        List<String> weekend = periods.get(2);
+
         List<Scheduling> dayWork = new ArrayList<>();   //一天的排班数据
         List<Object> weekWork = new ArrayList<>();   //七天的排班数据【dayWork * 7】
         for (Scheduling scheduling : work) {
@@ -83,19 +290,29 @@ public class SchedulingController {
 
             int flagStart = i < 5 ? 1 : 2;
 
-            for (int j = 0; j < shiftLen; j++) {
+            for (int j = 0; j < periodLen; j++) {
                 List<Object> dayWork2;
-                if (index < dayWork.size() && (format((dayWork.get(index).getStartTime()), "H:mm:ss").equals(period(flagStart, j)))) {
+                if (i < 5 && j >= weekday.size() || i >= 5 && j < all.size() - weekend.size()) {
                     dayWork2 = new ArrayList<>();
-                    dayWork2.add(employeeService.getEmployees(dayWork.get(index).getEmployeeIds()));
-                    dayWork2.add(dayWork.get(index).getId());
-                    dayWork1.add(dayWork2);
-                    index++;
-                } else {
-                    dayWork2 = new ArrayList<>();
-                    dayWork2.add(new ArrayList<Employee>());
                     dayWork2.add(null);
+                    dayWork2.add(null);
+                    dayWork2.add(all.get(j));
                     dayWork1.add(dayWork2);
+                } else {
+                    if (index < dayWork.size() && ((dayWork.get(index).getStartTime().toString()).equals(period(flagStart, j, periods)))) {
+                        dayWork2 = new ArrayList<>();
+                        dayWork2.add(employeeService.getEmployees(dayWork.get(index).getEmployeeIds()));
+                        dayWork2.add(dayWork.get(index).getId());
+                        dayWork2.add(all.get(j));
+                        dayWork1.add(dayWork2);
+                        index++;
+                    } else {
+                        dayWork2 = new ArrayList<>();
+                        dayWork2.add(new ArrayList<Employee>());
+                        dayWork2.add(null);
+                        dayWork2.add(all.get(j));
+                        dayWork1.add(dayWork2);
+                    }
                 }
             }
             weekWork.set(i, dayWork1);
@@ -104,34 +321,43 @@ public class SchedulingController {
         return weekWork;
     }
 
-    @GetMapping("/getADayWork/{day}/{week}/{storeId}")
-    public List<Object> getADayWork(@PathVariable("day") Date day, @PathVariable("week") int week, @PathVariable("storeId") String storeId) {
+    private List<Object> getDaySchedule(List<Scheduling> work, String storeId, int week) {
         int index = 0;
-        setPeriods(storeId);
+        List<List<String>> periods = setArray(storeId);
+        List<String> weekdayStart = periods.get(3);
 
-        List<Scheduling> work = schedulingService.getADayWork(day, storeId);
         List<Employee> newWork = new ArrayList<>();
         List<Object> newWorks = new ArrayList<>();
+        List<Object> result = new ArrayList<>();
 
-        int flagStart = week == 1 ? 1 : 2;
+        int flagStart = week == 1 ? 1 : 5;
+        int flag = week == 1 ? 3 : 6;
 
         for (Scheduling scheduling : work) {
-            while (index < weekdayStart.length && !(format((scheduling.getStartTime()), "H:mm:ss").equals(period(flagStart, index)))) {
+            while (index < weekdayStart.size() && !((scheduling.getStartTime().toString()).equals(period(flagStart, index, periods)))) {
                 for (int j = 0; j < 8; j++) {
                     newWork.add(new Employee());
                 }
                 newWorks.add(newWork);
+                newWorks.add(period(flag, index, periods));
+                result.add(newWorks);
+
+                newWorks = new ArrayList<>();
                 newWork = new ArrayList<>();
                 index++;
             }
 
-            if (index < weekdayStart.length && (format(scheduling.getStartTime(), "H:mm:ss")).equals(period(flagStart, index))) {
+            if (index < weekdayStart.size() && (scheduling.getStartTime().toString()).equals(period(flagStart, index, periods))) {
                 newWork = employeeService.getEmployees(scheduling.getEmployeeIds());
                 int need = 8 - newWork.size();
                 for (int j = 0; j < need; j++) {
                     newWork.add(new Employee());
                 }
                 newWorks.add(newWork);
+                newWorks.add(period(flag, index, periods));
+                result.add(newWorks);
+
+                newWorks = new ArrayList<>();
                 newWork = new ArrayList<>();
                 index++;
             }
@@ -142,195 +368,15 @@ public class SchedulingController {
                 newWork.add(new Employee());
             }
             newWorks.add(newWork);
+            newWorks.add(period(flag, index, periods));
+            result.add(newWorks);
+
+            newWorks = new ArrayList<>();
             newWork = new ArrayList<>();
             index++;
         }
 
-        return newWorks;
-    }
-
-    @GetMapping("/deleteScheduling/{ids}")
-    public int deleteScheduling(@PathVariable("ids") String ids) {
-        return schedulingService.deleteScheduling(ids);
-    }
-
-    @PostMapping("/deleteDaySchedule")
-    @ResponseBody
-    public void deleteDaySchedule(@RequestBody Map map) {
-        String employeeIds = map.get("employeeIds").toString();
-        Date day = Date.valueOf(map.get("day").toString());
-        int week = (int) map.get("week");
-        String startIndex = map.get("startIndex").toString();
-        String storeId = map.get("storeId").toString();
-        setPeriods(storeId);
-
-        String[] partIds = employeeIds.split("[=]");
-        String[] partIndexs = startIndex.split("[,]");
-        System.out.println("---------------deleteDaySchedule---------------");
-        System.out.println(employeeIds);
-        System.out.println(startIndex);
-        System.out.println(partIds[0]);
-        System.out.println(partIndexs[0].equals(""));
-        System.out.println("---------------end---------------");
-
-        int flagStart = week == 1 ? 1 : 2;
-
-        for (int i = 0; i < partIds.length; i++) {
-            if (partIds[i].equals("") && !partIndexs[i].equals("")) {
-                schedulingService.deleteEmployeeIds(day, Time.valueOf(period(flagStart, Integer.parseInt(partIndexs[i]))));
-            } else if (!partIndexs[i].equals("")) {
-                schedulingService.updateEmployeeIds(partIds[i], day, Time.valueOf(period(flagStart, Integer.parseInt(partIndexs[i]))));
-            }
-        }
-    }
-
-    @PostMapping("/replaceScheduling")
-    @ResponseBody
-    public void replaceScheduling(@RequestBody Map map) {
-        String tableData = map.get("tableData").toString();
-        String week = map.get("week").toString();
-        String storeId = map.get("storeId").toString();
-        setPeriods(storeId);
-
-        String[] datas = tableData.split("[<]");
-        String[] weeks = week.split("[,]");
-//        Object[][][] schedule = new Object[6][7][2];
-
-        String[] weekValue = {"一", "二", "三", "四", "五", "六", "日"};
-
-        for (int i = 0; i < datas.length; i++) {
-            String[] datas1 = datas[i].split("[-]");
-            for (int j = 0; j < datas1.length; j++) {
-                if (!(datas1[j].equals("+"))) {
-                    String[] datas2 = datas1[j].split("[+]");
-                    Scheduling scheduling = new Scheduling();
-                    scheduling.setDay(Date.valueOf(weeks[j]));
-
-                    int flagStart = j < 5 ? 1 : 2;
-                    int flagEnd = j < 5 ? 3 : 4;
-                    scheduling.setStartTime(Time.valueOf(period(flagStart, i)));
-                    scheduling.setEndTime(Time.valueOf(period(flagEnd, i)));
-                    scheduling.setPeriodName("周" + weekValue[j] + period(flagStart, i) + "-" + period(flagEnd, i));
-
-                    for (int k = 0; k < datas2.length; k++) {
-                        String[] datas3 = datas2[k].split("[>]");
-//                        List<Employee> employees = new ArrayList<>();
-                        StringBuilder employeeIds = new StringBuilder();
-                        for (int l = 0; l < datas3.length; l++) {
-                            if (k == 0) {
-                                if (!(datas3[l].equals(""))) {
-                                    Employee employee = JSON.toJavaObject(JSONObject.parseObject(datas3[l]), Employee.class);
-                                    scheduling.setStoreId(employee.getStoreId());
-                                    if (l == 0) employeeIds.append(employee.getEmployeeId());
-                                    else employeeIds.append(",").append(employee.getEmployeeId());
-                                    if (l == datas3.length - 1)
-                                        scheduling.setEmployeeIds(employeeIds.toString());
-//                                employees.add(employee);
-                                }
-                            } else {
-                                scheduling.setId(Integer.parseInt(datas3[l]));
-//                                schedule[i][j][k] = datas3[l];
-                            }
-                        }
-
-                        if (k == 1 && scheduling.getId() != 0 && scheduling.getEmployeeIds() != null &&
-                                !((scheduling.getEmployeeIds()).equals(schedulingService.getById(scheduling.getId()).getEmployeeIds()))) {
-                            System.out.println(scheduling);
-                            schedulingService.updateScheduling(scheduling.getEmployeeIds(), scheduling.getId());
-                        } else if (datas2.length < 2) {
-                            System.out.println(scheduling);
-                            schedulingService.insertScheduling(scheduling.getStoreId(), scheduling.getEmployeeIds(), scheduling.getDay(), scheduling.getStartTime(), scheduling.getEndTime(), scheduling.getPeriodName());
-                        } else if (k == 1 && scheduling.getEmployeeIds() == null) {
-                            System.out.println(scheduling);
-                            schedulingService.deleteScheduling(String.valueOf(scheduling.getId()));
-                        }
-//                        if (k == 0) {
-//                            schedule[i][j][k] = employees;
-//                        }
-                    }
-                }
-            }
-        }
-    }
-
-    @PostMapping("/replaceDaySchedule")
-    @ResponseBody
-    public void replaceDaySchedule(@RequestBody Map map) {
-        String employeeIds = map.get("employeeIds").toString();
-        String storeId = map.get("storeId").toString();
-        setPeriods(storeId);
-        Date day = Date.valueOf(map.get("day").toString());
-        int week = (int) map.get("week");
-
-
-        String[] weeks = {"日", "一", "二", "三", "四", "五", "六"};
-        String[] partIds = employeeIds.split("[=]", -1);
-        System.out.println(employeeIds);
-        System.out.println(partIds.length);
-
-        int flagStart = (week == 0 || week == 6) ? 2 : 1;
-        int flagEnd = (week == 0 || week == 6) ? 4 : 3;
-        for (int i = 0; i < 6; i++) {
-            if (partIds[i].equals("")) {
-                schedulingService.deleteEmployeeIds(day, Time.valueOf(period(flagStart, i)));
-            } else {
-                Scheduling scheduling = schedulingService.getByTime(day, Time.valueOf(period(flagStart, i)));
-                if (scheduling == null)
-                    schedulingService.insertScheduling(storeId, partIds[i], day, Time.valueOf(period(flagStart, i)),
-                            Time.valueOf(period(flagEnd, i)), "周" + weeks[week] + period(flagStart, i) + "-" + period(flagEnd, i));
-                else
-                    schedulingService.updateEmployeeIds(partIds[i], day, Time.valueOf(period(flagStart, i)));
-            }
-        }
-    }
-
-    private String format(Time time, String form) {
-        SimpleDateFormat sdf = new SimpleDateFormat(form);
-        return sdf.format(time);
-    }
-
-    private String period(int flag, int index) {
-        if (flag == 1) return weekdayStart[index];
-        else if (flag == 2) return weekendStart[index];
-        else if (flag == 3) return weekdayEnd[index];
-        else if (flag == 4) return weekendEnd[index];
-
-        return null;
-    }
-
-    private List<Double> setArray(String storeId) {
-        List<Double> generalTime = (new Methods()).getTime(ruleService.getGeneralRule());
-        List<Double> storeTime = (new Methods()).getTime(ruleService.getStoreRule(storeId));
-        for (int i = 0; i < storeTime.size(); i++) {
-            if (storeTime.get(i) < 0) storeTime.set(i, generalTime.get(i));
-        }
-
-        shiftLen = 24 + (int) (storeTime.get(0) / 0.5) + (int) (storeTime.get(1) / 0.5);
-        weekdayStart = new String[shiftLen];
-        weekendStart = new String[shiftLen];
-        weekdayEnd = new String[shiftLen];
-        weekendEnd = new String[shiftLen];
-
-        return storeTime;
-    }
-
-    private void setPeriods(String storeId) {
-        List<Double> storeTime = setArray(storeId);
-
-        int index = 0;
-        for (double i = (9 - storeTime.get(0)); i < (21 + storeTime.get(1)); i += 0.5, index++) {
-            if (i - (int) i != 0) {
-                weekdayStart[index] = (int) i + ":30:00";
-                weekdayEnd[index] = ((int) i + 1) + ":00:00";
-                weekendStart[index] = ((int) i + 1) + ":30:00";
-                weekendEnd[index] = ((int) i + 2) + ":00:00";
-            } else {
-                weekdayStart[index] = (int) i + ":00:00";
-                weekdayEnd[index] = ((int) i) + ":30:00";
-                weekendStart[index] = ((int) i + 1) + ":00:00";
-                weekendEnd[index] = ((int) i + 1) + ":30:00";
-            }
-        }
+        return result;
     }
 
     /**

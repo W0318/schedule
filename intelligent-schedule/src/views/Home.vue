@@ -63,8 +63,7 @@
 <script>
 import {
   getData,
-  getStore,
-  postStoreId,
+  getStore
 } from "@/api";
 import * as echarts from "echarts";
 import employee from "@/views/StoreManagement/Employee.vue";
@@ -156,7 +155,7 @@ export default {
       this.newStoreId=e
       // this.data.newStoreId=e
       console.log(e.storeId)
-       postStoreId(e.storeId);
+       // postStoreId(e.storeId);
 
        this.countData[0].value=e.manger
        this.countData[2].value=e.address

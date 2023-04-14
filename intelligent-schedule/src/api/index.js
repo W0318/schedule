@@ -138,6 +138,130 @@ export const insertStore = (storeId, storeName, storeType, address, size, manger
   });
 }
 
+export const getRule = () => {
+  return request.get('http://localhost:8082/rule/allRule');
+}
+
+export const getAllRule = () => {
+  return request.get('http://localhost:8082/rule/all');
+}
+
+export const getOpenshopRule = () => {
+  return request.get('http://localhost:8082/rule/openshopRule');
+}
+
+export const getCloseshopRule = () => {
+  return request.get('http://localhost:8082/rule/closeshopRule');
+}
+
+export const getCustomerRule = () => {
+  return request.get('http://localhost:8082/rule/customerRule');
+}
+
+export const getClassesRule = () => {
+  return request.get('http://localhost:8082/rule/classesRule');
+}
+
+export const getOpenByStoreId = (storeId) => {
+  return request.get('http://localhost:8082/rule/getOpenbyStoreId/' + storeId);
+}
+
+export const getCloseByStoreId = (storeId) => {
+  return request.get('http://localhost:8082/rule/getClosebyStoreId/' + storeId);
+}
+
+export const getCustomerByStoreId = (storeId) => {
+  return request.get('http://localhost:8082/rule/getCustomerbyStoreId/' + storeId);
+}
+
+export const getClassesByStoreId = (storeId) => {
+  return request.get('http://localhost:8082/rule/getClassesbyStoreId/' + storeId);
+}
+
+export const insertOpen = (ruleId, storeId, ruleValue) => {
+  return request.post('http://localhost:8082/rule/insertOpen', {
+    ruleId: ruleId,
+    storeId: storeId,
+    ruleValue: ruleValue,
+  });
+}
+
+export const insertClose = (ruleId, storeId, ruleValue) => {
+  return request.post('http://localhost:8082/rule/insertClose', {
+    ruleId: ruleId,
+    storeId: storeId,
+    ruleValue: ruleValue,
+  });
+}
+
+export const insertCustomer = (ruleId, storeId, ruleValue) => {
+  return request.post('http://localhost:8082/rule/insertCustomer', {
+    ruleId: ruleId,
+    storeId: storeId,
+    ruleValue: ruleValue,
+  });
+}
+
+export const insertClasses = (ruleId, storeId, ruleValue) => {
+  return request.post('http://localhost:8082/rule/insertClasses', {
+    ruleId: ruleId,
+    storeId: storeId,
+    ruleValue: ruleValue,
+  });
+}
+
+export const updateOpenshop = (ruleValue) => {
+  return request.post('http://localhost:8082/rule/updateOpenshop', {
+    ruleValue: ruleValue,
+  });
+}
+
+export const updateCloseshop = (ruleValue) => {
+  return request.post('http://localhost:8082/rule/updateCloseshop', {
+    ruleValue: ruleValue,
+  });
+}
+
+export const updateCustomer = (ruleValue) => {
+  return request.post('http://localhost:8082/rule/updateCustomer', {
+    ruleValue: ruleValue,
+  });
+}
+
+export const updateClasses = (ruleValue) => {
+  return request.post('http://localhost:8082/rule/updateClasses', {
+    ruleValue: ruleValue,
+  });
+}
+
+export const updateOpenByStoreId = (storeId, ruleValue) => {
+  return request.post('http://localhost:8082/rule/updateOpenbyStoreId', {
+    storeId: storeId,
+    ruleValue: ruleValue,
+  });
+}
+
+export const updateCloseByStoreId = (storeId, ruleValue) => {
+  return request.post('http://localhost:8082/rule/updateClosebyStoreId', {
+    storeId: storeId,
+    ruleValue: ruleValue,
+  });
+}
+
+export const updateCustomerByStoreId = (storeId, ruleValue) => {
+  return request.post('http://localhost:8082/rule/updateCustomerbyStoreId', {
+    storeId: storeId,
+    ruleValue: ruleValue,
+  });
+}
+
+export const updateClassesByStoreId = (storeId, ruleValue) => {
+  return request.post('http://localhost:8082/rule/updateClassesbyStoreId', {
+    storeId: storeId,
+    ruleValue: ruleValue,
+  });
+}
+
 export const getEmployee = () => {
   return request.get('http://localhost:8082/employee/allEmployee');
 }
@@ -288,64 +412,64 @@ export const getAWeekwork = (Monday, Sunday, storeId) => {
   return request.get('http://localhost:8082/scheduling/getAWeekWork/' + Monday + '/' + Sunday + '/' + storeId);
 }
 
+export const getStuffWeekWork = (Monday, Sunday, storeId, employeeId) => {
+  return request.post('http://localhost:8082/scheduling/getStuffWeekWork', {
+    Monday: Monday,
+    Sunday: Sunday,
+    storeId: storeId,
+    employeeId: employeeId
+  });
+}
+
 export const getADaywork = (day, week, storeId) => {
   return request.get('http://localhost:8082/scheduling/getADayWork/' + day + '/' + week + '/' + storeId);
+}
+
+export const getStuffDayWork = (day, week, storeId, employeeId) => {
+  return request.post('http://localhost:8082/scheduling/getStuffDayWork', {
+    day: day,
+    week: week,
+    storeId: storeId,
+    employeeId: employeeId
+  });
 }
 
 export const deleteScheduling = (ids) => {
   return request.get('http://localhost:8082/scheduling/deleteScheduling/' + ids);
 }
 
-export const deleteDaySchedule = (employeeIds, day, week, startIndex, storeId) => {
+export const deleteDaySchedule = (items, day, storeId) => {
   return request.post('http://localhost:8082/scheduling/deleteDaySchedule', {
-    employeeIds: employeeIds,
+    items: items,
     day: day,
-    week: week,
-    startIndex: startIndex,
     storeId: storeId
   });
 }
 
-export const updateWeekData = (tableData, week, storeId) => {
+export const updateWeekData = (items, storeId) => {
   return request.post('http://localhost:8082/scheduling/replaceScheduling', {
-    tableData: tableData,
-    week: week,
+    items: items,
     storeId: storeId
   });
 }
 
-export const replaceDaySchedule = (employeeIds, storeId, day, week) => {
+export const replaceDaySchedule = (items, storeId, day) => {
   return request.post('http://localhost:8082/scheduling/replaceDaySchedule', {
-    employeeIds: employeeIds,
+    items: items,
     storeId: storeId,
-    day: day,
-    week: week
+    day: day
   });
 }
 
-export const getPeriodAll = (storeId) => {
-  return request.get('http://localhost:8082/period/all/' + storeId);
+export const getStorePersons = (storeId) => {
+  return request.get('http://localhost:8082/store/' + storeId);
 }
 
-export const getPeriodDay = (storeId, flag) => {
-  return request.get('http://localhost:8082/period/day/' + storeId + "/" + flag);
+export const autoSchedul = (storeId, limited, Monday) => {
+  console.log("信息数据   " + storeId + " " + limited + " " + Monday)
+  return request.get('http://localhost:8082/autoSchedule/' + storeId + '/' + limited + '/' + Monday);
 }
 
-export const getSize = (storeId) => {
-  return request.get('http://localhost:8082/period/size/' + storeId);
-}
-export const getStorePersons =(storeId)=>{
-  return request.get('http://localhost:8082/store/'+storeId);
-}
-export const autoSchedul = (storeId,limited,Monday) => {
-  console.log("信息数据   "+storeId+" "+limited+" "+Monday)
-  return request.get('http://localhost:8082/autoSchedule/'+ storeId+'/'+limited+'/'+Monday);
-  // console.log('拦截到请求')
-  // return request.post('http://localhost:8082/autoSchedule/limitedpresons', {//请求登录接口
-  //   str: data,
-  // })
-  // return request.post('/permission/getMenu',data)
-}
-export const  postStoreId =(storeId)=>{
-  return request.get('http://localhost:8082/store/stores/'+ storeId);
+export const postStoreId = (storeId) => {
+  return request.get('http://localhost:8082/store/stores/' + storeId);
 }
