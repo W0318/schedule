@@ -25,92 +25,114 @@ export default {
                             url: 'ShiftSchedule/ShiftSchedule'
                         },
                         {
-                            path: '/storemanagement',
-                            name: 'StoreManagement',
-                            lable: "门店管理",
-                            icon: "Shop",
-                            // url: 'StoreManagement/StoreManagement'
-                            children: [
-                                {
-                                    path: '/mystore',
-                                    name: 'MyStore',
-                                    lable: "零售门店管理",
-                                    icon: 'setting',
-                                    url: 'StoreManagement/MyStore'
-                                },
-                                {
-                                    path: '/employee',
-                                    name: 'Employee',
-                                    lable: "员工管理",
-                                    icon: 'setting',
-                                    url: 'StoreManagement/Employee'
-                                },
-                            ]
+                            path: '/mystore',
+                            name: 'MyStore',
+                            lable: "零售门店管理",
+                            icon: 'Shop',
+                            url: 'StoreManagement/MyStore'
                         },
                         {
-                            path: '/shiftmanagement',
-                            name: 'ShiftManagement',
-                            lable: "排班管理",
-                            icon: "CreditCard",
-                            // url: 'ShiftManagement/ShiftManagement'
-                            children: [
-                                {
-                                    path: '/personalizationrules',
-                                    name: 'PersonalizationRules',
-                                    lable: "零售门店管理",
-                                    icon: 'setting',
-                                    url: 'ShiftManagement/PersonalizationRules'
-                                },
-                                {
-                                    path: '/schedulingcalendar',
-                                    name: 'SchedulingCalendar',
-                                    lable: "员工管理",
-                                    icon: 'setting',
-                                    url: 'ShiftManagement/SchedulingCalendar'
-                                },
-                            ]
-
+                            path: '/employee',
+                            name: 'Employee',
+                            lable: "员工管理",
+                            icon: 'User',
+                            url: 'StoreManagement/Employee'
                         },
                         {
-                            path: '/schedulesetting',
-                            name: 'ScheduleSetting',
-                            lable: "排班基础设置",
-                            icon: "Operation",
-                            children: [
-                                {
-                                    path: '/shiftmanagement',
-                                    name: 'ShiftManagement',
-                                    lable: "日程管理",
-                                    icon: 'setting',
-                                    url: 'ScheduleSetting/ShiftManagement'
-                                },
-                            ]
+                            path: '/personalizationrules',
+                            name: 'PersonalizationRules',
+                            lable: "规则管理",
+                            icon: 'setting',
+                            url: 'ShiftManagement/PersonalizationRules'
                         },
-                        {
-                            path: '/setting',
-                            name: 'Setting',
-                            lable: "系统设置",
-                            icon: "Setting",
-                            // url: 'Setting/Setting'
-                            children: [
-                                {
+                        // {
+                        //     path: '/storemanagement',
+                        //     name: 'StoreManagement',
+                        //     lable: "门店管理",
+                        //     icon: "Shop",
+                        //     // url: 'StoreManagement/StoreManagement'
+                        //     children: [
+                        //         {
+                        //             path: '/mystore',
+                        //             name: 'MyStore',
+                        //             lable: "零售门店管理",
+                        //             icon: 'setting',
+                        //             url: 'StoreManagement/MyStore'
+                        //         },
+                        //         {
+                        //             path: '/employee',
+                        //             name: 'Employee',
+                        //             lable: "员工管理",
+                        //             icon: 'setting',
+                        //             url: 'StoreManagement/Employee'
+                        //         },
+                        //     ]
+                        // },
 
-                                    path: '/user',
-                                    name: 'User',
-                                    lable: "角色管理",
-                                    icon: 'setting',
-                                    url: 'Setting/User'
-                                },
-                                {
-
-                                    path: '/menumanagement',
-                                    name: 'MenuManagement',
-                                    lable: "菜单管理",
-                                    icon: 'setting',
-                                    url: 'Setting/MenuManagement'
-                                },
-                            ]
-                        },
+                        // {
+                        //     path: '/shiftmanagement',
+                        //     name: 'ShiftManagement',
+                        //     lable: "排班管理",
+                        //     icon: "CreditCard",
+                        //     // url: 'ShiftManagement/ShiftManagement'
+                        //     children: [
+                        //         {
+                        //             path: '/personalizationrules',
+                        //             name: 'PersonalizationRules',
+                        //             lable: "规则管理",
+                        //             icon: 'setting',
+                        //             url: 'ShiftManagement/PersonalizationRules'
+                        //         },
+                        //         // {
+                        //         //     path: '/schedulingcalendar',
+                        //         //     name: 'SchedulingCalendar',
+                        //         //     lable: "员工管理",
+                        //         //     icon: 'setting',
+                        //         //     url: 'ShiftManagement/SchedulingCalendar'
+                        //         // },
+                        //     ]
+                        //
+                        // },
+                        // {
+                        //     path: '/schedulesetting',
+                        //     name: 'ScheduleSetting',
+                        //     lable: "排班基础设置",
+                        //     icon: "Operation",
+                        //     children: [
+                        //         {
+                        //             path: '/shiftmanagement',
+                        //             name: 'ShiftManagement',
+                        //             lable: "日程管理",
+                        //             icon: 'setting',
+                        //             url: 'ScheduleSetting/ShiftManagement'
+                        //         },
+                        //     ]
+                        // },
+                        // {
+                        //     path: '/setting',
+                        //     name: 'Setting',
+                        //     lable: "系统设置",
+                        //     icon: "Setting",
+                        //     // url: 'Setting/Setting'
+                        //     children: [
+                        //         {
+                        //
+                        //             path: '/user',
+                        //             name: 'User',
+                        //             lable: "角色管理",
+                        //             icon: 'setting',
+                        //             url: 'Setting/User'
+                        //         },
+                        //         {
+                        //
+                        //             path: '/menumanagement',
+                        //             name: 'MenuManagement',
+                        //             lable: "菜单管理",
+                        //             icon: 'setting',
+                        //             url: 'Setting/MenuManagement'
+                        //         },
+                        //     ]
+                        // },
                     ],
                     token: Mock.Random.guid(),
                     Message: '获取成功'
