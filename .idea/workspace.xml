@@ -5,15 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="da0541f5-4c6e-40d5-b328-c67ceb1c0852" name="变更" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/algorithm/Chromosome.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/algorithm/Chromosome.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/algorithm/GA.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/algorithm/GA.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/algorithm/GA_group.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/algorithm/GeneticAlgorithm.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/algorithm/GeneticAlgorithm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/AutoScheduling.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/AutoScheduling.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/entity/Store.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/entity/Store.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-10_1.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-10_1.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-11_1.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-11_1.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-12_1.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-12_1.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-13_1.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-13_1.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-14_1.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-14_1.xlsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-15_1.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-15_1.xlsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-16_1.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-16_1.xlsx" afterDir="false" />
     </list>
@@ -173,6 +170,8 @@
       <workItem from="1681452053425" duration="6790000" />
       <workItem from="1681458866136" duration="6168000" />
       <workItem from="1681471596502" duration="3678000" />
+      <workItem from="1681476007827" duration="196000" />
+      <workItem from="1681476895173" duration="460000" />
     </task>
     <servers />
   </component>
@@ -214,11 +213,6 @@
           <url>file://$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/AutoScheduling.java</url>
           <line>378</line>
           <option name="timeStamp" value="75" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/springboot/src/main/java/com/schedule/entity/Store.java</url>
-          <line>59</line>
-          <option name="timeStamp" value="76" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
