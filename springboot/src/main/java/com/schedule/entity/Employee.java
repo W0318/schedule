@@ -17,6 +17,9 @@ public class Employee {
     private String position;
     private String phone;
     private int root;
+    private int state;
+    private String username;
+    private String password;
 
     private ArrayList<Integer> preferCode;   //偏好数值化0-39
     private ArrayList<ArrayList<Integer>> chromo;

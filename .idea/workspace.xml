@@ -5,28 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="da0541f5-4c6e-40d5-b328-c67ceb1c0852" name="变更" comment="">
-      <change afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/PeriodController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/entity/Period.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/mapper/PeriodMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/service/PeriodService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/intelligent-schedule/src/api/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/intelligent-schedule/src/api/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/intelligent-schedule/src/components/CommonHeader.vue" beforeDir="false" afterPath="$PROJECT_DIR$/intelligent-schedule/src/components/CommonHeader.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/intelligent-schedule/src/components/DayDrag.vue" beforeDir="false" afterPath="$PROJECT_DIR$/intelligent-schedule/src/components/DayDrag.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/intelligent-schedule/src/components/SlideSelection.vue" beforeDir="false" afterPath="$PROJECT_DIR$/intelligent-schedule/src/components/SlideSelection.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/intelligent-schedule/src/components/WeekDrag.vue" beforeDir="false" afterPath="$PROJECT_DIR$/intelligent-schedule/src/components/WeekDrag.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/intelligent-schedule/src/views/ShiftSchedule.vue" beforeDir="false" afterPath="$PROJECT_DIR$/intelligent-schedule/src/views/ShiftSchedule.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/algorithm/GeneticAlgorithm.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/algorithm/GeneticAlgorithm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/AutoScheduling.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/AutoScheduling.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/SchedulingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/SchedulingController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/service/SchedulingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/service/SchedulingService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-03-27_1.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-10_1.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-03-28_1.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-11_1.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-03-29_1.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-12_1.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-03-30_1.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-13_1.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-03-31_1.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-14_1.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-01_1.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-15_1.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-02_1.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/resources/flow/2023-04-16_1.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/intelligent-schedule/src/api/mockServeData/permission.js" beforeDir="false" afterPath="$PROJECT_DIR$/intelligent-schedule/src/api/mockServeData/permission.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,6 +24,19 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="41e07e90-5ca1-4890-a602-cd491e97e475" />
+        <option name="url" value="https://github.com/W0318/schedule.git" />
+      </UrlAndAccount>
+    </option>
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="jar://$MAVEN_REPOSITORY$/org/apache/tomcat/embed/tomcat-embed-core/9.0.37/tomcat-embed-core-9.0.37.jar!/javax/servlet/http/HttpServlet.class" root0="SKIP_INSPECTION" />
@@ -116,7 +109,7 @@
       <recent name="com.schedule.config" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.SpringbootApplication">
+  <component name="RunManager" selected="npm.serve">
     <configuration name="SpringbootApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="spring-vue" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.schedule.SpringbootApplication" />
@@ -194,7 +187,12 @@
       <workItem from="1681262998391" duration="1612000" />
       <workItem from="1681264986477" duration="4242000" />
       <workItem from="1681282706820" duration="7778000" />
-      <workItem from="1681294189008" duration="929000" />
+      <workItem from="1681294189008" duration="1534000" />
+      <workItem from="1681309479694" duration="1095000" />
+      <workItem from="1681355835911" duration="8628000" />
+      <workItem from="1681374655471" duration="643000" />
+      <workItem from="1681452053425" duration="6790000" />
+      <workItem from="1681458866136" duration="3851000" />
     </task>
     <servers />
   </component>
@@ -228,12 +226,12 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/AutoScheduling.java</url>
-          <line>91</line>
+          <line>148</line>
           <option name="timeStamp" value="73" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/AutoScheduling.java</url>
-          <line>311</line>
+          <line>378</line>
           <option name="timeStamp" value="75" />
         </line-breakpoint>
       </breakpoints>

@@ -204,12 +204,12 @@ public class GeneticAlgorithm {
                 if (getContTime(j) >= 8) {
                     ArrayList<Integer> tmp = check.get(j);
                     tmp.set(i, 1);//确认
-                    if (i + 1 < scale)
+                    if (i + 1 < len)
                         tmp.set(i + 1, 1);
                     check.set(j, tmp);
                     tmp = status.get(j);
                     tmp.set(i, 3);//休息中
-                    if (i + 1 < scale)
+                    if (i + 1 < len)
                         tmp.set(i + 1, 3);//休息
                     status.set(j, tmp);
                     resetContTime(j);//重置这个人的连续工作时间

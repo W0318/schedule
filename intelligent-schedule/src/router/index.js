@@ -1,6 +1,7 @@
 import Home from '../views/Home.vue'
 import User from '../views/Setting/User.vue'
 import Main from '../views/Main.vue'
+import Personal from '../views/Personal.vue'
 import ShiftSchedule from '../views/ShiftSchedule.vue'
 import ShiftManagement from '../views/ScheduleSetting/ShiftManagement.vue'
 import MenuManagement from '../views/Setting/MenuManagement.vue'
@@ -59,6 +60,9 @@ const routes = [
             },
             // 基础排班设置
             {
+                path: "/user",
+                name: "User",
+                component: User,
                 path: "/Person",
                 name: "Person",
                 component: Person,
@@ -107,6 +111,11 @@ const routes = [
                 path: "/myStore/employee",
                 name: "employee",
                 component: () => import('../views/StoreManagement/Employee'),
+            },
+            {
+                path: "/commonHeader/personal",
+                name: "personal",
+                component: () => import('../views/Personal'),
             },
             {
                 path: "/scheduleSetting/addShiftManagement",

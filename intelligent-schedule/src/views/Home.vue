@@ -42,7 +42,8 @@
         <div ref="echarts2" style="height:480px"></div>
       </el-card>
     </el-row>
-    <el-row class="button">
+
+    <el-row class="buttom">
       <el-card class="component2" :body-style="{padding:0 }">
         <text class="text-title">历史客流量</text>
         <!-- 折线图 -->
@@ -54,6 +55,7 @@
         <div ref="echarts3" style="height:480px"></div>
       </el-card>
     </el-row>
+    
     <!-- <div class="button"></div> -->
   </div>
 </template>
@@ -164,7 +166,9 @@ export default {
   mounted() {
 
     getStore().then((datas) => {
-      this.options = datas.data;
+
+      this.options = datas.data;//检索信息的问题部分信息丢失
+      console.log(datas)
       console.log("登录数据：  "+sessionStorage.getItem("employee"));
       const a = sessionStorage.getItem("employee");
       console.log((JSON.parse(a).employeeId).toString())
@@ -478,10 +482,11 @@ body{
     }
   }
 
-  .button {
+  .buttom {
     display: flex;
     flex: 1;
     margin-top: 5px;
+    margin-bottom: 5px;
 
     .component1 {
       margin-left: 10px;
@@ -502,7 +507,7 @@ body{
     }
 
     .component2 {
-      margin-right: 10px;
+      margin-left: 10px;
       background-color: #fff;
       border-radius: 15px;
       display: flex;

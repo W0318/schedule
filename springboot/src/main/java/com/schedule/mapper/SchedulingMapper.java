@@ -21,7 +21,8 @@ public interface SchedulingMapper {
 
     @Select("SELECT * FROM scheduling\n" +
             "WHERE day >= #{Monday} AND day <= #{Sunday} AND storeId = #{storeId}\n" +
-            "AND (employeeIds LIKE concat('%', #{employeeId}, ',%') OR employeeIds LIKE concat('%,', #{employeeId}, '%') OR employeeIds = #{employeeId})\n" +
+            "AND (employeeIds LIKE concat('%', #{employeeId}, ',%') OR employeeIds LIKE concat('%,', #{employeeId}, '%') OR employeeIds = #{employeeId})\n"
+            +
             "ORDER BY day, startTime")
     List<Scheduling> getStuffWeekWork(Date Monday, Date Sunday, String storeId, String employeeId);
 
@@ -30,7 +31,8 @@ public interface SchedulingMapper {
 
     @Select("SELECT * FROM scheduling\n" +
             "WHERE day = #{day} AND storeId = #{storeId}\n" +
-            "AND (employeeIds LIKE concat('%', #{employeeId}, ',%') OR employeeIds LIKE concat('%,', #{employeeId}, '%') OR employeeIds = #{employeeId})\n" +
+            "AND (employeeIds LIKE concat('%', #{employeeId}, ',%') OR employeeIds LIKE concat('%,', #{employeeId}, '%') OR employeeIds = #{employeeId})\n"
+            +
             "ORDER BY startTime")
     List<Scheduling> getStuffDayWork(Date day, String storeId, String employeeId);
 
@@ -54,4 +56,7 @@ public interface SchedulingMapper {
 
     @Delete("DELETE FROM scheduling WHERE day = #{day} AND startTime = #{startTime} AND storeId = #{storeId}")
     void deleteEmployeeIds(Date day, Time startTime, String storeId);
+
+    @Delete("DELETE FROM scheduling WHERE storeId = #{storeId}")
+    void deleteSchedulingByStoreId(String storeId);
 }
