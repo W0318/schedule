@@ -77,6 +77,8 @@ public class Store {
                         map.put(titleName, value);
                     } else if (titleName.equals("开始时间") || titleName.equals("结束时间")) {
                         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+
+                        System.out.println("我是cell"+cell);
                         String value = sdf.format(cell.getDateCellValue());
                         map.put(titleName, value);
                     } else {
