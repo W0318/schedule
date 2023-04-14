@@ -3,7 +3,7 @@
     <el-row class="top">
       <el-card class="component1">
         <el-clo>
-          <text class="text-title">排班统计</text>
+          <text class="text-title">店面信息</text>
           <div class="select-border">
             <text class="text-name">门店名称:</text>
 
@@ -39,7 +39,7 @@
       <el-card class="component2" :body-style="{padding:0 }">
         <!-- 柱状图 -->
         <text class="text-title">客流量预测</text>
-        <div ref="echarts2" style="height:480px"></div>
+        <div ref="echarts2" style="height:370px"></div>
       </el-card>
     </el-row>
 
@@ -47,12 +47,12 @@
       <el-card class="component2" :body-style="{padding:0 }">
         <text class="text-title">历史客流量</text>
         <!-- 折线图 -->
-        <div ref="echarts1" style="height:480px"></div>
+        <div ref="echarts1" style="height:370px"></div>
       </el-card>
       <el-card class="component1" :body-style="{padding:0 }">
         <text class="text-title">偏好排名前列</text>
         <!-- 折线图 -->
-        <div ref="echarts3" style="height:480px"></div>
+        <div ref="echarts3" style="height:370px"></div>
       </el-card>
     </el-row>
     
@@ -375,7 +375,7 @@ body{
 .container {
   display: flex;
   flex-direction: column;
-  height: 89vh;
+  //height: 100vh;
 
   .top {
     display: flex;
@@ -508,7 +508,7 @@ body{
     }
 
     .component2 {
-      margin-left: 10px;
+      margin-right: 10px;
       background-color: #fff;
       border-radius: 15px;
       display: flex;
