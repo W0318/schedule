@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="da0541f5-4c6e-40d5-b328-c67ceb1c0852" name="变更" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/intelligent-schedule/src/views/Login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/intelligent-schedule/src/views/Login.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/AutoScheduling.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/AutoScheduling.java" afterDir="false" />
-    </list>
+    <list default="true" id="da0541f5-4c6e-40d5-b328-c67ceb1c0852" name="变更" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -192,7 +188,7 @@
       <workItem from="1681309479694" duration="1095000" />
       <workItem from="1681355835911" duration="8628000" />
       <workItem from="1681374655471" duration="643000" />
-      <workItem from="1681452053425" duration="3919000" />
+      <workItem from="1681452053425" duration="4536000" />
     </task>
     <servers />
   </component>
@@ -231,7 +227,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/AutoScheduling.java</url>
-          <line>371</line>
+          <line>376</line>
           <option name="timeStamp" value="75" />
         </line-breakpoint>
       </breakpoints>
