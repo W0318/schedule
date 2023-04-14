@@ -6,7 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="da0541f5-4c6e-40d5-b328-c67ceb1c0852" name="变更" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/intelligent-schedule/src/api/mockServeData/permission.js" beforeDir="false" afterPath="$PROJECT_DIR$/intelligent-schedule/src/api/mockServeData/permission.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/intelligent-schedule/src/components/CommonAside.vue" beforeDir="false" afterPath="$PROJECT_DIR$/intelligent-schedule/src/components/CommonAside.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/intelligent-schedule/src/components/CommonHeader.vue" beforeDir="false" afterPath="$PROJECT_DIR$/intelligent-schedule/src/components/CommonHeader.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/intelligent-schedule/src/views/Home.vue" beforeDir="false" afterPath="$PROJECT_DIR$/intelligent-schedule/src/views/Home.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -192,7 +194,7 @@
       <workItem from="1681355835911" duration="8628000" />
       <workItem from="1681374655471" duration="643000" />
       <workItem from="1681452053425" duration="6790000" />
-      <workItem from="1681458866136" duration="3851000" />
+      <workItem from="1681458866136" duration="6168000" />
     </task>
     <servers />
   </component>
