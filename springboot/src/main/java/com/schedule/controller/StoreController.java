@@ -1,18 +1,23 @@
 package com.schedule.controller;
 
 import com.schedule.entity.Employee;
+import com.schedule.beans.Storebean;
 import com.schedule.entity.Store;
-import com.schedule.mapper.StoreMapper;
 import com.schedule.service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import java.util.List;
 import java.util.Map;
 
 
 @RestController
 @RequestMapping("/store")
-public class StoreController  {
+public class StoreController {
     @Autowired
     StoreService storeService;
 
@@ -25,16 +30,17 @@ public class StoreController  {
     public List<Store> getAllStore() {
         return storeService.getAllStore();
     }
-
-    @Autowired
-    private StoreMapper storeMapper;
-    @GetMapping("/queryStoreList")
-    public  List<Store> queryStoreList(){
-        List<Store> storeList = storeMapper.queryStoreList();
-        for(Store store:storeList){
-            System.out.println(store);
-        }
-        return storeList;
+    @GetMapping("/{storeId}")
+    public int getStorePersons(@PathVariable("storeId") String storeId){
+        return storeService.getStorePersons(storeId);
+    };
+    @GetMapping("/stores/{storeId}")
+    public Store getStoreById(@PathVariable("storeId") String storeId){
+        return storeService.getStoreById(storeId);
+    };
+    @GetMapping("/storemessage")
+    public List<Storebean> getStoresMessage() {
+        return storeService.getStoresMessage();
     }
 
     /**
@@ -104,3 +110,4 @@ public class StoreController  {
         storeService.insertStore(map.get("storeId").toString(), map.get("storeName").toString(), map.get("storeType").toString(), map.get("address").toString(), Float.parseFloat(map.get("size").toString()), map.get("manger").toString(), Integer.parseInt(map.get("workers").toString()));
     }
 }
+

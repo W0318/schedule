@@ -55,5 +55,7 @@ public class PreferenceService {
     }
     public void deletePreferenceHaveThree(String employeeId) {
         preferenceMapper.deletePreferenceHaveThree(employeeId);
+    public List<Preference> getEmployeePrefer(String employeeId) {
+        return preferenceMapper.getEmployeePrefer(employeeId);
     }
 }

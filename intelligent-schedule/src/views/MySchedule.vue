@@ -58,29 +58,37 @@ import moment from 'moment';
 import { ref } from 'vue';
 
 const calendar = ref();
+// const employee = ref(sessionStorage.getItem("employee").employeeId);
+const employee  = sessionStorage.getItem("employee")
+console.log("employee"+employee)
+const employeeId =  JSON.parse(employee).employeeId;
 const selectDate = (val) => {
     calendar.value.selectDate(val)
 };
 
-//登录用户有工作的日子
-const assignAll = ref([]);
-getWorkday('1').then((datas) => {
-    assignAll.value = datas.data;
-    console.log(assignAll.value)
-});
+
 
 const chooseDate = ref(moment().format('YYYY-MM-DD'));
 const assigns = ref([]);
-getDaywork('1', chooseDate.value).then((datas) => {
+// const employeeId = (JSON.stringify(sessionStorage.getItem("employee")).employeeId);
+getDaywork(employeeId, chooseDate.value).then((datas) => {
     assigns.value = datas.data;
     console.log(assigns.value)
+});
+
+//登录用户有工作的日子
+const assignAll = ref([]);
+getWorkday(employeeId).then((datas) => {
+  console.log(datas)
+  assignAll.value = datas.data;
+  console.log("sheshi1"+assignAll.value)
 });
 
 const handleClick = (day) => {
     console.log(day);
     chooseDate.value = day;
 
-    getDaywork('1', day).then((datas) => {
+    getDaywork(employeeId, day).then((datas) => {
         assigns.value = datas.data;
         console.log(assigns.value)
     });

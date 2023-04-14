@@ -1,11 +1,14 @@
 package com.schedule.service;
 
+import com.schedule.entity.Rule;
 import com.schedule.mapper.RuleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public class  RuleService {
+public class RuleService {
     @Autowired
     RuleMapper ruleMapper;
 
@@ -16,5 +19,11 @@ public class  RuleService {
      */
     public void deleteRuleByStoreId(String storeId) {
         ruleMapper.deleteRuleByStoreId(storeId);
+    public List<Rule> getGeneralRule() {
+        return ruleMapper.getGeneralRule();
+    }
+
+    public List<Rule> getStoreRule(String storeId) {
+        return ruleMapper.getStoreRule(storeId);
     }
 }

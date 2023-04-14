@@ -5,23 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="da0541f5-4c6e-40d5-b328-c67ceb1c0852" name="变更" comment="">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/beans/Storebean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/intelligent-schedule/src/api/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/intelligent-schedule/src/api/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/intelligent-schedule/src/components/WeekDrag.vue" beforeDir="false" afterPath="$PROJECT_DIR$/intelligent-schedule/src/components/WeekDrag.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/intelligent-schedule/src/views/Home.vue" beforeDir="false" afterPath="$PROJECT_DIR$/intelligent-schedule/src/views/Home.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/intelligent-schedule/src/views/ShiftSchedule.vue" beforeDir="false" afterPath="$PROJECT_DIR$/intelligent-schedule/src/views/ShiftSchedule.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/EmployeeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/EmployeeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/SchedulingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/SchedulingController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/algorithm/GeneticAlgorithm.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/algorithm/GeneticAlgorithm.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/StoreController.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/StoreController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/entity/Scheduling.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/entity/Scheduling.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/mapper/EmployeeMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/mapper/EmployeeMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/mapper/SchedulingMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/mapper/SchedulingMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/mapper/StoreMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/mapper/StoreMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/service/EmployeeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/service/EmployeeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/service/SchedulingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/service/SchedulingService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/service/StoreService.java" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/java/com/schedule/service/StoreService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/target/classes/com/schedule/controller/EmployeeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/target/classes/com/schedule/controller/EmployeeController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/target/classes/com/schedule/mapper/EmployeeMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/target/classes/com/schedule/mapper/EmployeeMapper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/springboot/target/classes/com/schedule/service/EmployeeService.class" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/target/classes/com/schedule/service/EmployeeService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/springboot/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/springboot/target/classes/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/springboot/target/classes/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/springboot/target/maven-archiver/pom.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/springboot/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/springboot/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/springboot/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/springboot/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/springboot/target/spring-vue-0.0.1-SNAPSHOT.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/springboot/target/spring-vue-0.0.1-SNAPSHOT.jar.original" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/springboot/target/test-classes/com/schedule/SpringbootApplicationTests.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,13 +34,30 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
+        <option value="Interface" />
         <option value="spring-beans.schema" />
+        <option value="Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="41e07e90-5ca1-4890-a602-cd491e97e475" />
+        <option name="url" value="https://github.com/W0318/schedule.git" />
+      </UrlAndAccount>
+    </option>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://$MAVEN_REPOSITORY$/org/apache/tomcat/embed/tomcat-embed-core/9.0.37/tomcat-embed-core-9.0.37.jar!/javax/servlet/http/HttpServlet.class" root0="SKIP_INSPECTION" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -48,6 +68,9 @@
         <option name="useMavenConfig" value="true" />
       </MavenGeneralSettings>
     </option>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectId" id="2LaqAZwCYNwJCh1iGirqwhZVE1D" />
   <component name="ProjectLevelVcsManager">
@@ -69,13 +92,18 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;deletionFromPopupRequiresConfirmation&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/work/vue/schedule/intelligent-schedule/src/components&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;模块&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;0d570cb2-96df-43cc-80da-7f777e6d0afe&quot;,
     &quot;spring.configuration.checksum&quot;: &quot;7ffdcca97a6161b581790219543f7dd3&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;D:\\soft\\IntelliJ IDEA 2022.3.1\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
   &quot;keyToStringList&quot;: {
@@ -84,7 +112,22 @@
     ]
   }
 }</component>
-  <component name="RunManager" selected="npm.serve">
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\work\vue\schedule\intelligent-schedule\src\components" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\work\vue\schedule\intelligent-schedule\src\views" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.schedule.service" />
+      <recent name="com.schedule.mapper" />
+      <recent name="com.schedule.controller" />
+      <recent name="com.schedule.entity" />
+      <recent name="com.schedule.config" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.SpringbootApplication">
     <configuration name="SpringbootApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="spring-vue" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.schedule.SpringbootApplication" />
@@ -129,14 +172,99 @@
       <workItem from="1676816769150" duration="265000" />
       <workItem from="1676879675544" duration="3000" />
       <workItem from="1676964584969" duration="623000" />
-      <workItem from="1677296129836" duration="2063000" />
+      <workItem from="1677296129836" duration="4246000" />
+      <workItem from="1677329388078" duration="167000" />
+      <workItem from="1677378337683" duration="584000" />
+      <workItem from="1677669252807" duration="669000" />
+      <workItem from="1678066366087" duration="1914000" />
+      <workItem from="1678431815528" duration="6008000" />
+      <workItem from="1678962078113" duration="2964000" />
+      <workItem from="1679019735510" duration="10415000" />
+      <workItem from="1679049699226" duration="2282000" />
+      <workItem from="1679125487338" duration="16647000" />
+      <workItem from="1679199465922" duration="8930000" />
+      <workItem from="1680093045835" duration="3083000" />
+      <workItem from="1680148538308" duration="392000" />
+      <workItem from="1680148942415" duration="30546000" />
+      <workItem from="1680265810607" duration="5918000" />
+      <workItem from="1680313637646" duration="6463000" />
+      <workItem from="1680323499777" duration="6000" />
+      <workItem from="1680345170811" duration="5170000" />
+      <workItem from="1680351698107" duration="5249000" />
+      <workItem from="1680683243343" duration="3199000" />
+      <workItem from="1680709220354" duration="676000" />
+      <workItem from="1680926214279" duration="35000" />
+      <workItem from="1680926296676" duration="27609000" />
+      <workItem from="1680966281517" duration="34000" />
+      <workItem from="1680967616701" duration="31525000" />
+      <workItem from="1681086349497" duration="11565000" />
+      <workItem from="1681126666805" duration="69000" />
+      <workItem from="1681130714588" duration="12877000" />
+      <workItem from="1681186674775" duration="1939000" />
+      <workItem from="1681202004518" duration="600000" />
+      <workItem from="1681262998391" duration="1612000" />
+      <workItem from="1681264986477" duration="4242000" />
+      <workItem from="1681282706820" duration="7778000" />
+      <workItem from="1681294189008" duration="1534000" />
+      <workItem from="1681309479694" duration="1095000" />
+      <workItem from="1681355835911" duration="8144000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.IndexOutOfBoundsException" package="java.lang" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.ArrayIndexOutOfBoundsException" package="java.lang" />
+          <option name="timeStamp" value="2" />
+        </breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/AutoScheduling.java</url>
+          <line>91</line>
+          <option name="timeStamp" value="73" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/springboot/src/main/java/com/schedule/controller/AutoScheduling.java</url>
+          <line>311</line>
+          <option name="timeStamp" value="75" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="java.util.ArrayList" memberName="elementData" />
+      </pinned-members>
+    </pin-to-top-manager>
+    <watches-manager>
+      <configuration name="SpringBootApplicationConfigurationType">
+        <watch expression="21 = {Chromo@7388} " language="JAVA" />
+        <watch expression="banci.elementData" />
+      </configuration>
+    </watches-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

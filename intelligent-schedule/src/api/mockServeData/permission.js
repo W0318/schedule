@@ -143,6 +143,13 @@ export default {
                             icon: "Timer",
                             url: 'MySchedule/MySchedule'
                         },
+                        {
+                            path: '/person',
+                            name: 'Person',
+                            lable: "个人信息管理",
+                            icon: "Timer",
+                            url: 'Person/Person'
+                        },
                     ],
                     token: Mock.Random.guid(),
                     Message: '获取成功'

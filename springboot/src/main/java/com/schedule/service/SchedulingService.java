@@ -14,11 +14,6 @@ public class SchedulingService {
     @Autowired
     SchedulingMapper schedulingMapper;
 
-    /**
-     * @author 吴佳丽
-     * <p>
-     * ///////////////////////////////////////////////////////////////////////////////////////////////
-     */
     public List<Date> getEmployeeWorkday(String employeeId) {
         return schedulingMapper.getEmployeeWorkday(employeeId);
     }

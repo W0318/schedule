@@ -54,4 +54,6 @@ public interface PreferenceMapper {
     @Delete("DELETE FROM preference WHERE employeeId = #{employeeId} AND preferType = \"班次时长偏好\"")
     void deletePreferenceHaveThree(String employeeId);
 
+    @Select("SELECT * FROM preference WHERE employeeId = #{employeeId}")
+    List<Preference> getEmployeePrefer(String employeeId);
 }

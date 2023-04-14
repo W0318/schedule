@@ -10,6 +10,8 @@ import Employee from '../views/StoreManagement/Employee.vue'
 import SchedulingCalendar from '../views/ShiftSchedule/SchedulingCalendar.vue'
 import PersonalizationRules from '../views/ShiftSchedule/PersonalizationRules.vue'
 import MySchedule from '../views/MySchedule.vue'
+import Person from '../views/Person.vue'
+
 import Login from '../views/Login.vue'
 // //1.创建路由组件
 // //2. 将路由与组件进行映射
@@ -56,11 +58,14 @@ const routes = [
                 name: "SchedulingCalendar",
                 component: SchedulingCalendar,
             },
-            //基础排班设置
+            // 基础排班设置
             {
                 path: "/user",
                 name: "User",
                 component: User,
+                path: "/Person",
+                name: "Person",
+                component: Person,
             },
             {
                 path: "/shiftmanagement",

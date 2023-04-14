@@ -85,4 +85,6 @@ public interface EmployeeMapper {
 
     @Insert("INSERT INTO employee VALUES (#{employeeId}, #{employeeName}, #{storeId}, #{email}, #{position}, #{phone}, 2, #{employeeId}, #{employeeId}, 1)")
     void insertEmployee(String employeeId, String employeeName, String storeId, String email, String position, String phone);
+    @Select("select * from employee where employeeId=#{employeeId} and password = #{password}")
+    Employee login(String employeeId, String password);
 }
