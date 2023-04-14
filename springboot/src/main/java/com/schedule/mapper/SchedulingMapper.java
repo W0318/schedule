@@ -46,4 +46,12 @@ public interface SchedulingMapper {
 
     @Delete("DELETE FROM scheduling WHERE day = #{day} AND startTime = #{startTime}")
     void deleteEmployeeIds(Date day, Time startTime);
+
+    /**
+     * @author 张卓童
+     * <p>
+     * ///////////////////////////////////////////////////////////////////////////////////////////////
+     */
+    @Delete("DELETE FROM scheduling WHERE storeId = #{storeId}")
+    void deleteSchedulingByStoreId(String storeId);
 }

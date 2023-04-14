@@ -314,4 +314,15 @@ public class SchedulingController {
             }
         }
     }
+
+    /**
+     * @author 张卓童
+     * <p>
+     * ///////////////////////////////////////////////////////////////////////////////////////////////
+     */
+    @PostMapping("/deleteSchedulingByStoreId")
+    @ResponseBody
+    public void deleteSchedulingByStoreId(@RequestBody Map map) {
+        schedulingService.deleteSchedulingByStoreId(map.get("storeId").toString());
+    }
 }

@@ -8,4 +8,13 @@ import org.springframework.stereotype.Service;
 public class  RuleService {
     @Autowired
     RuleMapper ruleMapper;
+
+    /**
+     * @author 张卓童
+     * <p>
+     * ///////////////////////////////////////////////////////////////////////////////////////////////
+     */
+    public void deleteRuleByStoreId(String storeId) {
+        ruleMapper.deleteRuleByStoreId(storeId);
+    }
 }

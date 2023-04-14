@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 @Data
 public class Preference implements Serializable {
-    private String preferId;
+    private int preferId;
     private String employeeId;
     private String preferType;
     private String preferValue;

@@ -13,4 +13,7 @@ public class Employee implements Serializable {
     private String position;
     private int phone;
     private int root;
+    private int state;
+    private String username;
+    private String password;
 }

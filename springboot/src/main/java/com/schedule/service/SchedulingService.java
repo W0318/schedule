@@ -62,4 +62,14 @@ public class SchedulingService {
     public Scheduling getByTime(Date day, Time startTime) {
         return schedulingMapper.getByTime(day, startTime);
     }
+
+    /**
+     * @author 张卓童
+     * <p>
+     * ///////////////////////////////////////////////////////////////////////////////////////////////
+     */
+    public void deleteSchedulingByStoreId(String storeId) {
+        schedulingMapper.deleteSchedulingByStoreId(storeId);
+    }
+
 }

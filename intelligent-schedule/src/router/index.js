@@ -1,6 +1,7 @@
 import Home from '../views/Home.vue'
 import User from '../views/Setting/User.vue'
 import Main from '../views/Main.vue'
+import Personal from '../views/Personal.vue'
 import ShiftSchedule from '../views/ShiftSchedule.vue'
 import ShiftManagement from '../views/ScheduleSetting/ShiftManagement.vue'
 import MenuManagement from '../views/Setting/MenuManagement.vue'
@@ -9,7 +10,6 @@ import Employee from '../views/StoreManagement/Employee.vue'
 import SchedulingCalendar from '../views/ShiftSchedule/SchedulingCalendar.vue'
 import PersonalizationRules from '../views/ShiftSchedule/PersonalizationRules.vue'
 import MySchedule from '../views/MySchedule.vue'
-
 import Login from '../views/Login.vue'
 // //1.创建路由组件
 // //2. 将路由与组件进行映射
@@ -63,11 +63,6 @@ const routes = [
                 component: User,
             },
             {
-                path: "/shiftschedule",
-                name: "ShiftSchedule",
-                component: ShiftSchedule,
-            },
-            {
                 path: "/shiftmanagement",
                 name: "ShiftManagement",
                 component: ShiftManagement,
@@ -111,6 +106,11 @@ const routes = [
                 path: "/myStore/employee",
                 name: "employee",
                 component: () => import('../views/StoreManagement/Employee'),
+            },
+            {
+                path: "/commonHeader/personal",
+                name: "personal",
+                component: () => import('../views/Personal'),
             },
             {
                 path: "/scheduleSetting/addShiftManagement",

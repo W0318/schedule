@@ -10,19 +10,22 @@
       <!-- 面包屑 -->
       <!-- <span class="text">{{首页}}</span> -->
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item v-for="item in {...store.state.tabsList }" :key="item.path" :to="{ path: item.path }">{{
-          item.lable
-        }}</el-breadcrumb-item>
+        <el-breadcrumb-item
+          v-for="item in { ...store.state.tabsList }"
+          :key="item.path"
+          :to="{ path: item.path }"
+          >{{ item.lable }}</el-breadcrumb-item
+        >
       </el-breadcrumb>
     </div>
     <div class="r-content">
       <el-dropdown>
         <span class="el-dropdown-link">
-          <img class="user" src="../assets/logo.png" alt />
+          <img class="user" src="../assets/head1.png" alt />
         </span>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item>个人中心</el-dropdown-item>
+            <el-dropdown-item @click="personal">个人中心</el-dropdown-item>
             <el-dropdown-item @click="logout">退出</el-dropdown-item>
           </el-dropdown-menu>
         </template>
@@ -47,6 +50,9 @@ const logout = () => {
   //跳转回登录页面
   router.push({ path: "login" });
 };
+const personal = () => {
+  router.push({ name: "personal" });
+};
 </script>
 <style lang="less" scoped>
 .header-container {
@@ -68,6 +74,7 @@ const logout = () => {
       width: 40px;
       height: 40px;
       border-radius: 50%;
+      // border: 1px solid #000000;
     }
   }
 
