@@ -10,6 +10,7 @@ import com.schedule.entity.Employee;
 import com.schedule.entity.Preference;
 import com.schedule.entity.Rule;
 import com.schedule.entity.Store;
+import com.schedule.method.Methods;
 import com.schedule.service.EmployeeService;
 import com.schedule.service.PreferenceService;
 import com.schedule.service.RuleService;
@@ -43,6 +44,60 @@ public class AutoScheduling {
     RuleService ruleService;
     @Autowired
     StoreService storeService;
+    List<List<String>> setArray(String storeId) {
+        List<List<String>> result = new ArrayList<>();
+        List<Double> generalTime = (new Methods()).getTime(ruleService.getGeneralRule());
+        List<Double> storeTime = (new Methods()).getTime(ruleService.getStoreRule(storeId));
+        for (int i = 0; i < storeTime.size(); i++) {
+            if (storeTime.get(i) < 0) storeTime.set(i, generalTime.get(i));
+        }
+        Double before = storeTime.get(0), after = storeTime.get(1);
+
+//        int periodLen = 26 + (int) (before / 0.5) + (int) (after / 0.5);
+//        int shiftLen = 24 + (int) (before / 0.5) + (int) (after / 0.5);
+        List<String> weekdayStart = new ArrayList<>();
+        List<String> weekendStart = new ArrayList<>();
+        List<String> weekday = new ArrayList<>();
+        List<String> weekend = new ArrayList<>();
+        List<String> all = new ArrayList<>();
+
+        for (double i = (9 - before); i < (22 + after); i += 0.5) {
+            if (i - (int) i != 0) {
+                if (i < 21 + after) {
+                    weekdayStart.add(((int) i < 10 ? "0" : "") + (int) i + ":30:00");
+                    weekday.add(((int) i < 10 ? "0" : "") + (int) i + ":30-" + ((int) i + 1 < 10 ? "0" : "") + ((int) i + 1) + ":00");
+                }
+                if (i >= 10 - before) {
+                    weekendStart.add(((int) i < 10 ? "0" : "") + (int) i + ":30:00");
+                    weekend.add(((int) i < 10 ? "0" : "") + (int) i + ":30-" + ((int) i + 1 < 10 ? "0" : "") + ((int) i + 1) + ":00");
+                }
+                all.add(((int) i < 10 ? "0" : "") + (int) i + ":30-" + ((int) i + 1 < 10 ? "0" : "") + ((int) i + 1) + ":00");
+            } else {
+                if (i < 21 + after) {
+                    weekdayStart.add(((int) i < 10 ? "0" : "") + (int) i + ":00:00");
+                    weekday.add(((int) i < 10 ? "0" : "") + (int) i + ":00-" + ((int) i < 10 ? "0" : "") + (int) i + ":30");
+                }
+                if (i >= 10 - before) {
+                    weekendStart.add(((int) i < 10 ? "0" : "") + (int) i + ":00:00");
+                    weekend.add(((int) i < 10 ? "0" : "") + (int) i + ":00-" + ((int) i < 10 ? "0" : "") + (int) i + ":30");
+                }
+                all.add(((int) i < 10 ? "0" : "") + (int) i + ":00-" + ((int) i < 10 ? "0" : "") + ((int) i) + ":30");
+            }
+        }
+
+//        System.out.println("all:" + all);
+//        System.out.println("weekday:" + weekday);
+//        System.out.println("weekend:" + weekend);
+//        System.out.println("weekdayStart:" + weekdayStart);
+//        System.out.println("weekendStart:" + weekendStart);
+//        result.add(all);
+        result.add(weekday);
+        result.add(weekend);
+//        result.add(weekdayStart);
+//        result.add(weekendStart);
+
+        return result;
+    }
 
     HashMap<String, Boolean> ruleExist = new HashMap<String, Boolean>() {{
         put("开店规则", false);
@@ -112,8 +167,10 @@ public class AutoScheduling {
 
         int len = newEmployees.get(0).getChromo().get(0).size();
         Object[][][] myArray = new Object[7][len][newEmployees.size()];
-        Object[][][] returnArray = new Object[7][len][2];
+        Object[][][] returnArray = new Object[7][len][3];
+        List<List<String>> peroid = new ArrayList<>(setArray(storeId));
         Object[][] array_a = new Object[1][];
+        System.out.println("peroid"+peroid);
         if(flag) {
             for (int j = 0; j < 7; j++) {
                 for (int i = 0; i < newEmployees.size(); i++) {
@@ -135,9 +192,15 @@ public class AutoScheduling {
                         if (Objects.equals(myArray[j][k][i].toString(), "1")) {
                             myEmployeeBans.add(backEmployee.get(i));
                         }
+
                     }
                     returnArray[j][k][0] = myEmployeeBans;
                     returnArray[j][k][1] = null;
+                    if(j<5){
+                        returnArray[j][k][2] = peroid.get(0).get(k);
+                    }else {
+                        returnArray[j][k][2] = peroid.get(1).get(k);
+                    }
                     System.out.println();
                 }
                 System.out.println();
@@ -156,6 +219,7 @@ public class AutoScheduling {
 //            System.out.println();
 //        }
         }
+
         System.out.println(flag);
         System.out.println(returnArray[0][0][0]==null);
         return returnArray;
@@ -290,8 +354,9 @@ public class AutoScheduling {
                 "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00"};
 
         storeRule.setFlowNeeds(date, day);   //生成班次及班次所需人数
-        int len = storeRule.getFlowNeeds().size() + 2;   //总班次，包括开店前和关店后2个班次
+        int len = (int)(storeRule.getPreTimeNeed()/0.5)+storeRule.getFlowNeeds().size() + (int)(storeRule.getAftTimeNeed()/0.5);   //总班次，包括开店前和关店后2个班次
 
+        System.out.println("storeRule.getPreTimeNeed()/0.5"+storeRule.getPreTimeNeed()/0.5);
         //计算需要人数
         int preENeed = storeRule.getPreENeed();   //开店前所需人数
         int aftENeed = storeRule.getAftENeed();   //关店后所需人数

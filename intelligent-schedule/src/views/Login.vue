@@ -59,7 +59,7 @@ export default {
               let a = sessionStorage.getItem("employee");
               console.log("这是什么"+a.trim())
               console.log(a.employeeId)
-              console.log("猜猜我是谁"+JSON.stringify(a).employeeId);
+              console.log("猜猜我是谁"+JSON.parse(a).employeeId);
               // console.log(data.employee)
               if(data.flag==="ok"){
                 getMenu(parseInt(data.employee.root)).then(({ data }) => {
