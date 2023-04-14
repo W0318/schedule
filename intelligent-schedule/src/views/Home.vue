@@ -42,17 +42,19 @@
         <div ref="echarts2" style="height:480px"></div>
       </el-card>
     </el-row>
+
+
     <el-row class="button">
       <el-card class="component2" :body-style="{padding:0 }">
         <text class="text-title">历史客流量</text>
         <!-- 折线图 -->
-        <div ref="echarts1" style="height:480px"></div>
+<!--        <div ref="echarts1" style="height:480px"></div>-->
       </el-card>
-      <el-card class="component1" :body-style="{padding:0 }">
-        <text class="text-title">偏好排名前列</text>
-        <!-- 折线图 -->
-        <div ref="echarts3" style="height:480px"></div>
-      </el-card>
+<!--      <el-card class="component1" :body-style="{padding:0 }">-->
+<!--        <text class="text-title">偏好排名前列</text>-->
+<!--        &lt;!&ndash; 折线图 &ndash;&gt;-->
+<!--        <div ref="echarts3" style="height:480px"></div>-->
+<!--      </el-card>-->
     </el-row>
     <!-- <div class="button"></div> -->
   </div>
@@ -485,42 +487,43 @@ body{
     display: flex;
     flex: 1;
     margin-top: 5px;
+    margin-bottom: 5px;
 
-    .component1 {
-      margin-left: 10px;
-      background-color: #fff;
-      border-radius: 15px;
-      display: flex;
-      flex: 1;
-      flex-direction: column;
-      padding: 20px;
-
-      .text-title {
-        color: #000;
-        font-weight: bold;
-        font-size: 18px;
-        margin-top: 20px;
-        margin-bottom: 20px;
-      }
-    }
-
-    .component2 {
-      margin-right: 10px;
-      background-color: #fff;
-      border-radius: 15px;
-      display: flex;
-      flex: 2;
-      flex-direction: column;
-      padding: 20px;
-
-      .text-title {
-        color: #000;
-        font-weight: bold;
-        font-size: 18px;
-        margin-top: 20px;
-        margin-bottom: 20px;
-      }
-    }
+    //.component1 {
+    //  margin-left: 10px;
+    //  background-color: #fff;
+    //  border-radius: 15px;
+    //  display: flex;
+    //  flex: 1;
+    //  flex-direction: column;
+    //  padding: 20px;
+    //
+    //  .text-title {
+    //    color: #000;
+    //    font-weight: bold;
+    //    font-size: 18px;
+    //    margin-top: 20px;
+    //    margin-bottom: 20px;
+    //  }
+    //}
+    //
+    //.component2 {
+    //  margin-left: 10px;
+    //  background-color: #fff;
+    //  border-radius: 15px;
+    //  display: flex;
+    //  flex: 2;
+    //  flex-direction: column;
+    //  padding: 20px;
+    //
+    //  .text-title {
+    //    color: #000;
+    //    font-weight: bold;
+    //    font-size: 18px;
+    //    margin-top: 20px;
+    //    margin-bottom: 20px;
+    //  }
+    //}
   }
 }
 </style>
