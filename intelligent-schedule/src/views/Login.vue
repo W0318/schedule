@@ -22,19 +22,6 @@
       </div>
     </el-form>
   </div>
-  <el-form ref="form" class="login-container" label-width="150px" :model="form" :inline="true">
-    <!-- :rules="rules" -->
-    <h3 class="login_title">系统登录</h3>
-    <el-form-item class="login_username" label="用户名">
-      <el-input v-model="form.username" placeholder="请输入账号" />
-    </el-form-item>
-    <el-form-item label="密 码">
-      <el-input type="password" v-model="form.password" placeholder="请输入密码" />
-    </el-form-item>
-    <el-form-item>
-      <el-button @click="submit" style="margin-left :170px ;margin-top:10px" type="primary">登录</el-button>
-    </el-form-item>
-  </el-form>
 </template>
 <script>
 import Mock from "mockjs";

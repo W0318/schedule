@@ -30,7 +30,7 @@ public class RuleController {
     public void deleteRuleByStoreId(@RequestBody Map map) {
         ruleService.deleteRuleByStoreId(map.get("storeId").toString());
     }
-}
+
     @GetMapping("/getPeriods/{storeId}")
     public List<String> getPeriods(@PathVariable("storeId") String storeId) {
         List<String> periods = new ArrayList<>();

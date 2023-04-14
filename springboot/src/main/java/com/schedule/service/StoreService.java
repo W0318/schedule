@@ -68,6 +68,7 @@ public class StoreService {
 
     public void insertStore(String storeId, String storeName, String storeType, String address, Float size, String manger, Integer workers) {
         storeMapper.insertStore(storeId, storeName, storeType, address, size, manger, workers);
+    }
     public Store getStoreById(String storeId) {
         return storeMapper.getStoreById(storeId);
     }

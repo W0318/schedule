@@ -19,6 +19,7 @@ public class RuleService {
      */
     public void deleteRuleByStoreId(String storeId) {
         ruleMapper.deleteRuleByStoreId(storeId);
+    }
     public List<Rule> getGeneralRule() {
         return ruleMapper.getGeneralRule();
     }
