@@ -129,7 +129,7 @@ const chooseOption = (button, index) => {
             }
             emit('emitTable', table.value)
 
-            emit('updateTableData');
+            emit('updateTableData', curWeek.value);
         }
         else {
             curDay.value = button;
@@ -243,7 +243,7 @@ const initWeeks = () => {
     };
     emit('emitTable', table.value);
 
-    emit('updateTableData');
+    emit('updateTableData', curWeek.value);
 }
 const initDays = () => {
     day1.value = moment().format('M月D日');

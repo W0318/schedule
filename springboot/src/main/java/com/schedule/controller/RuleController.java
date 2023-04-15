@@ -155,25 +155,25 @@ public class RuleController {
     @PostMapping("/insertOpen")
     @ResponseBody
     public void insertOpen(@RequestBody Map map) {
-        ruleService.insertOpen(map.get("ruleId").toString(), map.get("storeId").toString(), map.get("ruleValue").toString());
+        ruleService.insertOpen(map.get("storeId").toString(), map.get("ruleValue").toString());
     }
 
     @PostMapping("/insertClose")
     @ResponseBody
     public void insertClose(@RequestBody Map map) {
-        ruleService.insertClose(map.get("ruleId").toString(), map.get("storeId").toString(), map.get("ruleValue").toString());
+        ruleService.insertClose(map.get("storeId").toString(), map.get("ruleValue").toString());
     }
 
     @PostMapping("/insertCustomer")
     @ResponseBody
     public void insertCustomer(@RequestBody Map map) {
-        ruleService.insertCustomer(map.get("ruleId").toString(), map.get("storeId").toString(), map.get("ruleValue").toString());
+        ruleService.insertCustomer(map.get("storeId").toString(), map.get("ruleValue").toString());
     }
 
     @PostMapping("/insertClasses")
     @ResponseBody
     public void insertClasses(@RequestBody Map map) {
-        ruleService.insertClasses(map.get("ruleId").toString(), map.get("storeId").toString(), map.get("ruleValue").toString());
+        ruleService.insertClasses(map.get("storeId").toString(), map.get("ruleValue").toString());
     }
 
     @GetMapping("/all")

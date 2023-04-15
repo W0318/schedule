@@ -29,8 +29,8 @@
     <!-- 新建规则对话框 -->
     <el-dialog v-model="addDialogVisible" title="编辑规则" width="30%">
       <el-form :model="addForm">
-        <el-form-item :label="rulenamee" label-width="60%"> </el-form-item>
-        <el-form-item label="规则内容：" prop="rulevaluee">
+        <el-form-item :label="rulenamee" label-width="100%" style="float: left"> </el-form-item>
+        <el-form-item label="规则内容：" prop="rulevaluee" style="float: left">
           <el-input
             v-model="this.rulevaluee"
             placeholder="请输入规则内容"
@@ -144,7 +144,7 @@ export default {
             this.tableData[0].ruleValue = json.minNeed;
             this.tableData[0].ruleTitle = "最少所需人数";
             const rules = {
-              ruleTitle: "客流计算公式",
+              ruleTitle: "客流计算公式（客流量：flow）",
               ruleValue: json.formula,
             };
             this.tableData.unshift(rules);
@@ -268,9 +268,9 @@ export default {
           getAllRule().then(async (datas) => {
             this.lengthh = datas.data.length + 1;
             this.lengthh = this.lengthh.toString();
-            console.log(this.lengthh);
+            // console.log(this.lengthh);
             console.log(this.label111);
-            await insertCustomer(this.lengthh, this.label111, this.sstr);
+            await insertCustomer(this.label111, this.sstr);
             this.addDialogVisible = false;
             // this.sleep(10000);
             await getCustomerByStoreId(this.label111).then((datass) => {
@@ -387,5 +387,11 @@ export default {
   .rulesList {
     margin-top: 20px;
   }
+}
+.dialog-footer {
+  clear: left;
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

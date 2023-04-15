@@ -120,17 +120,17 @@ export default {
       countData: [
         {
           name: "公司负责人: ",
-          value: "小明",
+          value: "高启强",
           color: "#409EFF"
         },
         {
           name: "在值员工数: ",
-          value: 23,
+          value: 25,
           color: "#f28d3c"
         },
         {
           name: "地址: ",
-          value: "上塘街道湖州街51号",
+          value: "京海市剧场街",
           color: "#f23c3c"
         },
         {
@@ -379,14 +379,13 @@ body{
   .top {
     display: flex;
     flex: 1;
-    margin-top: 5px;
     margin-bottom: 5px;
 
     .component1 {
       //position: absolute;
       //left: 0;
       background-color: #fff;
-      border-radius: 15px;
+      border-radius: 5px;
       display: flex;
       flex: 3;
       flex-direction: column;
@@ -405,7 +404,7 @@ body{
         height: 60px;
         //width: 300px;
         border: 1px solid var(--el-border-color);
-        border-radius: 15px;
+        border-radius: 5px;
         padding: 5px;
         margin-top: 20px;
         background-color: #6292f4;
@@ -413,7 +412,7 @@ body{
         align-items: center;
 
         .select {
-          border-radius: 15px;
+          border-radius: 5px;
           width: 180px;
         }
 
@@ -467,7 +466,7 @@ body{
     .component2 {
       margin-left: 10px;
       background-color: #fff;
-      border-radius: 15px;
+      border-radius: 5px;
       display: flex;
       flex: 7;
       flex-direction: column;
@@ -491,7 +490,7 @@ body{
     .component1 {
       margin-left: 10px;
       background-color: #fff;
-      border-radius: 15px;
+      border-radius: 5px;
       display: flex;
       flex: 1;
       flex-direction: column;
@@ -509,7 +508,7 @@ body{
     .component2 {
       margin-right: 10px;
       background-color: #fff;
-      border-radius: 15px;
+      border-radius: 5px;
       display: flex;
       flex: 2;
       flex-direction: column;

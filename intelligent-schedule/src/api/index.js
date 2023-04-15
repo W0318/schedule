@@ -178,33 +178,29 @@ export const getClassesByStoreId = (storeId) => {
   return request.get('http://localhost:8082/rule/getClassesbyStoreId/' + storeId);
 }
 
-export const insertOpen = (ruleId, storeId, ruleValue) => {
+export const insertOpen = (storeId, ruleValue) => {
   return request.post('http://localhost:8082/rule/insertOpen', {
-    ruleId: ruleId,
     storeId: storeId,
     ruleValue: ruleValue,
   });
 }
 
-export const insertClose = (ruleId, storeId, ruleValue) => {
+export const insertClose = (storeId, ruleValue) => {
   return request.post('http://localhost:8082/rule/insertClose', {
-    ruleId: ruleId,
     storeId: storeId,
     ruleValue: ruleValue,
   });
 }
 
-export const insertCustomer = (ruleId, storeId, ruleValue) => {
+export const insertCustomer = (storeId, ruleValue) => {
   return request.post('http://localhost:8082/rule/insertCustomer', {
-    ruleId: ruleId,
     storeId: storeId,
     ruleValue: ruleValue,
   });
 }
 
-export const insertClasses = (ruleId, storeId, ruleValue) => {
+export const insertClasses = (storeId, ruleValue) => {
   return request.post('http://localhost:8082/rule/insertClasses', {
-    ruleId: ruleId,
     storeId: storeId,
     ruleValue: ruleValue,
   });
@@ -261,6 +257,7 @@ export const updateClassesByStoreId = (storeId, ruleValue) => {
     ruleValue: ruleValue,
   });
 }
+
 
 export const getEmployee = () => {
   return request.get('http://localhost:8082/employee/allEmployee');
@@ -446,10 +443,11 @@ export const deleteDaySchedule = (items, day, storeId) => {
   });
 }
 
-export const updateWeekData = (items, storeId) => {
+export const updateWeekData = (items, storeId, flag) => {
   return request.post('http://localhost:8082/scheduling/replaceScheduling', {
     items: items,
-    storeId: storeId
+    storeId: storeId,
+    flag: flag
   });
 }
 

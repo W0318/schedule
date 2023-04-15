@@ -29,8 +29,8 @@
     <!-- 编辑规则对话框 -->
     <el-dialog v-model="addDialogVisible" title="编辑规则" width="30%">
       <el-form :model="addForm">
-        <el-form-item :label="this.rulenamee" label-width="66%"> </el-form-item>
-        <el-form-item label="规则内容：" prop="rulevaluee">
+        <el-form-item :label="this.rulenamee" label-width="100%" style="float: left"> </el-form-item>
+        <el-form-item label="规则内容：" prop="rulevaluee" style="float: left;">
           <el-input
             v-model="this.rulevaluee"
             placeholder="请输入规则内容"
@@ -147,14 +147,14 @@ export default {
             this.tableData = datas.data;
             let json = JSON.parse(this.tableData[0].ruleValue);
             this.tableData[0].ruleValue = json.position;
-            this.tableData[0].ruleTitle = "开店前准备员工限定职位（数组）";
+            this.tableData[0].ruleTitle = "开店前准备员工限定职位";
             const rules = {
-              ruleTitle: "开店前准备所需人数公式",
+              ruleTitle: "开店前准备所需人数公式（面积：size）",
               ruleValue: json.formula,
             };
             this.tableData.unshift(rules);
             const rules1 = {
-              ruleTitle: "开店前准备所需时间",
+              ruleTitle: "开店前准备所需时间（单位：小时）",
               ruleValue: json.before,
             };
             this.tableData.unshift(rules1);
@@ -346,7 +346,8 @@ export default {
               this.lengthh = this.lengthh.toString();
               console.log(this.lengthh);
               console.log(this.label111);
-              await insertOpen(this.lengthh, this.label111, this.sstr);
+              console.log(this.sstr);
+              await insertOpen(this.label111, this.sstr);
               this.addDialogVisible = false;
 
               await getOpenByStoreId(this.label111).then((datass) => {
@@ -496,5 +497,12 @@ export default {
 <style lang="less" scoped>
 .el-link {
   margin-left: 17px;
+}
+
+.dialog-footer {
+  clear: left;
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

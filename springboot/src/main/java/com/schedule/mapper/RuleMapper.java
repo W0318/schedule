@@ -87,21 +87,21 @@ public interface RuleMapper {
             "WHERE (storeId = #{storeId} AND ruleType =\"班次规则\")")
     void updateClassesByStoreId(String storeId, String ruleValue);
 
-    @Insert("INSERT INTO rule\n" +
-            "VALUES(#{ruleId}, #{storeId}, '开店规则', #{ruleValue})")
-    void insertOpen(String ruleId, String storeId, String ruleValue);
+    @Insert("INSERT INTO rule(storeId, ruleType, ruleValue)\n" +
+            "VALUES(#{storeId}, '开店规则', #{ruleValue})")
+    void insertOpen(String storeId, String ruleValue);
 
-    @Insert("INSERT INTO rule\n" +
-            "VALUES(#{ruleId}, #{storeId}, '关店规则', #{ruleValue})")
-    void insertClose(String ruleId, String storeId, String ruleValue);
+    @Insert("INSERT INTO rule(storeId, ruleType, ruleValue)\n" +
+            "VALUES(#{storeId}, '关店规则', #{ruleValue})")
+    void insertClose(String storeId, String ruleValue);
 
-    @Insert("INSERT INTO rule\n" +
-            "VALUES(#{ruleId}, #{storeId}, '客流规则', #{ruleValue})")
-    void insertCustomer(String ruleId, String storeId, String ruleValue);
+    @Insert("INSERT INTO rule(storeId, ruleType, ruleValue)\n" +
+            "VALUES(#{storeId}, '客流规则', #{ruleValue})")
+    void insertCustomer(String storeId, String ruleValue);
 
-    @Insert("INSERT INTO rule\n" +
-            "VALUES(#{ruleId}, #{storeId}, '班次规则', #{ruleValue})")
-    void insertClasses(String ruleId, String storeId, String ruleValue);
+    @Insert("INSERT INTO rule(storeId, ruleType, ruleValue)\n" +
+            "VALUES(#{storeId}, '班次规则', #{ruleValue})")
+    void insertClasses(String storeId, String ruleValue);
 
     //门店是否有规则
     @Select("SELECT ruleId,ruleValue FROM rule\n" +
@@ -122,4 +122,6 @@ public interface RuleMapper {
 
     @Select("SELECT * from rule")
     List<Rule> getAllRule();
+
+
 }

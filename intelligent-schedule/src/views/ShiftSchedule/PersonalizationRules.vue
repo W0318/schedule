@@ -217,9 +217,9 @@ export default {
   height: 600px;
   padding: 0;
 }
-.el-tree{
+/* .el-tree{
   font-size: 17px;
-}
+} */
 .btns {
   display: flex;
   justify-content: space-between;

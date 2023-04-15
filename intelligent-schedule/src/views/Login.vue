@@ -5,18 +5,19 @@
       <h3 class="login_title">用户登录</h3>
       <div>
         <el-form-item class="login_username" label="用户名">
-          <el-input v-model="form.username" placeholder="请输入账号" />
+          <el-input v-model="form.username" placeholder="请输入账号"/>
         </el-form-item>
         <el-form-item label="密&ensp;&ensp;码" class="login">
           <el-input
-            type="password"
-            v-model="form.password"
-            placeholder="请输入密码"
+              type="password"
+              v-model="form.password"
+              placeholder="请输入密码"
           />
         </el-form-item>
         <el-form-item>
           <el-button @click="submit" class="button" type="primary"
-            >登录</el-button
+          >登录
+          </el-button
           >
         </el-form-item>
       </div>
@@ -28,6 +29,7 @@ import Mock from "mockjs";
 import Cookie from "js-cookie";
 import { getLogin, getMenu } from "../api";
 import axios from "axios";
+
 export default {
   data() {
     return {
@@ -37,9 +39,9 @@ export default {
       },
       rules: {
         username: [
-          { required: true, trigger: "blur", message: "请输入用户名" },
+          {required: true, trigger: "blur", message: "请输入用户名"},
         ],
-        password: [{ required: true, trigger: "blur", message: "请输入密码" }],
+        password: [{required: true, trigger: "blur", message: "请输入密码"}],
       },
     };
   },
@@ -56,7 +58,7 @@ export default {
         if (vaild) {
           console.log(vaild);
           // console.log("from"+this.form.password)
-          getLogin(this.form).then(({ data }) => {
+          getLogin(this.form).then(({data}) => {
             // console.log("数据"+data)
             // console.log("falg   "+data.flag)
             // console.log("root   "+data.employee.root)
@@ -68,22 +70,22 @@ export default {
             // console.log(data.employee)
             if (data.flag === "ok") {
               getMenu(parseInt(data.employee.root))
-                .then(({ data }) => {
-                  if (data.code === 200) {
-                    //将token信息存入cookie中用于不同页面间的通讯
-                    Cookie.set("token", data.data.token);
-                    //获取菜单的数据，存入store
-                    // data.data.menu
-                    this.$store.commit("setMenu", data.data.menu);
-                    //跳转到首页
-                    this.$router.push("/home");
-                  } else {
-                    this.$message.error(data.data.message);
-                  }
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
+                  .then(({data}) => {
+                    if (data.code === 200) {
+                      //将token信息存入cookie中用于不同页面间的通讯
+                      Cookie.set("token", data.data.token);
+                      //获取菜单的数据，存入store
+                      // data.data.menu
+                      this.$store.commit("setMenu", data.data.menu);
+                      //跳转到首页
+                      this.$router.push("/home");
+                    } else {
+                      this.$message.error(data.data.message);
+                    }
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
             } else {
               console.log(data.flag);
             }
@@ -91,37 +93,37 @@ export default {
           console.log(vaild);
           // console.log("from"+this.form.password)
           getLogin(this.form)
-            .then(({ data }) => {
-              // console.log("数据"+data)
-              // console.log("falg   "+data.flag)
-              // console.log("root   "+data.employee.root)
-              sessionStorage.setItem("employee",JSON.stringify(data.employee));//存储user对象
-              let a = sessionStorage.getItem("employee");
-              console.log("这是什么"+a.trim())
-              console.log(a.employeeId)
-              console.log("猜猜我是谁"+JSON.parse(a).employeeId);
-              // console.log(data.employee)
-              if(data.flag==="ok"){
-                getMenu(parseInt(data.employee.root)).then(({ data }) => {
-                  if (data.code === 200) {
-                    //将token信息存入cookie中用于不同页面间的通讯
-                    Cookie.set("token", data.data.token);
-                    //获取菜单的数据，存入store
-                    // data.data.menu
-                    this.$store.commit("setMenu", data.data.menu);
-                    //跳转到首页
-                    this.$router.push("/home");
-                  } else {
-                    this.$message.error(data.data.message);
-                  }
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
-            } else {
-              console.log(data.flag);
-            }
-          });
+              .then(({data}) => {
+                // console.log("数据"+data)
+                // console.log("falg   "+data.flag)
+                // console.log("root   "+data.employee.root)
+                sessionStorage.setItem("employee", JSON.stringify(data.employee));//存储user对象
+                let a = sessionStorage.getItem("employee");
+                console.log("这是什么" + a.trim())
+                console.log(a.employeeId)
+                console.log("猜猜我是谁" + JSON.parse(a).employeeId);
+                // console.log(data.employee)
+                if (data.flag === "ok") {
+                  getMenu(parseInt(data.employee.root)).then(({data}) => {
+                    if (data.code === 200) {
+                      //将token信息存入cookie中用于不同页面间的通讯
+                      Cookie.set("token", data.data.token);
+                      //获取菜单的数据，存入store
+                      // data.data.menu
+                      this.$store.commit("setMenu", data.data.menu);
+                      //跳转到首页
+                      this.$router.push("/home");
+                    } else {
+                      this.$message.error(data.data.message);
+                    }
+                  })
+                      .catch((err) => {
+                        console.log(err);
+                      });
+                } else {
+                  console.log(data.flag);
+                }
+              });
         } else {
           console.log(vaild);
         }
@@ -131,19 +133,19 @@ export default {
     login() {
       var that = this;
       axios
-        .post("http://localhost:8082/employee/login", {
-          //请求登录接口
-          username: this.form.username,
-          password: this.form.password,
-        })
-        .then(function (response) {
-          console.log(response.data);
-          that.response = response.data;
-          that.$emit("lisentcurrent", [that.response]);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+          .post("http://localhost:8082/employee/login", {
+            //请求登录接口
+            username: this.form.username,
+            password: this.form.password,
+          })
+          .then(function (response) {
+            console.log(response.data);
+            that.response = response.data;
+            that.$emit("lisentcurrent", [that.response]);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
       console.log("pass", that.response);
       this.$router.push("/home");
     },
@@ -211,6 +213,7 @@ export default {
   //   border: 1px solid black;
   // }
 }
+
 #building {
   background: url("../assets/background2.jpg");
   width: 100%;
@@ -220,6 +223,7 @@ export default {
   display: flex;
   // filter: brightness(90%);
 }
+
 .button {
   display: inline-block;
   border-radius: 4px;

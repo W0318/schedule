@@ -101,25 +101,24 @@ public class RuleService {
         return ruleMapper.getClassesByStoreId(storeId);
     }
 
-    public void insertOpen(String ruleId, String storeId, String ruleValue){
-        ruleMapper.insertOpen(ruleId, storeId, ruleValue);
+    public void insertOpen(String storeId, String ruleValue){
+        ruleMapper.insertOpen(storeId, ruleValue);
     }
 
-    public void insertClose(String ruleId, String storeId, String ruleValue){
-        ruleMapper.insertClose(ruleId, storeId, ruleValue);
+    public void insertClose(String storeId, String ruleValue){
+        ruleMapper.insertClose(storeId, ruleValue);
     }
 
-    public void insertCustomer(String ruleId, String storeId, String ruleValue){
-        ruleMapper.insertCustomer(ruleId, storeId, ruleValue);
+    public void insertCustomer(String storeId, String ruleValue){
+        ruleMapper.insertCustomer(storeId, ruleValue);
     }
 
-    public void insertClasses(String ruleId, String storeId, String ruleValue){
-        ruleMapper.insertClasses(ruleId, storeId, ruleValue);
+    public void insertClasses(String storeId, String ruleValue){
+        ruleMapper.insertClasses(storeId, ruleValue);
     }
 
     public List<Rule> getAllRule() {
         return ruleMapper.getAllRule();
     }
-
 
 }

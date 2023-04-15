@@ -15,8 +15,6 @@ public class GeneticAlgorithm {
     public ArrayList<ArrayList<Integer>> workingTime;   //0下标表示连续工作时间，1下标表示日工作时间 2下标表示周工作时间
 
     private double P_mutation = 0.5;   //变异概率
-//    private double P_mutation = ;   //变异概率
-
 
     private int len = 34;   //染色体长度：开店前工作时间+日常工作时间【12h】+关店后工作时间
     private int scale = 20;   //可上班员工数目，即种群规模
@@ -190,6 +188,7 @@ public class GeneticAlgorithm {
         for (int i = pre; i < len; i++) {
             //ran++;
             double PopulationsNeed = 0;
+            if (later > 0) later = Math.max(later, 4);
             if (i >= pre && i < len - later) PopulationsNeed = PassFlowNum.get(i - pre);
             else if (i >= len - later) PopulationsNeed = AftNum;
 
@@ -226,7 +225,6 @@ public class GeneticAlgorithm {
                     }
                 }//今天就工作完了
             }
-
 
 //            //随机2-4小时的员工休息半小时
 //            /*while (ran == 7 ) {
@@ -369,7 +367,7 @@ public class GeneticAlgorithm {
     //偏好数组和星期几，用于check
 //    public ArrayList<Chromosome> GA(int PreNum, int AftNum, List<Integer> PassFlowNum, int pre, int later, int day, ArrayList<ArrayList<Integer>> loves_arr) {
 
-    public ArrayList<Employee> GA(int PreNum, int AftNum, List<Integer> PassFlowNum, int pre, int later, int day, ArrayList<Employee> loves_arr) {
+    public ArrayList<Employee> GA(int PreNum, int AftNum, List<Integer> PassFlowNum, int pre, int later, int day, ArrayList<Employee> loves_arr, int cnt) {
         ArrayList<Chromosome> group1 = group;
         ArrayList<Chromosome> group2 = group;
 
@@ -428,35 +426,22 @@ public class GeneticAlgorithm {
         //1.初始化种群
         //2.while次迭代以全局适应
         Random r = new Random();
-        int count = 0;
+
         while (true)//while循环中一直在进行种群更新
         {
-            count++;
-            if (count > 10) return null;
+            if (cnt > 10) return null;
             if (fitness(PreNum, AftNum, PassFlowNum, pre, later, loves_arr) == true) {
                 System.out.println("Day" + day + "已完成排班，结果如下：");
 //                ArrayList<Employee> new_loves = new  ArrayList<>(loves_arr);
                 for (int i = 0; i < scale; i++) {
                     System.out.println("员工" + i);
-//                    new_loves.get(i).getChromo();
-//                    loves_arr.get(j).setWeekTime(loves_arr.get(j).getWeekTime()+getDayTime(j));
                     ArrayList<Chromosome> newChomes = new ArrayList<>();
                     newChomes.add(group.get(day));
-//                    loves_arr.get(i).mySetChromo(day,group.get(i));
-//                    System.out.println(loves_arr.get(i).getChromo());
-//                    loves_arr.get(i).getChromo().set(day,newChomes.get(0));
-//                    ArrayList<Chromosome> temp = loves_arr.get(i).getChromo().add(group.get(i));
-//                    System.out.println(temp);
-//                    loves_arr.get(i).setChromo(temp);
-//                    System.out.println(loves_arr.get(i).getChromo());
-//                    System.out.println(loves_arr.get(i).getWeekTime());
                     loves_arr.get(i).getChromo().add(group.get(i).chromosome);
                     loves_arr.get(i).setChromo(loves_arr.get(i).getChromo());
                     System.out.print(loves_arr.get(i).getChromo());
                     for (int j = 0; j < len; j++) {
                         System.out.print(group.get(i).chromosome.get(j).intValue());
-//                        System.out.print(loves_arr.get(i).getChromo().get(day).chromosome.get(j).intValue());
-//                        System.out.print(loves_arr.get(i).getChromo().get(day).intValue());
                         System.out.print(" ");
                     }
                     System.out.println();
@@ -468,27 +453,11 @@ public class GeneticAlgorithm {
 //                return group1;
                 return loves_arr;
             } else {
-                return GA(PreNum, AftNum, PassFlowNum, pre, later, day, loves_arr);
+                cnt++;
+                return GA(PreNum, AftNum, PassFlowNum, pre, later, day, loves_arr, cnt);
             }
 
             //在fitness中进行变异
         }
-
-//
-//        //完成GA，显示结果
-//        System.out.println("Day" + day + "已完成排班，结果如下：");
-//        for (int i = 0; i < scale; i++) {
-//            System.out.println("员工" + i);
-//            for (int j = 0; j < len; j++) {
-//                System.out.print(group.get(i).chromosome.get(j).intValue());
-//                System.out.print(" ");
-//            }
-//            System.out.println();
-//        }
-//        System.out.println("结果显示完成!!!");
-//        group1 = group;
-//        group = group2;
-//        return group1;
-        //为什么每天GA的结果都是一样
     }
 }

@@ -44,6 +44,7 @@ public class SchedulingController {
     @GetMapping("/getAWeekWork/{Monday}/{Sunday}/{storeId}")
     public List<Object> getAWeekWork(@PathVariable("Monday") Date Monday, @PathVariable("Sunday") Date Sunday, @PathVariable("storeId") String storeId) {
         List<Scheduling> work = schedulingService.getAWeekWork(Monday, Sunday, storeId);   //从数据库获取一周数据
+        System.out.println(work);
         List<Object> weekWork = getSchedule(work, storeId);
 
         return weekWork;
@@ -140,7 +141,14 @@ public class SchedulingController {
             } else if (value.getString("employeeIds").equals("")) {
                 schedulingService.deleteScheduling(value.getString("id"));
             } else {
-                schedulingService.updateScheduling(value.getString("employeeIds"), value.getIntValue("id"));
+                int flag = (int) map.get("flag");
+                if (flag == 1)
+                    schedulingService.updateScheduling(value.getString("employeeIds"), value.getIntValue("id"));
+                else {
+                    String[] times = value.getString("period").split("-");
+                    String start = times[0] + ":00";
+                    schedulingService.updateEmployeeIds(value.getString("employeeIds"), Date.valueOf(value.getString("day")), Time.valueOf(start), storeId);
+                }
             }
         }
     }
@@ -299,6 +307,7 @@ public class SchedulingController {
                     dayWork2.add(all.get(j));
                     dayWork1.add(dayWork2);
                 } else {
+                    while (index < dayWork.size() && ((dayWork.get(index).getStartTime().toString()).compareTo(period(flagStart, j, periods)) < 0)) index++;
                     if (index < dayWork.size() && ((dayWork.get(index).getStartTime().toString()).equals(period(flagStart, j, periods)))) {
                         dayWork2 = new ArrayList<>();
                         dayWork2.add(employeeService.getEmployees(dayWork.get(index).getEmployeeIds()));
@@ -318,6 +327,7 @@ public class SchedulingController {
             weekWork.set(i, dayWork1);
         }
 
+        System.out.println(weekWork);
         return weekWork;
     }
 
