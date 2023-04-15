@@ -136,7 +136,7 @@ const dayData = ref([]);
 const weekIndex = [0, 1, 1, 1, 1, 1, 0];
 
 let persons = ref();
-const needpersons = ref(18);
+const needpersons = ref(23);
 
 const getmessage = ref(false);
 
@@ -144,9 +144,9 @@ const submitForm = (needperson) => {
   let monday = current.value.startOf('isoWeek').format('YYYY-MM-DD');
   console.log(storeValue.value + "   " + needperson + "   " + monday)
   autoSchedul(storeValue.value, needperson, monday).then((datas) => {
-    console.log("1332eeisdyhsjdhsadhio")
-    console.log("ggjh" + datas.data)
+    console.log(datas.data)
   });
+  getmessage.value = false;
 }
 
 const confermessage = () => {

@@ -110,7 +110,7 @@ public class AutoScheduling {
 
     @SneakyThrows
     @GetMapping("/{storeId}/{limited}/{Monday}")
-    public void AutoSchedule(@PathVariable("storeId") String storeId, @PathVariable("limited") String limited, @PathVariable("Monday") String Monday) {
+    public Object[][][] AutoSchedule(@PathVariable("storeId") String storeId, @PathVariable("limited") String limited, @PathVariable("Monday") String Monday) {
         /**
          * 1`根据storeId获取所有员工,并将偏好数值化存入对象
          */
@@ -120,6 +120,7 @@ public class AutoScheduling {
         ruleExist.put("客流规则", false);
         ruleExist.put("班次规则", false);
 
+//        System.out.println(storeId+"   "+limited+"  "+Monday);
         List<Employee> employees = employeeService.getAllEmployee(storeId);
         List<Employee> newEmployees = new ArrayList<>();
         System.out.println(employees.size());
@@ -142,89 +143,89 @@ public class AutoScheduling {
         storeRule = getStoreRule(storeRule, generalRule);   //未设置规则部分采用通用规则
         System.out.println(Math.ceil(1 / 2));
 
-//        boolean flag = true;
-//        int days = 7;
-//        Date ddtate = MyCalendar.StrToDate(Monday);
-//        for (int day = 0; day < days; day++) {
-//            if (use_GA(newEmployees, storeRule, MyCalendar.DateToStr(MyCalendar.addDays(ddtate, day)), day)) {
-//                System.out.println("至味null");
-//                flag = false;
-//                break;
-//            }
-//
-//        }
-//
-//        ArrayList<EmployeeBan> backEmployee = new ArrayList<>();
-//        for (Employee e : newEmployees) {
-//            EmployeeBan a = new EmployeeBan();
-//            a.setEmployeeId(e.getEmployeeId());
-//            a.setEmployeeName(e.getEmployeeName());
-//            a.setStoreId(e.getStoreId());
-//            a.setEmail(e.getEmail());
-//            a.setPhone(e.getPhone());
-//            a.setPosition(e.getPosition());
-//            a.setRoot(e.getRoot());
-//            backEmployee.add(a);
-//        }
-//
-//        int len = newEmployees.get(0).getChromo().get(0).size();
-//        Object[][][] myArray = new Object[7][len][newEmployees.size()];
-//        Object[][][] returnArray = new Object[7][len][3];
-//        List<List<String>> peroid = new ArrayList<>(setArray(storeId));
-//        Object[][] array_a = new Object[1][];
-//        System.out.println("peroid" + peroid);
-//        if (flag) {
-//            for (int j = 0; j < 7; j++) {
-//                for (int i = 0; i < newEmployees.size(); i++) {
-//                    array_a[0] = newEmployees.get(i).getChromo().get(j).toArray();
-//                    Object[][] transposeMatrix = transpose(array_a);
-//                    for (int k = 0; k < len; k++) {
-//                        myArray[j][k][i] = transposeMatrix[k][0];
-//                    }
-//                }
-//            }
-//
-//            for (int j = 0; j < 7; j++) {
-//                System.out.println("Day" + j + " ");
-//                for (int k = 0; k < len; k++) {
-//                    System.out.print("基因组" + k + " ");
-//                    ArrayList<EmployeeBan> myEmployeeBans = new ArrayList<>();
-//                    for (int i = 0; i < newEmployees.size(); i++) {
-//                        System.out.print(myArray[j][k][i] + " ");
-//                        if (Objects.equals(myArray[j][k][i].toString(), "1")) {
-//                            myEmployeeBans.add(backEmployee.get(i));
-//                        }
-//
-//                    }
-//                    returnArray[j][k][0] = myEmployeeBans;
-//                    returnArray[j][k][1] = null;
-//                    if (j < 5) {
-//                        returnArray[j][k][2] = peroid.get(0).get(k);
-//                    } else {
-//                        returnArray[j][k][2] = peroid.get(1).get(k);
-//                    }
-//                    System.out.println();
+        boolean flag = true;
+        int days = 7;
+        Date ddtate = MyCalendar.StrToDate(Monday);
+        for (int day = 0; day < days; day++) {
+            if (use_GA(newEmployees, storeRule, MyCalendar.DateToStr(MyCalendar.addDays(ddtate, day)), day)) {
+                System.out.println("至味null");
+                flag = false;
+                break;
+            }
+
+        }
+
+        ArrayList<EmployeeBan> backEmployee = new ArrayList<>();
+        for (Employee e : newEmployees) {
+            EmployeeBan a = new EmployeeBan();
+            a.setEmployeeId(e.getEmployeeId());
+            a.setEmployeeName(e.getEmployeeName());
+            a.setStoreId(e.getStoreId());
+            a.setEmail(e.getEmail());
+            a.setPhone(e.getPhone());
+            a.setPosition(e.getPosition());
+            a.setRoot(e.getRoot());
+            backEmployee.add(a);
+        }
+
+        int len = newEmployees.get(0).getChromo().get(0).size();
+        Object[][][] myArray = new Object[7][len][newEmployees.size()];
+        Object[][][] returnArray = new Object[7][len][3];
+        List<List<String>> peroid = new ArrayList<>(setArray(storeId));
+        Object[][] array_a = new Object[1][];
+        System.out.println("peroid" + peroid);
+        if (flag) {
+            for (int j = 0; j < 7; j++) {
+                for (int i = 0; i < newEmployees.size(); i++) {
+                    array_a[0] = newEmployees.get(i).getChromo().get(j).toArray();
+                    Object[][] transposeMatrix = transpose(array_a);
+                    for (int k = 0; k < len; k++) {
+                        myArray[j][k][i] = transposeMatrix[k][0];
+                    }
+                }
+            }
+
+            for (int j = 0; j < 7; j++) {
+                System.out.println("Day" + j + " ");
+                for (int k = 0; k < len; k++) {
+                    System.out.print("基因组" + k + " ");
+                    ArrayList<EmployeeBan> myEmployeeBans = new ArrayList<>();
+                    for (int i = 0; i < newEmployees.size(); i++) {
+                        System.out.print(myArray[j][k][i] + " ");
+                        if (Objects.equals(myArray[j][k][i].toString(), "1")) {
+                            myEmployeeBans.add(backEmployee.get(i));
+                        }
+
+                    }
+                    returnArray[j][k][0] = myEmployeeBans;
+                    returnArray[j][k][1] = null;
+                    if (j < 5) {
+                        returnArray[j][k][2] = peroid.get(0).get(k);
+                    } else {
+                        returnArray[j][k][2] = peroid.get(1).get(k);
+                    }
+                    System.out.println();
+                }
+                System.out.println();
+            }
+
+
+//        for (int j = 0; j < 7; j++) {
+//            System.out.println("Day"+j+" ");
+//            for(int k = 0;k<len;k++){
+//                System.out.print("基因组"+k+" ");
+//                for (int i = 0; i < 2; i++) {
+//                    System.out.print(returnArray[j][k][i]+" ");
 //                }
 //                System.out.println();
 //            }
-//
-//
-////        for (int j = 0; j < 7; j++) {
-////            System.out.println("Day"+j+" ");
-////            for(int k = 0;k<len;k++){
-////                System.out.print("基因组"+k+" ");
-////                for (int i = 0; i < 2; i++) {
-////                    System.out.print(returnArray[j][k][i]+" ");
-////                }
-////                System.out.println();
-////            }
-////            System.out.println();
-////        }
+//            System.out.println();
 //        }
-//
-//        System.out.println(flag);
-//        System.out.println(returnArray[0][0][0] == null);
-//        return returnArray;
+        }
+
+        System.out.println(flag);
+        System.out.println(returnArray[0][0][0] == null);
+        return returnArray;
     }
 
     /**
