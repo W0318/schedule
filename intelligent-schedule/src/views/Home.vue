@@ -120,17 +120,17 @@ export default {
       countData: [
         {
           name: "公司负责人: ",
-          value: "小明",
+          value: "高启强",
           color: "#409EFF"
         },
         {
           name: "在值员工数: ",
-          value: 23,
+          value: 25,
           color: "#f28d3c"
         },
         {
           name: "地址: ",
-          value: "上塘街道湖州街51号",
+          value: "京海市剧场街",
           color: "#f23c3c"
         },
         {

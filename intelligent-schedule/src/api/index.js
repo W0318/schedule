@@ -443,10 +443,11 @@ export const deleteDaySchedule = (items, day, storeId) => {
   });
 }
 
-export const updateWeekData = (items, storeId) => {
+export const updateWeekData = (items, storeId, flag) => {
   return request.post('http://localhost:8082/scheduling/replaceScheduling', {
     items: items,
-    storeId: storeId
+    storeId: storeId,
+    flag: flag
   });
 }
 

@@ -168,6 +168,7 @@ public class AutoScheduling {
         }
 
         int len = newEmployees.get(0).getChromo().get(0).size();
+//        int len = 24;
         List<List<String>> peroid = new ArrayList<>(setArray(storeId));
         Object[][][] myArray = new Object[7][len][newEmployees.size()];
         Object[][][] returnArray = new Object[7][peroid.get(2).size()][3];
@@ -427,7 +428,7 @@ public class AutoScheduling {
 //System.out.println();
         //开始公式计算并传参进行GA,完成排班
 
-        ArrayList<Employee> abc = ga.GA(preENeed, aftENeed, storeRule.getFlowNeeds(), (int) (storeRule.getPreTimeNeed() / 0.5), (int) (storeRule.getAftTimeNeed() / 0.5), day, preferCodes);
+        ArrayList<Employee> abc = ga.GA(preENeed, aftENeed, storeRule.getFlowNeeds(), (int) (storeRule.getPreTimeNeed() / 0.5), (int) (storeRule.getAftTimeNeed() / 0.5), day, preferCodes ,0);
 //        System.out.println("wuyuzi");
 //        for (Employee e : abc) {
 //            System.out.println(e);
@@ -435,7 +436,5 @@ public class AutoScheduling {
 //        return abc;
         System.out.println("abc" + abc);
         return abc == null;
-//        return ga.GA(preENeed, aftENeed, storeRule.getFlowNeeds(), (int)(storeRule.getPreTimeNeed() / 0.5), (int)(storeRule.getAftTimeNeed() / 0.5), day, preferCodes);
-//        return null;
     }
 }

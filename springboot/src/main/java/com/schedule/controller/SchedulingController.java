@@ -141,7 +141,14 @@ public class SchedulingController {
             } else if (value.getString("employeeIds").equals("")) {
                 schedulingService.deleteScheduling(value.getString("id"));
             } else {
-                schedulingService.updateScheduling(value.getString("employeeIds"), value.getIntValue("id"));
+                int flag = (int) map.get("flag");
+                if (flag == 1)
+                    schedulingService.updateScheduling(value.getString("employeeIds"), value.getIntValue("id"));
+                else {
+                    String[] times = value.getString("period").split("-");
+                    String start = times[0] + ":00";
+                    schedulingService.updateEmployeeIds(value.getString("employeeIds"), Date.valueOf(value.getString("day")), Time.valueOf(start), storeId);
+                }
             }
         }
     }

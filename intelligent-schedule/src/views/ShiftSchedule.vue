@@ -32,33 +32,38 @@
         </el-select>
 
         <div v-if="root === 1" class="buttonView">
-          <el-button type="danger" :icon="Delete" @click="handleDelete" title="删除单元格内容">删除</el-button>
-          <el-button @click="confermessage" v-if="week_day === 'week'" type="warning" :icon="Postcard">一键生成排班
+          <el-button type="danger" :icon="Delete" @click="handleDelete" title="删除单元格内容" :disabled="disabled">删除</el-button>
+          <el-button @click="confermessage" v-if="week_day === 'week'" type="warning" :icon="Postcard" :disabled="disabled">一键生成排班
           </el-button>
 
           <el-button-group style="margin-left: 12px">
-            <el-button :class="edit === '完成' ? 'button-choose' : null" type="primary" :icon="Edit" @click="handleEdit">
+            <el-button :class="edit === '完成' ? 'button-choose' : null" type="primary" :icon="Edit" @click="handleEdit" :disabled="disabled">
               {{ edit }}
             </el-button>
-            <el-button type="success" :icon="Finished" @click="handleSave">保存</el-button>
+            <el-button v-if="saveFlag" type="success" :icon="Finished" @click="(generateFlag) => handleSave(generateFlag)" :disabled="disabled">保存</el-button>
           </el-button-group>
         </div>
       </div>
 
       <el-dialog v-model="getmessage">
-        <el-form ref="returnForm" label-width="100px" class="demo-ruleForm">
-          <el-form-item style="float:right">
-            <p><label>可排班人数：</label>
-              <span v-text="persons" style="margin-right: 20px"></span>
-            </p>
-          </el-form-item>
-          <el-form-item style="float:right;width: 350px">
-            <p><label>建议排班人数：</label>
-              <el-input v-model="needpersons" placeholder="18" style="margin-top: 10px;width: 100px"></el-input>
-            </p>
-          </el-form-item>
+        <el-form ref="returnForm" style="display: flex; flex-direction: column; align-items: center">
+          <p style="text-indent: 30px; line-height: 30px; padding: 10px; font-size: 16px">提示：您可以通过<strong>多次单击“一键生成排班”</strong>按钮<strong>多次生成排班数据</strong>，生成您满意的数据，但<strong>离开当周排班页面请记得单击“保存”，否则将无法保存生成的数据！</strong></p>
+          <div style="display: flex;">
+            <el-form-item style="margin-right: 50px">
+              <p>
+                <label>可排班人数：</label>
+                <span v-text="persons"></span>
+              </p>
+            </el-form-item>
+            <el-form-item>
+              <p>
+                <label>建议排班人数：</label>
+                <el-input v-model="needpersons" placeholder="18" style="width: 100px;"></el-input>
+              </p>
+            </el-form-item>
+          </div>
           <el-form-item>
-            <el-button type="primary" @click="submitForm(needpersons)" style="float:right">确定</el-button>
+            <el-button type="primary" @click="submitForm(needpersons)">确定</el-button>
           </el-form-item>
         </el-form>
       </el-dialog>
@@ -154,6 +159,8 @@ const submitForm = (needperson) => {
     dealTableData(datas.data);
     loading.value = false;
     getmessage.value = false;
+    saveFlag.value = true;
+    generateFlag.value = 0;
   });
 }
 
@@ -319,6 +326,9 @@ var arrTd = [];
 
 //编辑button的文本切换
 const edit = ref('编辑');
+const saveFlag = ref(false);
+const generateFlag = ref(1);
+const disabled = ref(false);
 
 //表格标签
 const table = ref({
@@ -485,11 +495,14 @@ const handleDelete = () => {
 //点击编辑|取消
 const handleEdit = () => {
   if (edit.value === '编辑') {
+    saveFlag.value = true;
     var tds = document.querySelectorAll('td');
     for (var i = 1; i < tds.length; i++) {
       if (tds[i].id !== 'td-time')
         tds[i].style.backgroundColor = '';
     }
+  } else {
+    saveFlag.value = false;
   }
 
   if (week_day.value === 'week')
@@ -500,9 +513,13 @@ const handleEdit = () => {
   edit.value = (edit.value === '编辑' ? '取消' : '编辑');
 }
 //点击保存
-const handleSave = () => {
+const handleSave = (generateFlag) => {
+  loading.value = true;
+  disabled.value = true;
   if (week_day.value === 'week') {
-    updateSchedule();
+    updateSchedule(generateFlag);
+    loading.value = false;
+    scheduleData.value = tableData.value;
   } else {
     let items = [];
     dayData.value.map((value, index) => {
@@ -521,12 +538,18 @@ const handleSave = () => {
       items.push(item);
     });
     console.log(items);
-    replaceDaySchedule(items, storeValue.value, current.value.format('YYYY-MM-DD'));
+    replaceDaySchedule(items, storeValue.value, current.value.format('YYYY-MM-DD')).then(() => {
+      loading.value = true;
+      ElMessage({
+        type: 'success',
+        message: '保存成功',
+      })
+    });
   }
 }
 
 //更新数据库排班数据
-const updateSchedule = () => {
+const updateSchedule = (generateFlag) => {
   let items = [];
   tableData.value.forEach(row => {
     row[1].forEach((col, i) => {
@@ -555,7 +578,13 @@ const updateSchedule = () => {
     })
   })
 
-  updateWeekData(items, storeValue.value);
+  updateWeekData(items, storeValue.value, generateFlag).then(() => {
+    generateFlag.value = 1;
+    ElMessage({
+      type: 'success',
+      message: '保存成功',
+    })
+  });
 }
 
 const dragInit = () => {
@@ -646,6 +675,7 @@ const initVariable = () => {
 
   //编辑button的文本切换
   edit.value = '编辑';
+  saveFlag.value = false;
 
   //是否可拖拽drag，拖拽起点dragging，拖拽终点ending
   drag.value = false;
@@ -772,6 +802,10 @@ const dealTableData = (data) => {
   //border: 1px solid black;
   //box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
 
+  strong {
+    color: red;
+  }
+
   .store {
     margin-bottom: 10px;
     //border-radius: 10px;
@@ -844,5 +878,12 @@ const dealTableData = (data) => {
     display: flex;
     justify-content: center;
   }
+}
+
+.dialog-footer {
+  clear: left;
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
 }
 </style>
