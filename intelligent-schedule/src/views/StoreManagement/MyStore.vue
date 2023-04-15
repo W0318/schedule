@@ -552,17 +552,17 @@ export default {
 <style scoped>
 .el-main {
   padding: 0;
-  margin-left: 20px;
+  /*margin-left: 20px;*/
   margin-top: 20px;
-  width: 97%;
+  width: 100%;
 }
 .el-header {
   padding: 0;
-  width: 97%;
+  width: 100%;
 }
 
 .right-header {
-  margin-left: 20px;
+  /*margin-left: 20px;*/
   width: 100%;
   justify-content: space-around;
   height: 70px;

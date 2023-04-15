@@ -138,6 +138,127 @@ export const insertStore = (storeId, storeName, storeType, address, size, manger
   });
 }
 
+export const getRule = () => {
+  return request.get('http://localhost:8082/rule/allRule');
+}
+
+export const getAllRule = () => {
+  return request.get('http://localhost:8082/rule/all');
+}
+
+export const getOpenshopRule = () => {
+  return request.get('http://localhost:8082/rule/openshopRule');
+}
+
+export const getCloseshopRule = () => {
+  return request.get('http://localhost:8082/rule/closeshopRule');
+}
+
+export const getCustomerRule = () => {
+  return request.get('http://localhost:8082/rule/customerRule');
+}
+
+export const getClassesRule = () => {
+  return request.get('http://localhost:8082/rule/classesRule');
+}
+
+export const getOpenByStoreId = (storeId) => {
+  return request.get('http://localhost:8082/rule/getOpenbyStoreId/' + storeId);
+}
+
+export const getCloseByStoreId = (storeId) => {
+  return request.get('http://localhost:8082/rule/getClosebyStoreId/' + storeId);
+}
+
+export const getCustomerByStoreId = (storeId) => {
+  return request.get('http://localhost:8082/rule/getCustomerbyStoreId/' + storeId);
+}
+
+export const getClassesByStoreId = (storeId) => {
+  return request.get('http://localhost:8082/rule/getClassesbyStoreId/' + storeId);
+}
+
+export const insertOpen = (storeId, ruleValue) => {
+  return request.post('http://localhost:8082/rule/insertOpen', {
+    storeId: storeId,
+    ruleValue: ruleValue,
+  });
+}
+
+export const insertClose = (storeId, ruleValue) => {
+  return request.post('http://localhost:8082/rule/insertClose', {
+    storeId: storeId,
+    ruleValue: ruleValue,
+  });
+}
+
+export const insertCustomer = (storeId, ruleValue) => {
+  return request.post('http://localhost:8082/rule/insertCustomer', {
+    storeId: storeId,
+    ruleValue: ruleValue,
+  });
+}
+
+export const insertClasses = (storeId, ruleValue) => {
+  return request.post('http://localhost:8082/rule/insertClasses', {
+    storeId: storeId,
+    ruleValue: ruleValue,
+  });
+}
+
+export const updateOpenshop = (ruleValue) => {
+  return request.post('http://localhost:8082/rule/updateOpenshop', {
+    ruleValue: ruleValue,
+  });
+}
+
+export const updateCloseshop = (ruleValue) => {
+  return request.post('http://localhost:8082/rule/updateCloseshop', {
+    ruleValue: ruleValue,
+  });
+}
+
+export const updateCustomer = (ruleValue) => {
+  return request.post('http://localhost:8082/rule/updateCustomer', {
+    ruleValue: ruleValue,
+  });
+}
+
+export const updateClasses = (ruleValue) => {
+  return request.post('http://localhost:8082/rule/updateClasses', {
+    ruleValue: ruleValue,
+  });
+}
+
+export const updateOpenByStoreId = (storeId, ruleValue) => {
+  return request.post('http://localhost:8082/rule/updateOpenbyStoreId', {
+    storeId: storeId,
+    ruleValue: ruleValue,
+  });
+}
+
+export const updateCloseByStoreId = (storeId, ruleValue) => {
+  return request.post('http://localhost:8082/rule/updateClosebyStoreId', {
+    storeId: storeId,
+    ruleValue: ruleValue,
+  });
+}
+
+export const updateCustomerByStoreId = (storeId, ruleValue) => {
+  return request.post('http://localhost:8082/rule/updateCustomerbyStoreId', {
+    storeId: storeId,
+    ruleValue: ruleValue,
+  });
+}
+
+export const updateClassesByStoreId = (storeId, ruleValue) => {
+  return request.post('http://localhost:8082/rule/updateClassesbyStoreId', {
+    storeId: storeId,
+    ruleValue: ruleValue,
+  });
+}
+
+
 export const getEmployee = () => {
   return request.get('http://localhost:8082/employee/allEmployee');
 }

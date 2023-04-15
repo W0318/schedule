@@ -8,5 +8,7 @@ spring:
 #    password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
     initialization-mode: always
+    hikari:
+      max-lifetime: 500000
 server:
   port: 8082

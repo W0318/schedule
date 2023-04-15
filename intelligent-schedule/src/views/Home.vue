@@ -379,14 +379,13 @@ body{
   .top {
     display: flex;
     flex: 1;
-    margin-top: 5px;
     margin-bottom: 5px;
 
     .component1 {
       //position: absolute;
       //left: 0;
       background-color: #fff;
-      border-radius: 15px;
+      border-radius: 5px;
       display: flex;
       flex: 3;
       flex-direction: column;
@@ -405,7 +404,7 @@ body{
         height: 60px;
         //width: 300px;
         border: 1px solid var(--el-border-color);
-        border-radius: 15px;
+        border-radius: 5px;
         padding: 5px;
         margin-top: 20px;
         background-color: #6292f4;
@@ -413,7 +412,7 @@ body{
         align-items: center;
 
         .select {
-          border-radius: 15px;
+          border-radius: 5px;
           width: 180px;
         }
 
@@ -467,7 +466,7 @@ body{
     .component2 {
       margin-left: 10px;
       background-color: #fff;
-      border-radius: 15px;
+      border-radius: 5px;
       display: flex;
       flex: 7;
       flex-direction: column;
@@ -491,7 +490,7 @@ body{
     .component1 {
       margin-left: 10px;
       background-color: #fff;
-      border-radius: 15px;
+      border-radius: 5px;
       display: flex;
       flex: 1;
       flex-direction: column;
@@ -509,7 +508,7 @@ body{
     .component2 {
       margin-right: 10px;
       background-color: #fff;
-      border-radius: 15px;
+      border-radius: 5px;
       display: flex;
       flex: 2;
       flex-direction: column;

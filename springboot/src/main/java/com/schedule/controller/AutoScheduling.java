@@ -46,6 +46,13 @@ public class AutoScheduling {
     RuleService ruleService;
     @Autowired
     StoreService storeService;
+    HashMap<String, Boolean> ruleExist = new HashMap<String, Boolean>() {{
+        put("开店规则", false);
+        put("关店规则", false);
+        put("客流规则", false);
+        put("班次规则", false);
+    }};
+
     List<List<String>> setArray(String storeId) {
         List<List<String>> result = new ArrayList<>();
         List<Double> generalTime = (new Methods()).getTime(ruleService.getGeneralRule());
@@ -92,21 +99,14 @@ public class AutoScheduling {
 //        System.out.println("weekend:" + weekend);
 //        System.out.println("weekdayStart:" + weekdayStart);
 //        System.out.println("weekendStart:" + weekendStart);
-//        result.add(all);
         result.add(weekday);
         result.add(weekend);
+        result.add(all);
 //        result.add(weekdayStart);
 //        result.add(weekendStart);
 
         return result;
     }
-
-    HashMap<String, Boolean> ruleExist = new HashMap<String, Boolean>() {{
-        put("开店规则", false);
-        put("关店规则", false);
-        put("客流规则", false);
-        put("班次规则", false);
-    }};
 
     @SneakyThrows
     @GetMapping("/{storeId}/{limited}/{Monday}")
@@ -146,11 +146,11 @@ public class AutoScheduling {
         int days = 7;
         Date ddtate = MyCalendar.StrToDate(Monday);
         for (int day = 0; day < days; day++) {
-           if(use_GA(newEmployees, storeRule, MyCalendar.DateToStr(MyCalendar.addDays(ddtate, day)), day)){
-               System.out.println("至味null");
-               flag =false;
-               break;
-           }
+            if (use_GA(newEmployees, storeRule, MyCalendar.DateToStr(MyCalendar.addDays(ddtate, day)), day)) {
+                System.out.println("至味null");
+                flag = false;
+                break;
+            }
 
         }
 
@@ -168,12 +168,12 @@ public class AutoScheduling {
         }
 
         int len = newEmployees.get(0).getChromo().get(0).size();
-        Object[][][] myArray = new Object[7][len][newEmployees.size()];
-        Object[][][] returnArray = new Object[7][len][3];
         List<List<String>> peroid = new ArrayList<>(setArray(storeId));
+        Object[][][] myArray = new Object[7][len][newEmployees.size()];
+        Object[][][] returnArray = new Object[7][peroid.get(2).size()][3];
         Object[][] array_a = new Object[1][];
-        System.out.println("peroid"+peroid);
-        if(flag) {
+        System.out.println("peroid" + peroid);
+        if (flag) {
             for (int j = 0; j < 7; j++) {
                 for (int i = 0; i < newEmployees.size(); i++) {
                     array_a[0] = newEmployees.get(i).getChromo().get(j).toArray();
@@ -186,22 +186,36 @@ public class AutoScheduling {
 
             for (int j = 0; j < 7; j++) {
                 System.out.println("Day" + j + " ");
-                for (int k = 0; k < len; k++) {
+                if (j < 5) {
+                    for (int k = peroid.get(0).size(); k < peroid.get(2).size(); k++) {
+                        returnArray[j][k][0] = null;
+                        returnArray[j][k][1] = null;
+                        returnArray[j][k][2] = peroid.get(2).get(k);
+                    }
+                } else {
+                    for (int k = 0; k < peroid.get(2).size() - peroid.get(1).size(); k++) {
+                        returnArray[j][k][0] = null;
+                        returnArray[j][k][1] = null;
+                        returnArray[j][k][2] = peroid.get(2).get(k);
+                    }
+                }
+                int start = j < 5 ? 0 : peroid.get(2).size() - peroid.get(1).size();
+                for (int k = start, l = 0; k < len + start; k++, l++) {
                     System.out.print("基因组" + k + " ");
                     ArrayList<EmployeeBan> myEmployeeBans = new ArrayList<>();
                     for (int i = 0; i < newEmployees.size(); i++) {
-                        System.out.print(myArray[j][k][i] + " ");
-                        if (Objects.equals(myArray[j][k][i].toString(), "1")) {
+                        System.out.print(myArray[j][l][i] + " ");
+                        if (Objects.equals(myArray[j][l][i].toString(), "1")) {
                             myEmployeeBans.add(backEmployee.get(i));
                         }
 
                     }
                     returnArray[j][k][0] = myEmployeeBans;
                     returnArray[j][k][1] = null;
-                    if(j<5){
-                        returnArray[j][k][2] = peroid.get(0).get(k);
-                    }else {
-                        returnArray[j][k][2] = peroid.get(1).get(k);
+                    if (j < 5) {
+                        returnArray[j][k][2] = peroid.get(0).get(l);
+                    } else {
+                        returnArray[j][k][2] = peroid.get(1).get(l);
                     }
                     System.out.println();
                 }
@@ -223,7 +237,7 @@ public class AutoScheduling {
         }
 
         System.out.println(flag);
-        System.out.println(returnArray[0][0][0]==null);
+        System.out.println(returnArray[0][0][0] == null);
         return returnArray;
     }
 
@@ -351,14 +365,10 @@ public class AutoScheduling {
 
     //调用GA算法排班
     public boolean use_GA(List<Employee> employees, Store storeRule, String date, int day) {
-        String[] times = {"09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00",
-                "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30",
-                "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00"};
-
         storeRule.setFlowNeeds(date, day);   //生成班次及班次所需人数
-        int len = (int)(storeRule.getPreTimeNeed()/0.5)+storeRule.getFlowNeeds().size() + (int)(storeRule.getAftTimeNeed()/0.5);   //总班次，包括开店前和关店后2个班次
+        int len = (int) (storeRule.getPreTimeNeed() / 0.5) + storeRule.getFlowNeeds().size() + (int) (storeRule.getAftTimeNeed() / 0.5);   //总班次，包括开店前和关店后2个班次
 
-        System.out.println("storeRule.getPreTimeNeed()/0.5"+storeRule.getPreTimeNeed()/0.5);
+        System.out.println("storeRule.getPreTimeNeed()/0.5" + storeRule.getPreTimeNeed() / 0.5);
         //计算需要人数
         int preENeed = storeRule.getPreENeed();   //开店前所需人数
         int aftENeed = storeRule.getAftENeed();   //关店后所需人数
@@ -423,39 +433,9 @@ public class AutoScheduling {
 //            System.out.println(e);
 //        }
 //        return abc;
-        System.out.println("abc"+abc);
+        System.out.println("abc" + abc);
         return abc == null;
 //        return ga.GA(preENeed, aftENeed, storeRule.getFlowNeeds(), (int)(storeRule.getPreTimeNeed() / 0.5), (int)(storeRule.getAftTimeNeed() / 0.5), day, preferCodes);
 //        return null;
     }
-
-    public List<Object> getScheduleData(ArrayList<Chromosome> chromos, List<Employee> employees) {
-        List<Object> data = new ArrayList<>();
-
-        for (int i = 0; i < chromos.get(0).getLen(); i++) {
-//            List<Employee> employees1 = new ArrayList<>();
-            List<String> employees1 = new ArrayList<>();
-            for (int j = 0; j < chromos.size(); j++) {
-                if (chromos.get(j).chromosome.get(i) == 1) {   //有班次
-                    employees1.add(employees.get(j).getEmployeeName());
-                }
-            }
-            data.add(employees1);
-        }
-
-        return data;
-    }
-
-//    public void insertSchedule(ArrayList<Chromosome> chromos, List<Employee> employees) {
-//        for (int i = 0; i < chromos.get(0).getLen(); i++) {
-////            List<Employee> employees1 = new ArrayList<>();
-//            List<String> employees1 = new ArrayList<>();
-//            for (int j = 0; j < chromos.size(); j++) {
-//                if (chromos.get(j).chromosome.get(i) == 1) {   //有班次
-//                    employees1.add(employees.get(j).getEmployeeName());
-//                }
-//            }
-//            data.add(employees1);
-//        }
-//    }
 }
