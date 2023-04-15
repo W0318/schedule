@@ -146,6 +146,7 @@ const submitForm = (needperson) => {
   autoSchedul(storeValue.value, needperson, monday).then((datas) => {
     console.log(datas.data)
   });
+  getmessage.value = false;
 }
 
 const confermessage = () => {
