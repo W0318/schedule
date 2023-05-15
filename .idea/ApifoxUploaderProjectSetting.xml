@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ApifoxUploaderProjectSetting">
+    <option name="apifoxAccessToken" value="APS-PKdm3otw3Dec2DSuuz7x72x47lAyCi87" />
+    <option name="apifoxApiOverwriteMode" value="覆盖所有字段" />
+    <option name="apifoxProjectIds">
+      <array>
+        <option value="# ModuleName:ProjectID" />
+        <option value="controller:2426328" />
+        <option value="spring-vue:2426328" />
+      </array>
+    </option>
+    <option name="yapiTokens" value="" />
+  </component>
+</project>
